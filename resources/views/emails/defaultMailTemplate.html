@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ subject }}</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #0044cc;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        .header img {
+            max-width: 120px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .content {
+            padding: 20px;
+            color: #333333;
+        }
+
+        .content p {
+            margin: 0 0 15px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #666666;
+        }
+
+        .footer a {
+            color: #0044cc;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    </head>
+    <body>
+        <div class="email-container">
+            <div class="content">
+                {{ mailContent }}
+
+                <p>Best regards,</p>
+                <p style="margin: auto;"><strong>Team Uplifty</strong></p>
+                <!-- <img style="width: 15%;margin-top: -2px;" -->
+                    <!-- src="https://uplifty.testlatentdomain.com/assets/svg/logos/logo.svg" -->
+                    <!-- alt="uplifty Logo"> -->
+            </div>
+            <div class="footer">
+                &copy; 2025 uplifty. All rights reserved. <a href="#">Privacy
+                    Policy</a>
+            </div>
+        </div>
+    </body>
+</html>
