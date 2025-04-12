@@ -9,7 +9,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($plans as $plan)
+        @forelse ($plans as $plan)
             <tr>
                 <td class="table-column-ps-0">{{ $loop->iteration }}</td>
                 <td>{{ $plan->name }}</td>
@@ -34,31 +34,42 @@
                     </div>
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="5">
+                    <div class="d-flex flex-column align-items-center p-4">
+                        <img class="mb-3" src="{{ asset('assets/svg/illustrations/oc-error.svg') }}" alt="No data"
+                            style="width: 10rem;" data-hs-theme-appearance="default">
+                        <img class="mb-3" src="{{ asset('assets/svg/illustrations-light/oc-error.svg') }}" alt="No data"
+                            style="width: 10rem;" data-hs-theme-appearance="dark">
+                        <p class="mb-0">No data available.</p>
+                    </div>
+                </td>
+            </tr>
+        @endforelse
     </tbody>
 </table>
 
-{{-- Laravel pagination links --}}
+{{-- Laravel pagination --}}
 <div class="d-flex justify-content-end mt-3">
     @if ($plans->lastPage() > 1)
         <nav>
             <ul class="pagination justify-content-end">
-
-                {{-- Previous Page Link --}}
+                {{-- Previous --}}
                 <li class="page-item {{ $plans->onFirstPage() ? 'disabled' : '' }}">
                     <a class="page-link" href="{{ $plans->previousPageUrl() ?? '#' }}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
 
-                {{-- Pagination Elements --}}
+                {{-- Page Numbers --}}
                 @for ($page = 1; $page <= $plans->lastPage(); $page++)
                     <li class="page-item {{ $page == $plans->currentPage() ? 'active' : '' }}">
                         <a class="page-link" href="{{ $plans->url($page) }}">{{ $page }}</a>
                     </li>
                 @endfor
 
-                {{-- Next Page Link --}}
+                {{-- Next --}}
                 <li class="page-item {{ !$plans->hasMorePages() ? 'disabled' : '' }}">
                     <a class="page-link" href="{{ $plans->nextPageUrl() ?? '#' }}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>

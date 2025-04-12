@@ -792,7 +792,7 @@
                         </div>
 
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('menberIndex') }}" role="button">
+                            <a class="nav-link" href="{{ url('menbers') }}" role="button">
                                 <i class="bi-building nav-icon"></i>
                                 <span class="nav-link-title">Menber Management</span>
                             </a>

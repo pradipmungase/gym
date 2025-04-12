@@ -3,22 +3,20 @@
     <main id="content" role="main" class="main">
         <div class="content container-fluid">
             <div class="page-header">
-                <div class="row align-items-end justify-content-between mb-4">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <h1 class="page-header-title">Plan Details</h1>
+                <div class="row align-items-center justify-content-between mb-4">
+                    <div class="col-6">
+                        <h1 class="page-header-title mb-0">Plan Details</h1>
                     </div>
-                    <div class="col-md-6 text-md-end d-flex flex-wrap gap-2 justify-content-md-end">
+                    <div class="col-6 text-end">
                         <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#addPlanModal">
                             <i class="bi bi-person-plus-fill me-1"></i> Add Plan
                         </a>
                     </div>
                 </div>
-
             </div>
-
-            <div class="table-responsive datatable-custom" id="plans-table-container">
-                {{-- Plan table will load here via AJAX --}}
-                <div class="text-center py-5">Loading plans...</div>
+            <div id="plans-table-container" class="text-center my-4 table-responsive datatable-custom">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Loading plans please wait...</p>
             </div>
 
         </div>

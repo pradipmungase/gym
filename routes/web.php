@@ -25,10 +25,17 @@ Route::post('/checkLogin', [AuthController::class, 'checkLogin']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/menberIndex', [MenberController::class, 'menberIndex'])->name('menberIndex');
+
+    Route::get('/plans', [PlanController::class, 'index'])->name('plans.index');
     Route::post('/plans/store', [PlanController::class, 'store'])->name('plans.store');
     Route::post('/plans/update', [PlanController::class, 'update'])->name('plans.update');
     Route::get('/plans/fetch', [PlanController::class, 'fetchPlans'])->name('plans.fetch');
-    Route::get('/plans', [PlanController::class, 'index'])->name('plans.index');
+
+
+
+    Route::get('/menbers', [MenberController::class, 'index'])->name('menbers.index');
+    Route::post('/menbers/store', [MenberController::class, 'store'])->name('menbers.store');
+    Route::post('/menbers/update', [MenberController::class, 'update'])->name('menbers.update');
+    Route::get('/menbers/fetch', [MenberController::class, 'fetchMenbers'])->name('menbers.fetch');
 });
 
