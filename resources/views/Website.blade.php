@@ -161,13 +161,15 @@
             </div>
             <div class="row classes-slider owl-carousel">
                 <div class="col-lg-4">
-                    <div class="single-class-item set-bg" data-setbg="{{ asset('Website/img/classes/classes-1.jpg') }}">
+                    <div class="single-class-item set-bg"
+                        data-setbg="{{ asset('Website/img/classes/classes-1.jpg') }}">
                         <div class="si-text">
                             <h4>Yoga</h4>
                             <span><i class="fa fa-user"></i> Ryan Knight</span>
                         </div>
                     </div>
-                    <div class="single-class-item set-bg" data-setbg="{{ asset('Website/img/classes/classes-4.jpg') }}">
+                    <div class="single-class-item set-bg"
+                        data-setbg="{{ asset('Website/img/classes/classes-4.jpg') }}">
                         <div class="si-text">
                             <h4>Karate</h4>
                             <span><i class="fa fa-user"></i> Kevin McCormick</span>
@@ -175,13 +177,15 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="single-class-item set-bg" data-setbg="{{ asset('Website/img/classes/classes-2.jpg') }}">
+                    <div class="single-class-item set-bg"
+                        data-setbg="{{ asset('Website/img/classes/classes-2.jpg') }}">
                         <div class="si-text">
                             <h4>Running</h4>
                             <span><i class="fa fa-user"></i> Randy Rivera</span>
                         </div>
                     </div>
-                    <div class="single-class-item set-bg" data-setbg="{{ asset('Website/img/classes/classes-5.jpg') }}">
+                    <div class="single-class-item set-bg"
+                        data-setbg="{{ asset('Website/img/classes/classes-5.jpg') }}">
                         <div class="si-text">
                             <h4>Dance</h4>
                             <span><i class="fa fa-user"></i> Russell Lane</span>
@@ -189,13 +193,15 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="single-class-item set-bg" data-setbg="{{ asset('Website/img/classes/classes-3.jpg') }}">
+                    <div class="single-class-item set-bg"
+                        data-setbg="{{ asset('Website/img/classes/classes-3.jpg') }}">
                         <div class="si-text">
                             <h4>Personal Training</h4>
                             <span><i class="fa fa-user"></i> Cole Robertson</span>
                         </div>
                     </div>
-                    <div class="single-class-item set-bg" data-setbg="{{ asset('Website/img/classes/classes-6.jpg') }}                       ">
+                    <div class="single-class-item set-bg"
+                        data-setbg="{{ asset('Website/img/classes/classes-6.jpg') }}                       ">
                         <div class="si-text">
                             <h4>Weight Loss</h4>
                             <span><i class="fa fa-user"></i> Ryan Scott</span>
@@ -203,13 +209,15 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="single-class-item set-bg" data-setbg="{{ asset('Website/img/classes/classes-7.jpg') }}">
+                    <div class="single-class-item set-bg"
+                        data-setbg="{{ asset('Website/img/classes/classes-7.jpg') }}">
                         <div class="si-text">
                             <h4>Personal Training</h4>
                             <span><i class="fa fa-user"></i> Cole Robertson</span>
                         </div>
                     </div>
-                    <div class="single-class-item set-bg" data-setbg="{{ asset('Website/img/classes/classes-8.jpg') }}">
+                    <div class="single-class-item set-bg"
+                        data-setbg="{{ asset('Website/img/classes/classes-8.jpg') }}">
                         <div class="si-text">
                             <h4>Weight Loss</h4>
                             <span><i class="fa fa-user"></i> Ryan Scott</span>
@@ -306,7 +314,7 @@
                                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
                                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
                             <div class="ti-pic">
-                                    <img src="{{ asset('Website/img/testimonial/testimonial-1.jpg') }}" alt="">
+                                <img src="{{ asset('Website/img/testimonial/testimonial-1.jpg') }}" alt="">
                                 <div class="quote">
                                     <img src="{{ asset('Website/img/testimonial/quote-left.png') }}" alt="">
                                 </div>
@@ -470,32 +478,47 @@
                         </div>
                         <form action="#" class="register-form">
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <label for="gym_name">GYM Name <span class="text-danger">*</span></label>
-                                    <input type="text" id="gym_name" class="form-control" placeholder="Enter Gym Name">
-                                        <div id="error-gym_name" class="text-danger"></div> <!-- Error placeholder -->
+                                    <input type="text" id="gym_name" class="form-control"
+                                        placeholder="Enter Gym Name">
+                                    <div id="error-gym_name" class="text-danger"></div> <!-- Error placeholder -->
                                 </div>
                                 <div class="col-lg-6">
-                                    <label for="first_name">First Name <span class="text-danger">*</span></label>
-                                    <input type="text" id="first_name" class="form-control" placeholder="Enter First Name">
-                                    <div id="error-first_name" class="text-danger"></div> <!-- Error placeholder -->
+                                    <label for="owner_name">Owner Name <span class="text-danger">*</span></label>
+                                    <input type="text" id="owner_name" class="form-control"
+                                        placeholder="Enter Owner Name">
+                                    <div id="error-owner_name" class="text-danger"></div> <!-- Error placeholder -->
                                 </div>
-                                <div class="col-lg-6">
-                                    <label for="last_name">Last Name <span class="text-danger">*</span></label>
-                                    <input type="text" id="last_name" class="form-control" placeholder="Enter Last Name">
-                                    <div id="error-last_name" class="text-danger"></div> <!-- Error placeholder -->
-                                </div>
+
                                 <div class="col-lg-6">
                                     <label for="mobile">Mobile No <span class="text-danger">*</span></label>
-                                    <input type="text" id="mobile" class="form-control" placeholder="Enter Mobile No">
+                                    <input type="text" id="mobile" maxlength="10" pattern="\d{10}"
+                                        class="form-control" placeholder="Enter Mobile No" required>
                                     <div id="error-mobile" class="text-danger"></div> <!-- Error placeholder -->
                                 </div>
+
+                                <style>
+                                    /* Hide arrows on input[type=number] for all browsers */
+                                    input[type="number"]::-webkit-outer-spin-button,
+                                    input[type="number"]::-webkit-inner-spin-button {
+                                        -webkit-appearance: none;
+                                        margin: 0;
+                                    }
+
+                                    input[type="number"] {
+                                        -moz-appearance: textfield;
+                                    }
+                                </style>
+
+
                                 <div class="col-lg-6">
                                     <label for="password">Password <span class="text-danger">*</span></label>
-                                    <input type="password" id="password" class="form-control" placeholder="Enter Password">
+                                    <input type="password" id="password" class="form-control"
+                                        placeholder="Enter Password">
                                     <div id="error-password" class="text-danger"></div> <!-- Error placeholder -->
                                 </div>
- 
+
                             </div>
                             <button type="submit" class="register-btn">Get Started</button>
                         </form>
@@ -557,7 +580,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="footer-banner-item set-bg" data-setbg="{{ asset('Website/img/footer-banner/footer-banner-1.jpg') }}">
+                    <div class="footer-banner-item set-bg"
+                        data-setbg="{{ asset('Website/img/footer-banner/footer-banner-1.jpg') }}">
                         <span>New member</span>
                         <h2>7 days for free</h2>
                         <p>Complete the training sessions with us, surely you will be happy</p>
@@ -565,7 +589,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="footer-banner-item set-bg" data-setbg="{{ asset('Website/img/footer-banner/footer-banner-2.jpg') }}      ">
+                    <div class="footer-banner-item set-bg"
+                        data-setbg="{{ asset('Website/img/footer-banner/footer-banner-2.jpg') }}      ">
                         <span>contact us</span>
                         <h2>09 746 204</h2>
                         <p>If you trust us on your journey they dark sex does not disappoint you!</p>
@@ -615,9 +640,16 @@
                     <li><a href="#">Term&Use</a></li>
                     <li><a href="#">Privacy Policy</a></li>
                 </ul>
-                <p>&copy;<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></p>
+                <p>&copy;
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;
+                    <script>
+                        document.write(new Date().getFullYear());
+                    </script> All rights reserved | This template is made with <i class="fa fa-heart"
+                        aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </p>
+                </p>
                 <div class="footer-social">
                     <a href="#"><i class="fa fa-facebook"></i></a>
                     <a href="#"><i class="fa fa-twitter"></i></a>
@@ -638,54 +670,48 @@
     <script src="{{ asset('Website/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('Website/js/main.js') }}"></script>
 
-<script>
- $(document).on('submit', '.register-form', function (e) {
-    e.preventDefault();
+    <script>
+        $(document).on('submit', '.register-form', function(e) {
+            e.preventDefault();
 
-    // Clear previous validation errors
-    $('small.text-danger').html('');
+            // Clear previous validation errors
+            $('small.text-danger').html('');
 
-    // Disable button and show loader
-    let $btn = $('.register-btn');
-    $btn.prop('disabled', true).html('Processing...');
+            // Disable button and show loader
+            let $btn = $('.register-btn');
+            $btn.prop('disabled', true).html('Processing...');
 
-    $.ajax({
-        url: '/register',
-        type: 'POST',
-        data: {
-            _token: '{{ csrf_token() }}',
-            gym_name: $('#gym_name').val(),
-            first_name: $('#first_name').val(),
-            last_name: $('#last_name').val(),
-            mobile: $('#mobile').val(),
-            password: $('#password').val()
-        },
-        success: function (response) {
-            if (response.status === 'success') {
-                alert(response.message);
-                $('.register-form')[0].reset();
-                $btn.prop('disabled', false).html('Get Started');
-                window.location.href = '/dashboard';
-            } else {
-                alert('Something went wrong. Please try again.');
-            }
-        },
-        error: function (xhr) {
-            if (xhr.status === 422) {
-                let errors = xhr.responseJSON.errors;
-                $.each(errors, function (key, messages) {
-                    $('#error-' + key).html(messages[0]);
-                });
-            } else {
-                alert('Something went wrong. Please try again.');
-            }
+            $.ajax({
+                url: '/register',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    gym_name: $('#gym_name').val(),
+                    owner_name: $('#owner_name').val(),
+                    mobile: $('#mobile').val(),
+                    password: $('#password').val()
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        window.location.href = '/dashboard';
+                    } else {
+                        alert('Something went wrong. Please try again.');
+                    }
+                },
+                error: function(xhr) {
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, messages) {
+                            $('#error-' + key).html(messages[0]);
+                        });
+                    } else {
+                        alert('Something went wrong. Please try again.');
+                    }
 
-            $btn.prop('disabled', false).html('Get Started');
-        }
-    });
-});
-
-
+                    $btn.prop('disabled', false).html('Get Started');
+                }
+            });
+        });
     </script>
 </body>
 

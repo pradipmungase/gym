@@ -12,6 +12,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('Website/assets/img/unnamed.webp') }}">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
@@ -798,9 +799,9 @@
                         </div>
 
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('tenantIndex') }}" role="button">
+                            <a class="nav-link" href="{{ url('plans') }}" role="button">
                                 <i class="bi-people nav-icon"></i>
-                                <span class="nav-link-title">Tenant Management</span>
+                                <span class="nav-link-title">Plan Management</span>
                             </a>
                         </div>
 

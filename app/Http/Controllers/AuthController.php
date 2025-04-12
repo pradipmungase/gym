@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rules\Password;
 
 
 class AuthController extends Controller{
@@ -16,10 +17,15 @@ class AuthController extends Controller{
     {
         $request->validate([
             'gym_name' => 'required|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'owner_name' => 'required|string|max:255',
             'mobile' => 'required|string|digits:10|unique:users,mobile',
-            'password' => 'required|string|min:6',
+            'password' => ['required', 'string', Password::min(8)
+                ->mixedCase()
+                ->letters()
+                ->numbers()
+                ->symbols()
+                // ->uncompromised() // checks if password has been exposed in data leaks
+            ],
         ]);
 
         try {
@@ -27,11 +33,9 @@ class AuthController extends Controller{
 
             DB::table('users')->insert([
                 'gym_name' => $request->gym_name,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
+                'owner_name' => $request->owner_name,
                 'mobile' => $request->mobile,
                 'password' => Hash::make($request->password),
-                'type' => 'owner',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

@@ -8,8 +8,8 @@
                         <h1 class="page-header-title">Menber Details</h1>
                     </div>
                     <div class="col-md-6 text-md-end d-flex flex-wrap gap-2 justify-content-md-end">
-                        <a class="btn btn-primary" href="{{ route('addMenber') }}" >
-                            <i class="bi bi-person-plus-fill me-1"></i> Add Menber
+                             <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#addMenberModal">
+                            <i class="bi bi-person-plus-fill me-1"></i> Add Member
                         </a>
                     </div>
                 </div>
@@ -59,4 +59,94 @@
 
         </div>
     </main>
+
+        <!-- Add room Modal -->
+<div class="modal fade" id="addMenberModal" tabindex="-1" aria-labelledby="addMenberModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <form id="addTenantForm" method="POST" action="#">
+            <div class="modal-content">
+                <div class="modal-header text-white">
+                    <h5 class="modal-title" id="addMenberModalLabel">
+                        <i class="bi bi-person-plus-fill me-2"></i> Add New Menber
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body px-4">
+                    <div class="row g-3">
+
+                        <!-- Full Name -->
+                        <div class="col-md-6">
+                            <label for="tenantName" class="form-label">
+                                Full Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="tenantName" name="full_name" required placeholder="e.g., John Doe">
+                            <div class="invalid-feedback">Full name is required.</div>
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="col-md-6">
+                            <label for="tenantEmail" class="form-label">
+                                Email Address <span class="text-danger">*</span>
+                            </label>
+                            <input type="email" class="form-control" id="tenantEmail" name="email" required placeholder="e.g., john@example.com">
+                            <div class="invalid-feedback">Valid email is required.</div>
+                        </div>
+
+                        <!-- Mobile No -->
+                        <div class="col-md-6">
+                            <label for="tenantMobile" class="form-label">
+                                Mobile No <span class="text-danger">*</span>
+                            </label>
+                            <input type="number" class="form-control" id="tenantMobile" name="mobile" required placeholder="e.g., 9876543210">
+                            <div class="invalid-feedback">Mobile number is required.</div>
+                        </div>
+
+                        <!-- Wing Selection -->
+                        <div class="col-md-6">
+                            <label for="wingSelect" class="form-label">
+                                Wing <span class="text-danger">*</span>
+                            </label>
+                            <select onchange="loadRoomDataForDropdown(this.value)" class="form-select" id="wingSelect" name="wing_id" required>
+                                <option value="">Select Wing</option>
+                                <!-- Dynamically add options -->
+                            </select>
+                            <div class="invalid-feedback">Please select a wing.</div>
+                        </div>
+
+                        <!-- Room Selection -->
+                        <div class="col-md-6">
+                            <label for="roomSelect" class="form-label">
+                                Room <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="roomSelect" name="room_id" required>
+                                <option value="">Select Room</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a room.</div>
+                        </div>
+
+                        <!-- Joining Date -->
+                        <div class="col-md-6">
+                            <label for="joiningDate" class="form-label">
+                                Joining Date <span class="text-danger">*</span>
+                            </label>
+                            <input type="date" class="form-control" id="joiningDate" name="joining_date" required>
+                            <div class="invalid-feedback">Please select a joining date.</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer px-4">
+                    <button type="submit" id="submitTenantBtn" class="btn btn-success">
+                        <i class="bi bi-check-circle me-1"></i> Submit
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i> Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
