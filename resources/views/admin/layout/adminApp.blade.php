@@ -717,7 +717,7 @@
                                                 alt="Image Description">
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5 class="mb-0 loginUserName">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h5>
+                                            <h5 class="mb-0 loginUserName">{{ Auth::user()->owner_name }}</h5>
                                             <p class="card-text text-body loginUserMobileNumber">{{ Auth::user()->mobile }}</p>
                                         </div>
                                     </div>
@@ -791,6 +791,15 @@
                             </a>
                         </div>
 
+
+
+                        <div class="nav-item">
+                            <a class="nav-link" href="{{ url('plans') }}" role="button">
+                                <i class="bi-people nav-icon"></i>
+                                <span class="nav-link-title">Plan Management</span>
+                            </a>
+                        </div>
+
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('menbers') }}" role="button">
                                 <i class="bi-building nav-icon"></i>
@@ -799,9 +808,9 @@
                         </div>
 
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('plans') }}" role="button">
-                                <i class="bi-people nav-icon"></i>
-                                <span class="nav-link-title">Plan Management</span>
+                            <a class="nav-link" href="{{ url('attendance') }}" role="button">
+                                <i class="bi-building nav-icon"></i>
+                                <span class="nav-link-title">Attendance Management</span>
                             </a>
                         </div>
 

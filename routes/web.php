@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Http\Controllers\MenberController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\AttendanceController;
 
 // Logout route
 Route::get('/logout', function () {
@@ -37,5 +38,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/menbers/store', [MenberController::class, 'store'])->name('menbers.store');
     Route::post('/menbers/update', [MenberController::class, 'update'])->name('menbers.update');
     Route::get('/menbers/fetch', [MenberController::class, 'fetchMenbers'])->name('menbers.fetch');
+
+
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/attendance/take', [AttendanceController::class, 'takeAttendance'])->name('attendance.take');
+    Route::post('/attendance/mark', [AttendanceController::class, 'markAttendance'])->name('attendance.mark');
 });
 
