@@ -69,5 +69,10 @@ class PlanController extends Controller{
         return response()->json(['message' => 'Plan updated successfully']);
     }
 
-
+    public function view($id)
+    {
+        $id = decrypt($id);
+        $plan = DB::table('menbership_plans')->where('id', $id)->first();
+        return view('admin.plans.view', compact('plan'));
+    }
 }

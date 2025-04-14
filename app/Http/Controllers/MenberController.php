@@ -92,7 +92,7 @@ class MenberController extends Controller{
             ]);
 
             // Send WhatsApp message
-            $this->sendWhatsAppMessage($request->mobile, $request->name, $qrCodePath);
+            sendWhatsAppMessageForMenberRegistration($request->mobile, $request->name, $qrCodePath);
 
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Member added successfully!']);
@@ -125,22 +125,11 @@ class MenberController extends Controller{
         return $filePath;
     }
 
-    private function sendWhatsAppMessage($mobile, $name, $imagePath)
+    public function view($id)
     {
-        $mobile = '7028143227';
-        $gymName = Auth::user()->gym_name;
-        $base64Image = base64_encode(file_get_contents($imagePath));
-
-        // Prepare your custom message
-        $message = "👋 Hello $name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nHere is your QR Code for daily attendance. 📲\n\nMake sure to scan it every day when you visit! ✅";
-
-        // Send the message via WhatsApp gateway (e.g. using a local server or 3rd party API)
-        Http::post('http://localhost:3000/send-message', [
-            'number' => '91' . $mobile,
-            'message' => $message,
-            'image' => $base64Image,
-        ]);
+        $id = decrypt($id);
+        $menber = DB::table('members')->where('id', $id)->first();
+        return view('admin.menbers.view', compact('menber'));
     }
-
 
 }

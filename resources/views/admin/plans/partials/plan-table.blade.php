@@ -28,7 +28,7 @@
                                         data-bs-target="#editPlanModal"
                                         data-plan='@json($plan)'>Edit</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                                <li><a class="dropdown-item" href="{{ route('plans.view', encrypt($plan->id)) }}">View Details</a></li>
                             </ul>
                         </div>
                     </div>

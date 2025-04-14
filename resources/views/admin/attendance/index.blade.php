@@ -5,7 +5,7 @@
             <div class="page-header">
                 <div class="row align-items-center justify-content-between mb-4">
                     <div class="col-6">
-                        <h1 class="page-header-title mb-0">Attendance Details</h1>
+                        <h1 class="page-header-title mb-0">Today's Attendance Details</h1>
                     </div>
                     <div class="col-6 text-end">
                         <a class="btn btn-primary" href="{{ url('attendance/take') }}">

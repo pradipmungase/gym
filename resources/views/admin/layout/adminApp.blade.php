@@ -801,6 +801,13 @@
                         </div>
 
                         <div class="nav-item">
+                            <a class="nav-link" href="{{ url('trainer') }}" role="button">
+                                <i class="bi-people nav-icon"></i>
+                                <span class="nav-link-title">Trainer Management</span>
+                            </a>
+                        </div>
+
+                        <div class="nav-item">
                             <a class="nav-link" href="{{ url('menbers') }}" role="button">
                                 <i class="bi-building nav-icon"></i>
                                 <span class="nav-link-title">Menber Management</span>

@@ -17,7 +17,6 @@
                 </div>
             </div>
 
-
         </div>
     </main>
 @endsection
@@ -80,6 +79,11 @@
                 setTimeout(function() {
                     scanCooldown = false;
                     lastScannedCode = null;
+                    $('#scan-output').html(`
+                        <div class="text-center">
+                            <p class="text-center">Waiting for scan...</p>
+                        </div>
+                    `);
                 }, 3000); // 3 seconds delay before allowing next scan
             }
         });
