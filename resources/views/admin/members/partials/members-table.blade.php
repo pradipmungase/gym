@@ -9,33 +9,33 @@
         </tr>
     </thead>
     <tbody>
-        @forelse ($menbers as $menber)
+        @forelse ($members as $member)
             <tr>
                 <td class="table-column-ps-0">{{ $loop->iteration }}</td>
 
                 <td class="table-column-ps-0">
-                    <a class="d-flex align-items-center" href="{{ route('menbers.view', encrypt($menber->id)) }}">
+                    <a class="d-flex align-items-center" href="{{ route('members.view', encrypt($member->id)) }}">
                         <div class="avatar avatar-circle">
-                            @if ($menber->image)
-                                <img class="avatar-img" src="{{ asset($menber->image) }}" alt="Image Description">
+                            @if ($member->image)
+                                <img class="avatar-img" src="{{ asset($member->image) }}" alt="Image Description">
                             @else
                                 <img class="avatar-img" src="{{ asset('assets/img/160x160/images (1).jpg') }}" alt="Image Description">
                             @endif
                         </div>
                         <div class="ms-3">
                             <div class="d-flex align-items-center">
-                                <span class="h5 text-inherit mb-0 me-1">{{ $menber->name }}</span>
+                                <span class="h5 text-inherit mb-0 me-1">{{ $member->name }}</span>
                                 <i class="bi-patch-check-fill text-primary" data-bs-toggle="tooltip"
                                     data-bs-placement="top" aria-label="Top endorsed"
                                     data-bs-original-title="Top endorsed"></i>
                             </div>
-                            <span class="d-block fs-5 text-body h5  mb-0 me-1">{{ $menber->email }}</span>
+                            <span class="d-block fs-5 text-body h5  mb-0 me-1">{{ $member->email }}</span>
                         </div>
                     </a>
                 </td>
 
-                <td>{{ $menber->mobile }}</td>
-                <td>{{ \Carbon\Carbon::parse($menber->joining_date)->format('d M, Y') }}</td>
+                <td>{{ $member->mobile }}</td>
+                <td>{{ \Carbon\Carbon::parse($member->joining_date)->format('d M, Y') }}</td>
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -46,9 +46,9 @@
                             <li>
                                 <a class="dropdown-item edit-menber-btn" href="#" data-bs-toggle="modal"
                                     data-bs-target="#editMenberModal"
-                                    data-menber='@json($menber)'>Edit</a>
+                                    data-menber='@json($member)'>Edit</a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ route('menbers.view', encrypt($menber->id)) }}">View Details</a></li>
+                            <li><a class="dropdown-item" href="{{ route('members.view', encrypt($member->id)) }}">View Details</a></li>
                         </ul>
                     </div>
                 </td>
@@ -69,29 +69,4 @@
     </tbody>
 </table>
 
-{{-- Laravel pagination links --}}
-<div class="d-flex justify-content-end mt-3">
-    @if ($menbers->lastPage() > 1)
-        <nav>
-            <ul class="pagination justify-content-end">
-                <li class="page-item {{ $menbers->onFirstPage() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $menbers->previousPageUrl() ?? '#' }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-
-                @for ($page = 1; $page <= $menbers->lastPage(); $page++)
-                    <li class="page-item {{ $page == $menbers->currentPage() ? 'active' : '' }}">
-                        <a class="page-link" href="{{ $menbers->url($page) }}">{{ $page }}</a>
-                    </li>
-                @endfor
-
-                <li class="page-item {{ !$menbers->hasMorePages() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $menbers->nextPageUrl() ?? '#' }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    @endif
-</div>
+@include('admin.pagination.paginationNumber',['data'=>$members])

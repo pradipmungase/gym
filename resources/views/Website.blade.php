@@ -713,6 +713,9 @@
             });
         });
     </script>
+    <script>
+        localStorage.setItem('hs_theme', 'dark');
+    </script>
 </body>
 
 </html>

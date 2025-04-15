@@ -68,30 +68,4 @@
         @endforelse
     </tbody>
 </table>
-
-{{-- Laravel pagination links --}}
-<div class="d-flex justify-content-end mt-3">
-    @if ($trainers->lastPage() > 1)
-        <nav>
-            <ul class="pagination justify-content-end">
-                <li class="page-item {{ $trainers->onFirstPage() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $trainers->previousPageUrl() ?? '#' }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-
-                @for ($page = 1; $page <= $trainers->lastPage(); $page++)
-                    <li class="page-item {{ $page == $trainers->currentPage() ? 'active' : '' }}">
-                        <a class="page-link" href="{{ $trainers->url($page) }}">{{ $page }}</a>
-                    </li>
-                @endfor
-
-                <li class="page-item {{ !$trainers->hasMorePages() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $trainers->nextPageUrl() ?? '#' }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    @endif
-</div>
+@include('admin.pagination.paginationNumber',['data'=>$trainers])

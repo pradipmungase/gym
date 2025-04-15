@@ -17,18 +17,18 @@ use Endroid\QrCode\Builder\Builder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
-class MenberController extends Controller{
+class MembersController extends Controller{
     
     public function index()
     {
         $plans = DB::table('menbership_plans')->where('gym_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
-        return view('admin.menbers.index', compact('plans')); // just loads view with empty or initial content
+        return view('admin.members.index', compact('plans')); // just loads view with empty or initial content
     }
 
-    public function fetchMenbers(Request $request)
+    public function fetchmembers(Request $request)
     {
-        $menbers = DB::table('members')->where('gym_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.menbers.partials.menber-table', compact('menbers'))->render(); // returns only table partial
+        $members = DB::table('members')->where('gym_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
+        return view('admin.members.partials.members-table', compact('members'))->render(); // returns only table partial
     }
 
     public function update(Request $request)
@@ -128,8 +128,8 @@ class MenberController extends Controller{
     public function view($id)
     {
         $id = decrypt($id);
-        $menber = DB::table('members')->where('id', $id)->first();
-        return view('admin.menbers.view', compact('menber'));
+        $member = DB::table('members')->where('id', $id)->first();
+        return view('admin.members.view', compact('member'));
     }
 
 }

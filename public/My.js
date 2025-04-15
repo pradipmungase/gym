@@ -103,15 +103,15 @@ function fetchPlans(page = 1) {
 }
 
 
-function fetchMenbers(page = 1) {
+function fetchmembers(page = 1) {
     $.ajax({
-        url: "menbers/fetch?page=" + page,
+        url: "members/fetch?page=" + page,
         type: 'GET',
         success: function (data) {
-            $('#menbers-table-container').html(data);
+            $('#members-table-container').html(data);
         },
         error: function () {
-            $('#menbers-table-container').html('<div class="text-danger text-center">Failed to load menbers.</div>');
+            $('#members-table-container').html('<div class="text-danger text-center">Failed to load members.</div>');
         }
     });
 }
@@ -154,13 +154,13 @@ if (window.location.pathname === '/plans') {
 
     fetchPlans();
 }
-if (window.location.pathname === '/menbers') {
+if (window.location.pathname === '/members') {
     $(document).on('click', '.pagination a', function (e) {
         e.preventDefault();
         let page = $(this).attr('href').split('page=')[1];
-        fetchMenbers(page);
+        fetchmembers(page);
     });
-    fetchMenbers();
+    fetchmembers();
 }
 
 if (window.location.pathname === '/trainer') {
@@ -200,14 +200,14 @@ $(document).ready(function () {
         submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...');
 
         $.ajax({
-            url: "/menbers/store", // Make sure this route is correct
+            url: "/members/store", // Make sure this route is correct
             method: 'POST',
             data: formData,
             success: function (response) {
                 if (response.status === 'success') {
                     $('#addMemberModal').modal('hide');
                     form[0].reset();
-                    fetchMenbers();
+                    fetchmembers();
                     showToast(response.message, 'bg-success');
                 } else {
                     showToast(response.message, 'bg-danger');
@@ -234,7 +234,7 @@ $(document).ready(function () {
 });
 
 
-if (window.location.pathname === '/menbers') {
+if (window.location.pathname === '/members') {
 
     document.addEventListener("DOMContentLoaded", function () {
         const planSelect = document.getElementById('plan');

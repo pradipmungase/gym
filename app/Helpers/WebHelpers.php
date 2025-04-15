@@ -1,39 +1,47 @@
 <?php
 use Illuminate\Support\Carbon;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 function sendWhatsAppMessageForAttendanceMarked($member)
 {
-    $mobile = '7028143227';
+    try {
+        $mobile = '7028143227'; // Replace with dynamic: $member->mobile ?? fallback
 
-    $gymName = Auth::user()->gym_name;
-    $formattedDate = Carbon::now()->format('d M Y'); // e.g., 14 Apr 2025
-    $formattedTime = Carbon::now()->format('h:i A'); // e.g., 03:45 PM
+        $gymName = Auth::user()->gym_name ?? 'Your Gym';
+        $formattedDate = Carbon::now()->format('d M Y');
+        $formattedTime = Carbon::now()->format('h:i A');
 
-    $message = "👋 Hello $member->name,\n\nYour attendance has been *marked successfully* for today 📅 *$formattedDate* at 🕒 *$formattedTime*.\n\nKeep up the great work at *$gymName*! 💪\n\nSee you tomorrow! 😊";
+        $message = "👋 Hello $member->name,\n\nYour attendance has been *marked successfully* for today 📅 *$formattedDate* at 🕒 *$formattedTime*.\n\nKeep up the great work at *$gymName*! 💪\n\nSee you tomorrow! 😊";
 
-    return Http::post('http://localhost:3000/send-message', [
-        'number' => '91' . $mobile,
-        'message' => $message,
-    ]);
+        Http::post('http://localhost:3000/send-message', [
+            'number' => '91' . $mobile,
+            'message' => $message,
+        ]);
+    } catch (\Exception $e) {
+        Log::error('WhatsApp Attendance Message Failed: ' . $e->getMessage());
+        // Don't throw error to caller
+    }
 }
 
-
-function sendWhatsAppMessageForMenberRegistration($mobile, $name, $imagePath)
+function sendWhatsAppMessageForMemberRegistration($mobile, $name, $imagePath)
 {
-    $mobile = '7028143227';
-    $gymName = Auth::user()->gym_name;
-    $base64Image = base64_encode(file_get_contents($imagePath));
+    try {
+        $gymName = Auth::user()->gym_name ?? 'Your Gym';
+        $base64Image = base64_encode(file_get_contents($imagePath));
 
-    // Prepare your custom message
-    $message = "👋 Hello $name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nHere is your QR Code for daily attendance. 📲\n\nMake sure to scan it every day when you visit! ✅";
+        $message = "👋 Hello $name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nHere is your QR Code for daily attendance. 📲\n\nMake sure to scan it every day when you visit! ✅";
 
-    // Send the message via WhatsApp gateway (e.g. using a local server or 3rd party API)
-    return Http::post('http://localhost:3000/send-message', [
-        'number' => '91' . $mobile,
-        'message' => $message,
-        'image' => $base64Image,
-    ]);
+        Http::post('http://localhost:3000/send-message', [
+            'number' => '91' . $mobile,
+            'message' => $message,
+            'image' => $base64Image,
+        ]);
+    } catch (\Exception $e) {
+        Log::error('WhatsApp Registration Message Failed: ' . $e->getMessage());
+        // Silent fail to avoid breaking the registration flow
+    }
 }
 
 

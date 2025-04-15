@@ -17,7 +17,8 @@ use Endroid\QrCode\Builder\Builder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Validator;
+use App\Helpers\WebHelpers;
 
 class AttendanceController extends Controller{
     
@@ -95,15 +96,16 @@ class AttendanceController extends Controller{
             'updated_at' => now()
         ]);
 
-        $response = sendWhatsAppMessageForAttendanceMarked($member);
+        sendWhatsAppMessageForAttendanceMarked($member);
 
         return response()->json([
             'message' => 'Attendance marked successfully',
             'status' => 'success',
-            'response' => $response,
             'data' => ['name' => $member->name]
         ]);
     }
+
+
 
 
 
@@ -111,62 +113,79 @@ class AttendanceController extends Controller{
     {
         $gym = DB::table('users')->where('id', $gym_id)->first();
         $member = DB::table('members')->where('id', $member_id)->first();
+
         if ($request->isMethod('get')) {
             return view('takeAttendanceByLatLong', compact('gym', 'gym_id', 'member_id', 'member'));
         }
 
-        if(!$gym || !$member){
+        if (!$gym || !$member) {
             return response()->json(['status' => 'error', 'message' => 'Gym or Member not found.']);
-        }   
-        // Handle POST request
+        }
+
+        // Validate latitude and longitude
+        $validator = Validator::make($request->all(), [
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'message' => 'Invalid coordinates.', 'errors' => $validator->errors()]);
+        }
+
         $userLat = $request->input('latitude');
         $userLng = $request->input('longitude');
+        $gymLat = $gym->latitude;
+        $gymLng = $gym->longitude;
 
-        $gymLat = 19.8540341;
-        $gymLng = 75.3353875;
-
-        // Calculate distance (in kilometers)
+        // Calculate distance
         $distance = haversineGreatCircleDistance($userLat, $userLng, $gymLat, $gymLng);
 
-        if ($distance <= 0.1) {
-            // Check if attendance already marked
-            $today = Carbon::today()->toDateString();
-            $attendance = DB::table('attendance')
-                ->where('member_id', $member_id)
-                ->where('gym_id', $gym_id)
-                ->where('date', $today)
-                ->first();
-
-            if ($attendance) {
-                return response()->json([
-                    'status' => 'already_marked',
-                    'message' => 'Attendance already marked.',
-                    'member_name' => $member->name ?? 'Member'
-                ]);
-            }
-
-            // Mark attendance
-            DB::table('attendance')->insert([
-                'member_id' => $member_id,
-                'gym_id' => $gym_id,
-                'date' => $today,
-                'time' => Carbon::now()->toTimeString(),
-                'status' => 'present',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            $response = sendWhatsAppMessageForAttendanceMarked($member);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Attendance marked successfully.',
-                'member_name' => $member->name ?? 'Member',
-                'response' => $response
-            ]);
+        if ($distance > 0.1) {
+            return response()->json(['status' => 'location_error', 'message' => 'You are not at the gym location.']);
         }
-        return response()->json(['status' => 'location_error', 'message' => 'You are not at the gym location.']);
+
+        $today = Carbon::today()->toDateString();
+
+        try {
+            return DB::transaction(function () use ($gym_id, $member_id, $today, $member) {
+                $existingAttendance = DB::table('attendance')
+                    ->where('member_id', $member_id)
+                    ->where('gym_id', $gym_id)
+                    ->where('date', $today)
+                    ->first();
+
+                if ($existingAttendance) {
+                    return response()->json([
+                        'status' => 'already_marked',
+                        'message' => 'Attendance already marked.',
+                        'member_name' => $member->name ?? 'Member',
+                    ]);
+                }
+
+                DB::table('attendance')->insert([
+                    'member_id' => $member_id,
+                    'gym_id' => $gym_id,
+                    'date' => $today,
+                    'time' => Carbon::now()->toTimeString(),
+                    'status' => 'present',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                sendWhatsAppMessageForAttendanceMarked($member);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Attendance marked successfully.',
+                    'member_name' => $member->name ?? 'Member',
+                ]);
+            });
+        } catch (\Exception $e) {
+            Log::error('Attendance marking failed: ' . $e->getMessage());
+            return response()->json(['status' => 'error', 'message' => 'Something went wrong. Please try again later.']);
+        }
     }
+
 
 
 

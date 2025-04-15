@@ -18,8 +18,8 @@
                     <!-- Avatar -->
                     <div class="avatar avatar-xxl avatar-circle profile-cover-avatar">
 
-                        @if ($menber->image)
-                            <img class="avatar-img" src="{{ asset($menber->image) }}" alt="Image Description">
+                        @if ($member->image)
+                            <img class="avatar-img" src="{{ asset($member->image) }}" alt="Image Description">
                         @else
                             <img class="avatar-img" src="{{ asset('assets/img/160x160/images (1).jpg') }}"
                                 alt="Image Description">
@@ -29,7 +29,7 @@
                     </div>
                     <!-- End Avatar -->
 
-                    <h1 class="page-header-title"> {{ $menber->name }} <i
+                    <h1 class="page-header-title"> {{ $member->name }} <i
                             class="bi-patch-check-fill fs-2 text-primary" data-bs-toggle="tooltip" data-bs-placement="top"
                             aria-label="Top endorsed" data-bs-original-title="Top endorsed"></i></h1>
 
@@ -37,17 +37,17 @@
                     <ul class="list-inline list-px-2">
                         <li class="list-inline-item">
                             <i class="bi-phone me-1"></i>
-                            <span>{{ $menber->mobile ?? 'N/A' }}</span>
+                            <span>{{ $member->mobile ?? 'N/A' }}</span>
                         </li>
 
                         <li class="list-inline-item">
                             <i class="bi-envelope me-1"></i>
-                            <span>{{ $menber->email ?? 'N/A' }}</span>
+                            <span>{{ $member->email ?? 'N/A' }}</span>
                         </li>
 
                         <li class="list-inline-item">
                             <i class="bi-calendar-week me-1"></i>
-                                <span>{{ \Carbon\Carbon::parse($menber->joining_date)->format('d M, Y') }}</span>
+                                <span>{{ \Carbon\Carbon::parse($member->joining_date)->format('d M, Y') }}</span>
                         </li>
                     </ul>
                 </div>
@@ -60,23 +60,23 @@
 
                     <div class="row mb-3">
                         <div class="col-6 fw-bold text-start">Gender</div>
-                            <div class="col-6 ps-5">{{ $menber->gender ?? 'N/A' }}</div>
+                            <div class="col-6 ps-5">{{ $member->gender ?? 'N/A' }}</div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-6 fw-bold text-start">Status</div>
                         <div class="col-6 ps-5">
                             @php
-                            $menber->status = 1;
+                            $member->status = 1;
                             @endphp
-                            <span class="badge {{ $menber->status == 1 ? 'bg-success' : 'bg-danger' }}">
-                                {{ $menber->status == 1 ? 'Active' : 'Inactive' }}
+                            <span class="badge {{ $member->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                {{ $member->status == 1 ? 'Active' : 'Inactive' }}
                             </span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-6 fw-bold text-start">Created At</div>
-                        <div class="col-6 ps-5">{{ \Carbon\Carbon::parse($menber->created_at)->format('d M, Y') }}</div>
+                        <div class="col-6 ps-5">{{ \Carbon\Carbon::parse($member->created_at)->format('d M, Y') }}</div>
                     </div>
                 </div>
             </div>

@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('owner_name');
             $table->string('mobile');
             $table->string('password');
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
-use App\Http\Controllers\MenberController;
+use App\Http\Controllers\MembersController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TrainerController;
@@ -28,6 +28,7 @@ Route::match(['get', 'post'], '/markAttendanceByLatLong/{gym_id}/{member_id}', [
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/saveLatitudeAndLongitude', [DashboardController::class, 'saveLatitudeAndLongitude'])->name('saveLatitudeAndLongitude');
 
     Route::get('/plans', [PlanController::class, 'index'])->name('plans.index');
     Route::post('/plans/store', [PlanController::class, 'store'])->name('plans.store');
@@ -36,11 +37,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/plans/view/{id}', [PlanController::class, 'view'])->name('plans.view');
 
 
-    Route::get('/menbers', [MenberController::class, 'index'])->name('menbers.index');
-    Route::post('/menbers/store', [MenberController::class, 'store'])->name('menbers.store');
-    Route::post('/menbers/update', [MenberController::class, 'update'])->name('menbers.update');
-    Route::get('/menbers/fetch', [MenberController::class, 'fetchMenbers'])->name('menbers.fetch');
-    Route::get('/menbers/view/{id}', [MenberController::class, 'view'])->name('menbers.view');  
+    Route::get('/members', [MembersController::class, 'index'])->name('members.index');
+    Route::post('/members/store', [MembersController::class, 'store'])->name('members.store');
+    Route::post('/members/update', [MembersController::class, 'update'])->name('members.update');
+    Route::get('/members/fetch', [MembersController::class, 'fetchMembers'])->name('members.fetch');
+    Route::get('/members/view/{id}', [MembersController::class, 'view'])->name('members.view');  
 
 
 

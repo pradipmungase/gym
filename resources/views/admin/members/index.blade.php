@@ -14,9 +14,9 @@
                     </div>
                 </div>
             </div>
-            <div id="menbers-table-container" class="text-center my-4 table-responsive datatable-custom">
+            <div id="members-table-container" class="text-center my-4 table-responsive datatable-custom">
                 <div class="spinner-border text-primary" role="status"></div>
-                <p class="mt-2">Loading menbers please wait...</p>
+                <p class="mt-2">Loading members please wait...</p>
             </div>
 
         </div>
@@ -155,14 +155,14 @@
     </div>
 
 
-    <div class="modal fade" id="editMenberModal" tabindex="-1" aria-labelledby="editMenberModalLabel"
+    <div class="modal fade" id="editmemberModal" tabindex="-1" aria-labelledby="editmemberModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <form id="editMenberForm" method="POST" action="#">
+            <form id="editmemberForm" method="POST" action="#">
                 <div class="modal-content">
                     <div class="modal-header text-white">
-                        <h5 class="modal-title" id="editMenberModalLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Edit Menber
+                        <h5 class="modal-title" id="editmemberModalLabel">
+                            <i class="bi bi-person-plus-fill me-2"></i> Edit member
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
@@ -170,16 +170,16 @@
 
                     <div class="modal-body px-4">
                         <div class="row g-3">
-                            <input type="hidden" name="menber_id" id="editMenberId">
+                            <input type="hidden" name="member_id" id="editmemberId">
 
                             <!-- Full Name -->
                             <div class="col-md-6">
                                 <label for="editPlanName" class="form-label">
                                     Plan Name <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control" id="editMenberName" name="menber_name"
-                                    required placeholder="e.g., Menber Name">
-                                <div class="invalid-feedback">Menber name is required.</div>
+                                <input type="text" class="form-control" id="editmemberName" name="member_name"
+                                    required placeholder="e.g., member Name">
+                                <div class="invalid-feedback">member name is required.</div>
                             </div>
 
                             <div class="col-md-6">

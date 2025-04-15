@@ -49,33 +49,4 @@
         @endforelse
     </tbody>
 </table>
-
-{{-- Laravel pagination --}}
-<div class="d-flex justify-content-end mt-3">
-    @if ($attendance->lastPage() > 1)
-        <nav>
-            <ul class="pagination justify-content-end">
-                {{-- Previous --}}
-                <li class="page-item {{ $attendance->onFirstPage() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $attendance->previousPageUrl() ?? '#' }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-
-                {{-- Page Numbers --}}
-                @for ($page = 1; $page <= $plans->lastPage(); $page++)
-                    <li class="page-item {{ $page == $attendance->currentPage() ? 'active' : '' }}">
-                        <a class="page-link" href="{{ $attendance->url($page) }}">{{ $page }}</a>
-                    </li>
-                @endfor
-
-                {{-- Next --}}
-                <li class="page-item {{ !$attendance->hasMorePages() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $attendance->nextPageUrl() ?? '#' }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    @endif
-</div>
+@include('admin.pagination.paginationNumber',['data'=>$attendance])

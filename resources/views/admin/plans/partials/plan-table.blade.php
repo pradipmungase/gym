@@ -50,32 +50,4 @@
     </tbody>
 </table>
 
-{{-- Laravel pagination --}}
-<div class="d-flex justify-content-end mt-3">
-    @if ($plans->lastPage() > 1)
-        <nav>
-            <ul class="pagination justify-content-end">
-                {{-- Previous --}}
-                <li class="page-item {{ $plans->onFirstPage() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $plans->previousPageUrl() ?? '#' }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-
-                {{-- Page Numbers --}}
-                @for ($page = 1; $page <= $plans->lastPage(); $page++)
-                    <li class="page-item {{ $page == $plans->currentPage() ? 'active' : '' }}">
-                        <a class="page-link" href="{{ $plans->url($page) }}">{{ $page }}</a>
-                    </li>
-                @endfor
-
-                {{-- Next --}}
-                <li class="page-item {{ !$plans->hasMorePages() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $plans->nextPageUrl() ?? '#' }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    @endif
-</div>
+@include('admin.pagination.paginationNumber',['data'=>$plans])

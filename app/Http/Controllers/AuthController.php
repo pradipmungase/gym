@@ -60,14 +60,15 @@ class AuthController extends Controller{
             'mobile' => 'required',
             'password' => 'required',
         ]);
-        $user = User::where('mobile', $request->mobile)->first();
-        if(!$user){
-            return redirect()->back()->with('error', 'Invalid mobile number or password');
+
+        $credentials = $request->only('mobile', 'password');
+        $remember = $request->has('remember'); // true if checkbox checked
+
+        if (Auth::attempt($credentials, $remember)) {
+            session()->flash('success', 'Welcome Back ' . Auth::user()->owner_name);
+            return redirect()->intended('dashboard');
         }
-        if(!Hash::check($request->password, $user->password)){
-            return redirect()->back()->with('error', 'Invalid mobile number or password');
-        }
-        Auth::login($user);
-        return redirect()->route('dashboard')->with('success', 'Login successful!');
+        return back()->withErrors(['email' => 'Invalid credentials']);
+
     }
 }

@@ -718,7 +718,8 @@
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <h5 class="mb-0 loginUserName">{{ Auth::user()->owner_name }}</h5>
-                                            <p class="card-text text-body loginUserMobileNumber">{{ Auth::user()->mobile }}</p>
+                                            <p class="card-text text-body loginUserMobileNumber">
+                                                {{ Auth::user()->mobile }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -796,28 +797,28 @@
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('plans') }}" role="button">
                                 <i class="bi-people nav-icon"></i>
-                                <span class="nav-link-title">Plan Management</span>
+                                <span class="nav-link-title">Plan</span>
                             </a>
                         </div>
 
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('trainer') }}" role="button">
                                 <i class="bi-people nav-icon"></i>
-                                <span class="nav-link-title">Trainer Management</span>
+                                <span class="nav-link-title">Trainer</span>
                             </a>
                         </div>
 
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('menbers') }}" role="button">
+                            <a class="nav-link" href="{{ url('members') }}" role="button">
                                 <i class="bi-building nav-icon"></i>
-                                <span class="nav-link-title">Menber Management</span>
+                                <span class="nav-link-title">Members</span>
                             </a>
                         </div>
 
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('attendance') }}" role="button">
                                 <i class="bi-building nav-icon"></i>
-                                <span class="nav-link-title">Attendance Management</span>
+                                <span class="nav-link-title">Attendance</span>
                             </a>
                         </div>
 
@@ -828,7 +829,6 @@
                             </a>
                         </div>
                     </div>
-
                 </div>
                 <!-- End Content -->
 
@@ -1081,6 +1081,7 @@
                 setActiveStyle()
             })
         })()
+
         function showToast(message, typeClass) {
             const toastEl = document.getElementById('dynamicToast');
             const toastBody = document.getElementById('toastMessage');
@@ -1096,13 +1097,99 @@
             toast.show();
         }
     </script>
-<script>
-    @if(session()->has('success'))
-        showToast(@json(session('success')), 'bg-success');
-    @elseif(session()->has('error'))
-        showToast(@json(session('error')), 'bg-danger');
+    <script>
+        @if (session()->has('success'))
+            showToast(@json(session('success')), 'bg-success');
+        @elseif (session()->has('error'))
+            showToast(@json(session('error')), 'bg-danger');
+        @endif
+    </script>
+
+    @if (Auth::user()->latitude == null || Auth::user()->longitude == null)
+        <script>
+            $(document).ready(function() {
+                function requestLocation() {
+                    if ("geolocation" in navigator) {
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                const lat = position.coords.latitude;
+                                const lng = position.coords.longitude;
+
+                                $.ajax({
+                                    url: `/saveLatitudeAndLongitude`,
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    },
+                                    data: {
+                                        latitude: lat,
+                                        longitude: lng
+                                    },
+                                    success: function(response) {
+                                        if (response.success) {
+                                            // showToast(response.message, 'bg-success');
+                                        } else {
+                                            showToast(response.message, 'bg-danger');
+                                        }
+                                    },
+                                    error: function(xhr, status, error) {
+                                        showToast(xhr.responseJSON.message, 'bg-danger');
+                                    }
+                                });
+                            },
+                            function(error) {
+                                $('#scan-output').html(`
+                                <div class="text-center">
+                                    <div class="text-danger" style="font-size: 100px;">
+                                        <i class="bi bi-geo-alt-slash-fill"></i>
+                                    </div>
+                                    <div class="mt-2 fs-5">
+                                        Location access denied.<br>
+                                        Please enable it in your browser settings.
+                                    </div>
+                                </div>
+                            `);
+                            }, {
+                                enableHighAccuracy: true,
+                                timeout: 10000,
+                                maximumAge: 0
+                            }
+                        );
+                    } else {
+                        $('#scan-output').html(`
+                        <div class="text-center">
+                            <div class="text-danger" style="font-size: 100px;">
+                                <i class="bi bi-geo-alt-slash-fill"></i>
+                            </div>
+                            <div class="mt-2 fs-5">Geolocation is not supported by this browser.</div>
+                        </div>
+                    `);
+                    }
+                }
+
+                // Initial location request
+                requestLocation();
+
+                // Retry button handler
+                $(document).on('click', '#retry-location-btn', function() {
+                    requestLocation();
+                });
+
+                // Optional: detect if permission is permanently denied
+                if (navigator.permissions) {
+                    navigator.permissions.query({
+                        name: 'geolocation'
+                    }).then(function(result) {
+                        if (result.state === 'denied') {
+                            showToast(
+                                'You have permanently denied location access. Please enable it from your browser settings.',
+                                'bg-danger');
+                        }
+                    });
+                }
+            });
+        </script>
     @endif
-</script>
 </body>
 
 </html>

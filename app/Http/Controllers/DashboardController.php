@@ -23,5 +23,17 @@ class DashboardController extends Controller{
     {
         return view('admin.dashboard.index');
     }
-  
+
+    public function saveLatitudeAndLongitude(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $user->latitude = $request->latitude;
+            $user->longitude = $request->longitude;
+            $user->save();
+            return response()->json(['success' => true, 'message' => 'Latitude and longitude saved successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
 }

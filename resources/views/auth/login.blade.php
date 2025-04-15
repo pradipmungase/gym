@@ -286,16 +286,16 @@
                                     <p>Don't have an account yet? <a class="link" href="#">Sign up here</a></p>
                                 </div>
                             </div>
-@if(session()->has('error'))
-    <div class="alert alert-danger mt-3" id="errorMessage">
-        {{ session('error') }}
-    </div>
-@endif
+                            @if (session()->has('error'))
+                                <div class="alert alert-danger mt-3" id="errorMessage">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
 
                             <!-- Email Field -->
                             <div class="mb-4">
                                 <label class="form-label" for="signinSrEmail">Your Mobile Number</label>
-                                <input value="0000000000" type="text" class="form-control form-control-lg"
+                                <input value="7028143227" type="text" class="form-control form-control-lg"
                                     name="mobile" id="signinSrEmail" tabindex="1" placeholder="919876543210"
                                     required>
                                 <span class="invalid-feedback">Please enter a valid mobile number.</span>
@@ -310,8 +310,9 @@
                                     </span>
                                 </label>
                                 <div class="input-group input-group-merge">
-                                    <input value="123456" type="password" class="form-control form-control-lg" name="password"
-                                        id="signupSrPassword" placeholder="8+ characters required" required>
+                                    <input value="Admin@123" type="password" class="form-control form-control-lg"
+                                        name="password" id="signupSrPassword" placeholder="8+ characters required"
+                                        required>
                                     <a id="changePassTarget" class="input-group-append input-group-text"
                                         href="javascript:;">
                                         <i id="changePassIcon" class="bi-eye-slash"></i>
@@ -397,7 +398,6 @@
             }
         });
     </script>
-
 </body>
 
 </html>
