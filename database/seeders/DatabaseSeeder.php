@@ -24,14 +24,5 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
-        DB::table('menu')->insert([
-            [
-                'menu_name' => 'Admin Management',
-                'permissions' => json_encode(["Add","View","Edit","Delete"]),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
     }
 }

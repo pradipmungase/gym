@@ -29,6 +29,7 @@ function sendWhatsAppMessageForAttendanceMarked($member)
 function sendWhatsAppMessageForMemberRegistration($mobile, $name, $imagePath)
 {
     try {
+        $mobile = '7028143227';
         $gymName = Auth::user()->gym_name ?? 'Your Gym';
         $base64Image = base64_encode(file_get_contents($imagePath));
 

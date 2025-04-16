@@ -14,20 +14,16 @@ return new class extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('mobile');
             $table->string('qr_code_path')->nullable();
             $table->date('joining_date');
+            $table->date('birth_date')->nullable();
             $table->string('status');
             $table->string('image')->nullable();
             $table->string('address')->nullable();
             $table->string('gender');
-            $table->integer('age');
-            $table->integer('plan_id');
-            $table->integer('plan_price');
-            $table->integer('final_price');
-            $table->string('discount_type');
-            $table->integer('discount_amount');
+            $table->integer('age')->nullable();
             $table->integer('gym_id');
             $table->softDeletes();
             $table->timestamps();

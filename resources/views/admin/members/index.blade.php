@@ -22,136 +22,163 @@
         </div>
     </main>
 
-    <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <form id="addMemberForm" method="POST" action="#">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header text-white">
-                        <h5 class="modal-title" id="addMemberModalLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Add New Member
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <form id="addMemberForm" method="POST" action="#">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header text-white">
+                    <h5 class="modal-title" id="addMemberModalLabel">
+                        <i class="bi bi-person-plus-fill me-2"></i> Add New Member
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
 
-                    <div class="modal-body px-4">
-                        <div class="row g-3">
+                <div class="modal-body px-4">
+                    <div class="row g-3">
 
-                            <!-- Name -->
-                            <div class="col-md-6">
-                                <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="name" name="name" required
-                                    placeholder="Enter name">
-                                <div class="invalid-feedback">Name is required.</div>
-                            </div>
+                        <!-- Name -->
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name" required placeholder="e.g., John Doe">
+                            <div class="invalid-feedback">Name is required.</div>
+                        </div>
 
-                            <!-- Email -->
-                            <div class="col-md-6">
-                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="email" name="email" required
-                                    placeholder="Enter email">
-                                <div class="invalid-feedback">Valid email is required.</div>
-                            </div>
+                        <!-- Email -->
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="e.g., johndoe@gmail.com">
+                            <div class="invalid-feedback">Valid email is required.</div>
+                        </div>
 
-                            <!-- Mobile No -->
-                            <div class="col-md-6">
-                                <label for="mobile" class="form-label">Mobile No <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="mobile" name="mobile" required
-                                    placeholder="Enter mobile number">
-                                <div class="invalid-feedback">Mobile number is required.</div>
-                            </div>
+                        <!-- Mobile No -->
+                        <div class="col-md-6">
+                            <label for="mobile" class="form-label">Mobile No <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="mobile" name="mobile" required placeholder="e.g., 03001234567">
+                            <div class="invalid-feedback">Mobile number is required.</div>
+                        </div>
 
-                            <!-- Joining Date -->
-                            <div class="col-md-6">
-                                <label for="joining_date" class="form-label">Joining Date <span
-                                        class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="joining_date" name="joining_date" required>
-                                <div class="invalid-feedback">Joining date is required.</div>
-                            </div>
-                            
+                        <!-- Joining Date -->
+                        <div class="col-md-6">
+                            <label for="joining_date" class="form-label">Joining Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="joining_date" name="joining_date" required>
+                            <div class="invalid-feedback">Joining date is required.</div>
+                        </div>
 
-                            <!-- Gender -->
-                            <div class="col-md-3">
-                                <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
-                                <select class="form-select" id="gender" name="gender" required>
-                                    <option selected disabled value="">Select gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <div class="invalid-feedback">Gender is required.</div>
-                            </div>
+                        <!-- Birth Date -->
+                        <div class="col-md-6">
+                            <label for="birth_date" class="form-label">Birth Date </label>
+                            <input type="date" class="form-control" id="birth_date" name="birth_date" >
+                            <div class="invalid-feedback">Birth date is required.</div>
+                        </div>
 
-                            <!-- Age -->
-                            <div class="col-md-3">
-                                <label for="age" class="form-label">Age <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="age" name="age" required
-                                    placeholder="Enter age">
-                                <div class="invalid-feedback">Age is required.</div>
-                            </div>
+                        <!-- Batch -->
+                        <div class="col-md-6">
+                            <label for="batch" class="form-label">Batch <span class="text-danger">*</span></label>
+                            <select class="form-select" id="batch" name="batch" required>
+                                <option selected disabled value="">Select batch</option>
+                                <option value="Morning">Morning</option>
+                                <option value="Afternoon">Afternoon</option>
+                                <option value="Evening">Evening</option>
+                            </select>
+                            <div class="invalid-feedback">Batch is required.</div>
+                        </div>
 
-                            <!-- Plan Dropdown -->
-                            <div class="col-md-6">
-                                <label for="plan" class="form-label">Plan <span class="text-danger">*</span></label>
-                                <select class="form-select" id="plan" name="plan" required>
-                                    <option selected disabled value="">Select Plan</option>
-                                    @foreach ($plans as $plan)
-                                        <option value="{{ $plan->id }}" data-price="{{ $plan->price }}">
-                                            {{ $plan->name }}</option>
-                                    @endforeach
+                        <!-- Admission Fee -->
+                        <div class="col-md-6">
+                            <label for="admission_fee" class="form-label">Admission Fee <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="admission_fee" name="admission_fee" required placeholder="Enter admission fee">
+                            <div class="invalid-feedback">Admission fee is required.</div>
+                        </div>
 
-                                </select>
-                                <div class="invalid-feedback">Plan selection is required.</div>
-                            </div>
+                        <!-- Gender -->
+                        <div class="col-md-6">
+                            <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
+                            <select class="form-select" id="gender" name="gender" required>
+                                <option selected disabled value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="invalid-feedback">Gender is required.</div>
+                        </div>
 
-                            <!-- Discount Type -->
-                            <div class="col-md-3">
-                                <label for="discount_type" class="form-label">Discount Type</label>
-                                <select class="form-select" id="discount_type" name="discount_type">
-                                    <option selected value="Flat">Flat</option>
-                                    <option value="Percentage">Percentage</option>
-                                </select>
-                            </div>
+                        <!-- Plan -->
+                        <div class="col-md-6">
+                            <label for="plan" class="form-label">Plan <span class="text-danger">*</span></label>
+                            <select class="form-select" id="plan" name="plan" required>
+                                <option selected disabled value="">Select Plan</option>
+                                @foreach ($plans as $plan)
+                                    <option value="{{ $plan->id }}" data-price="{{ $plan->price }}">
+                                        {{ $plan->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">Plan selection is required.</div>
+                        </div>
+                        <!-- trainer -->
+                        <div class="col-md-6">
+                            <label for="trainer" class="form-label">Trainer</label>
+                            <select class="form-select" id="trainer" name="trainer" required>
+                                <option selected disabled value="">Select Trainer</option>
+                                @foreach ($trainers as $trainer)
+                                    <option value="{{ $trainer->id }}">
+                                        {{ $trainer->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">Plan selection is required.</div>
+                        </div>
 
-                            <!-- Discount -->
-                            <div class="col-md-3">
-                                <label for="discount" class="form-label">Discount (%)</label>
-                                <input type="number" class="form-control" id="discount" name="discount"
-                                    placeholder="e.g., 10">
-                            </div>
+                        <!-- Discount Type -->
+                        <div class="col-md-3">
+                            <label for="discount_type" class="form-label">Discount Type <span class="text-danger">*</span></label>
+                            <select class="form-select" id="discount_type" name="discount_type" required>
+                                <option value="Flat" selected>Flat</option>
+                                <option value="Percentage">Percentage</option>
+                            </select>
+                            <div class="invalid-feedback">Discount type is required.</div>
+                        </div>
 
-                            <!-- Plan Price -->
-                            <div class="col-md-3">
-                                <label class="form-label">Plan Price</label>
-                                <input type="text" class="form-control" value="0" name="plan_price" id="plan_price"
-                                    readonly>
-                            </div>
+                        <!-- Discount -->
+                        <div class="col-md-3">
+                            <label for="discount" class="form-label">Discount (%)</label>
+                            <input type="number" class="form-control" id="discount" name="discount" placeholder="e.g., 10">
+                        </div>
 
-                            <!-- Final Price -->
-                            <div class="col-md-3">
-                                <label class="form-label">Final Price</label>
-                                <input type="text" class="form-control" value="0" name="final_price" id="final_price"
-                                    readonly>
-                            </div>
+                        <!-- Plan Price -->
+                        <div class="col-md-2">
+                            <label class="form-label">Plan Price</label>
+                            <input type="text" class="form-control" value="0" name="plan_price" id="plan_price" readonly>
+                        </div>
 
+                        <!-- Final Price -->
+                        <div class="col-md-2">
+                            <label class="form-label">Final Price</label>
+                            <input type="text" class="form-control" value="0" name="final_price" id="final_price" readonly>
+                        </div>
 
+                        <!-- Due Amount -->
+                        <div class="col-md-2">
+                            <label class="form-label">Due Amount</label>
+                            <input type="text" class="form-control text-danger fw-bold" value="0" name="due_amount" id="due_amount" readonly>
                         </div>
                     </div>
-
-                    <div class="modal-footer px-4">
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-check-circle me-1"></i> Submit
-                        </button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle me-1"></i> Cancel
-                        </button>
-                    </div>
                 </div>
-            </form>
-        </div>
+
+                <div class="modal-footer px-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle me-1"></i> Submit
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i> Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
+</div>
 
 
     <div class="modal fade" id="editmemberModal" tabindex="-1" aria-labelledby="editmemberModalLabel"

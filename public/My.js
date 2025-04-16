@@ -261,12 +261,15 @@ if (window.location.pathname === '/members') {
         const discountTypeSelect = document.getElementById('discount_type');
         const planPriceField = document.getElementById('plan_price');
         const finalPriceField = document.getElementById('final_price');
+        const admissionFeeField = document.getElementById('admission_fee');
+        const dueAmountField = document.getElementById('due_amount');
 
         function calculateFinalPrice() {
             const selectedOption = planSelect.options[planSelect.selectedIndex];
             const planPrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
             const discount = parseFloat(discountInput.value) || 0;
             const discountType = discountTypeSelect.value;
+            const admissionFee = parseFloat(admissionFeeField.value) || 0;
 
             let finalPrice = planPrice;
 
@@ -278,15 +281,21 @@ if (window.location.pathname === '/members') {
                 }
             }
 
+            const dueAmount = finalPrice - admissionFee;
+
             planPriceField.value = planPrice.toFixed(2);
-            finalPriceField.value = finalPrice > 0 ? finalPrice.toFixed(2) : 0;
+            finalPriceField.value = finalPrice > 0 ? finalPrice.toFixed(2) : '0.00';
+            dueAmountField.value = dueAmount > 0 ? dueAmount.toFixed(2) : '0.00';
         }
 
         // Event listeners
         planSelect.addEventListener('change', calculateFinalPrice);
         discountInput.addEventListener('input', calculateFinalPrice);
         discountTypeSelect.addEventListener('change', calculateFinalPrice);
+        admissionFeeField.addEventListener('input', calculateFinalPrice); // admission fee input change
     });
+
+
 }
 
 

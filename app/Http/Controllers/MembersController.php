@@ -22,7 +22,8 @@ class MembersController extends Controller{
     public function index()
     {
         $plans = DB::table('menbership_plans')->where('gym_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
-        return view('admin.members.index', compact('plans')); // just loads view with empty or initial content
+        $trainers = DB::table('trainers')->where('gym_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        return view('admin.members.index', compact('plans', 'trainers')); // just loads view with empty or initial content
     }
 
     public function fetchmembers(Request $request)
@@ -54,17 +55,38 @@ class MembersController extends Controller{
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:members,email',
+            'email' => 'required|email:rfc,dns|unique:members,email',
             'mobile' => 'required|digits:10|unique:members,mobile',
-            'joining_date' => 'required|date',
-            'gender' => 'required|string',
-            'age' => 'required|integer',
+            'joining_date' => 'required|date|before_or_equal:today',
+            'birth_date' => 'required|date|before:today',
+            'gender' => 'required|in:Male,Female,Other',
             'plan' => 'required|exists:menbership_plans,id',
-            'discount_type' => 'required|string',
-            'discount' => 'required|numeric',
-            'final_price' => 'required|numeric|min:1',
+            'trainer' => 'required|exists:trainers,id',
+            'batch' => 'required|string|max:50',
+            'admission_fee' => 'required|numeric|min:0',
+            'discount_type' => 'required|in:Flat,Percentage',
+            'discount' => 'required|numeric|min:0',
             'plan_price' => 'required|numeric|min:1',
+            'final_price' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    $planPrice = $request->input('plan_price');
+                    if ($value > $planPrice) {
+                        $fail('Final price cannot be greater than plan price.');
+                    }
+                }
+            ],
+
+            'admission_fee' => 'required|numeric|min:0',
+            'due_amount' => [
+                'required',
+                'numeric',
+                'min:0',
+            ]
         ]);
+
 
         DB::beginTransaction();
 
@@ -74,15 +96,40 @@ class MembersController extends Controller{
                 'email' => $request->email,
                 'mobile' => $request->mobile,
                 'joining_date' => $request->joining_date,
+                'birth_date' => $request->birth_date,
                 'gender' => $request->gender,
-                'age' => $request->age,
-                'plan_id' => $request->plan,
-                'discount_type' => $request->discount_type,
                 'gym_id' => Auth::user()->id,
                 'status' => 'Active',
-                'discount_amount' => $request->discount,
-                'final_price' => $request->final_price,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            
+            $plan = DB::table('menbership_plans')->where('id', $request->plan)->first();
+
+            // Prepare duration string for strtotime (e.g., "+1 month", "+3 month", "+1 week")
+            $duration_string = '+' . $plan->duration;
+
+            // Subtract duration from joining date
+            $expiry_date = date('Y-m-d', strtotime($request->joining_date . ' ' . $duration_string));
+
+
+            DB::table('member_details')->insert([
+                'member_id' => $insertId,
+                'gym_id' => Auth::user()->id,
+                'plan_id' => $request->plan,
+                'trainer_id' => $request->trainer,
+                'joining_date' => $request->joining_date,
+                'expiry_date' => $expiry_date,
+                'batch' => $request->batch,
+                'admission_fee' => $request->admission_fee,
+                'discount_type' => $request->discount_type,
+                'discount_inpute' => $request->discount,
+                'after_discount_price' => $request->final_price,
                 'plan_price' => $request->plan_price,
+                'due_amount' => $request->due_amount,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             // Generate QR code and update the path
@@ -92,7 +139,7 @@ class MembersController extends Controller{
             ]);
 
             // Send WhatsApp message
-            sendWhatsAppMessageForMenberRegistration($request->mobile, $request->name, $qrCodePath);
+            sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath);
 
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Member added successfully!']);
