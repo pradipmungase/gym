@@ -4,10 +4,15 @@ $(document).ready(function () {
 
         let form = $(this);
         let formData = form.serialize();
+        let submitBtn = form.find('button[type="submit"]');
+        let originalBtnHtml = submitBtn.html();
 
         // Clear old errors
         form.find('.is-invalid').removeClass('is-invalid');
         form.find('.invalid-feedback').text('');
+
+        // Change button to loader
+        submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
 
         $.ajax({
             url: "/plans/store", // your Laravel route
@@ -20,7 +25,7 @@ $(document).ready(function () {
                 showToast(response.message, 'bg-success');
                 form[0].reset();
                 $('#addPlanModal').modal('hide');
-                fetchPlans()
+                fetchPlans();
             },
             error: function (xhr) {
                 let errors = xhr.responseJSON.errors;
@@ -30,6 +35,10 @@ $(document).ready(function () {
                     input.addClass('is-invalid');
                     input.next('.invalid-feedback').text(messages[0]);
                 });
+            },
+            complete: function () {
+                // Revert button back to original
+                submitBtn.prop('disabled', false).html(originalBtnHtml);
             }
         });
     });
@@ -42,10 +51,15 @@ $(document).ready(function () {
 
         let form = $(this);
         let formData = form.serialize();
+        let submitBtn = form.find('button[type="submit"]');
+        let originalBtnHtml = submitBtn.html();
 
         // Clear old errors
         form.find('.is-invalid').removeClass('is-invalid');
         form.find('.invalid-feedback').text('');
+
+        // Change button to loader
+        submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
 
         $.ajax({
             url: "/plans/update", // your Laravel route
@@ -58,7 +72,7 @@ $(document).ready(function () {
                 showToast(response.message, 'bg-success');
                 form[0].reset();
                 $('#editPlanModal').modal('hide');
-                fetchPlans()
+                fetchPlans();
             },
             error: function (xhr) {
                 let errors = xhr.responseJSON.errors;
@@ -68,10 +82,15 @@ $(document).ready(function () {
                     input.addClass('is-invalid');
                     input.next('.invalid-feedback').text(messages[0]);
                 });
+            },
+            complete: function () {
+                // Revert button back to original
+                submitBtn.prop('disabled', false).html(originalBtnHtml);
             }
         });
     });
 });
+
 
 
 
@@ -623,3 +642,70 @@ $(document).ready(function () {
 }); 
 
 
+$(document).ready(function () {
+    $('#addAnnouncementForm').on('submit', function (e) {
+        e.preventDefault();
+
+        let form = $(this);
+        let formData = form.serialize();
+        let submitBtn = form.find('button[type="submit"]');
+        let originalBtnHtml = submitBtn.html();
+
+        // Clear old errors
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').text('');
+
+        // Show loader in button
+        submitBtn.html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...').prop('disabled', true);
+
+        $.ajax({
+            url: "/announcement/store",
+            type: "POST",
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                showToast(response.message, 'bg-success');
+                form[0].reset();
+                $('#addAnnouncementModal').modal('hide');   
+                fetchAnnouncement();
+            },
+            error: function (xhr) {
+                let errors = xhr.responseJSON.errors;
+                $.each(errors, function (field, messages) {
+                    let input = $('[name="' + field + '"]');
+                        input.addClass('is-invalid');
+                    input.next('.invalid-feedback').text(messages[0]);
+                });
+            },
+            complete: function () {
+                submitBtn.html(originalBtnHtml).prop('disabled', false);
+            }
+        });
+    });
+});
+
+
+
+function fetchAnnouncement(page = 1) {
+    $.ajax({
+        url: "announcement/fetch?page=" + page,
+        type: 'GET',
+        success: function (data) {
+            $('#announcement-table-container').html(data);
+        },
+        error: function () {
+            $('#announcement-table-container').html('<div class="text-danger text-center">Failed to load announcements.</div>');
+        }
+    });
+}
+
+if (window.location.pathname === '/announcement') {     
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault();
+        let page = $(this).attr('href').split('page=')[1];
+        fetchAnnouncement(page);
+    });
+    fetchAnnouncement();
+}

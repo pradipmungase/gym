@@ -5,18 +5,18 @@
             <div class="page-header">
                 <div class="row align-items-center justify-content-between mb-4">
                     <div class="col-6">
-                        <h1 class="page-header-title mb-0">Plan Details</h1>
+                        <h1 class="page-header-title mb-0">Membership Plan</h1>
                     </div>
                     <div class="col-6 text-end">
                         <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#addPlanModal">
-                            <i class="bi bi-person-plus-fill me-1"></i> Add Plan
+                                <i class="bi bi-person-plus-fill me-1"></i> Add Membership Plan
                         </a>
                     </div>
                 </div>
             </div>
-            <div id="plans-table-container" class="text-center my-4 table-responsive datatable-custom">
+            <div id="plans-table-container" class="text-center my-4 table-responsive datatable-custom" style="height: 800px">
                 <div class="spinner-border text-primary" role="status"></div>
-                <p class="mt-2">Loading plans please wait...</p>
+                <p class="mt-2">Loading Membership plans please wait...</p>
             </div>
 
         </div>
@@ -28,7 +28,7 @@
                 <div class="modal-content">
                     <div class="modal-header text-white">
                         <h5 class="modal-title" id="addPlanModalLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Add New Plan
+                            <i class="bi bi-person-plus-fill me-2"></i> Add New Membership Plan
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
@@ -94,7 +94,7 @@
                 <div class="modal-content">
                     <div class="modal-header text-white">
                         <h5 class="modal-title" id="editPlanModalLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Edit Plan
+                            <i class="bi bi-person-plus-fill me-2"></i> Edit Membership Plan
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>

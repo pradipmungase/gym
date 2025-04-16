@@ -11,6 +11,8 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\AnnouncementController;
+
 
 // Logout route
 Route::get('/logout', function () {
@@ -66,5 +68,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/expenses/update', [ExpenseController::class, 'update'])->name('expenses.update');
     Route::get('/expenses/fetch', [ExpenseController::class, 'fetchExpenses'])->name('expenses.fetch');
     Route::get('/expenses/view/{id}', [ExpenseController::class, 'view'])->name('expenses.view');
+
+    Route::get('/announcement', [AnnouncementController::class, 'index'])->name('announcement.index');
+    Route::post('/announcement/store', [AnnouncementController::class, 'store'])->name('announcement.store');
+    Route::post('/announcement/update', [AnnouncementController::class, 'update'])->name('announcement.update');
+    Route::get('/announcement/fetch', [AnnouncementController::class, 'fetchAnnouncement'])->name('announcement.fetch');
+    Route::get('/announcement/view/{id}', [AnnouncementController::class, 'view'])->name('announcement.view');
 });
 

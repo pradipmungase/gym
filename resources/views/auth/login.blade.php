@@ -270,7 +270,7 @@
         <!-- Content -->
         <div class="container py-5 py-sm-7">
             <a class="d-flex justify-content-center mb-5" href="./index.html">
-                {{-- <img class="zi-2" src="{{ asset('Website/assets/img/unnamed.webp') }}" alt="Image Description" style="width: 8rem;"> --}}
+                {{-- <img class="zi-2" src="{{ asset('logo/1.jpg') }}" alt="Image Description" style="width: 8rem;"> --}}
             </a>
 
             <div class="mx-auto" style="max-width: 30rem;">

@@ -101,3 +101,53 @@ function sendForgotPasswordWhatsappMessage($user)
     }
 }
 
+
+function sendAnnouncement($for, $title, $description, $date)
+{
+    try {
+        $defaultMobile = '7028143227';
+        $gymName = Auth::user()->gym_name ?? 'Your Gym';
+        if($for == 'all'){
+            $members = DB::table('members')->where('gym_id', Auth::user()->id)->get();
+            foreach($members as $member){
+                $message = "👋 Hello $member->name,\n\n$title\n\n$description\n\n$date\n\n$gymName";
+                Http::post('http://localhost:3000/send-message', [
+                    'number' => '91' . $defaultMobile,
+                    'message' => $message,
+                ]);
+            }
+            $trainers = DB::table('trainers')->where('gym_id', Auth::user()->id)->get();
+            foreach($trainers as $trainer){
+                $message = "👋 Hello $trainer->name,\n\n$title\n\n$description\n\n$date\n\n$gymName";
+                Http::post('http://localhost:3000/send-message', [
+                    'number' => '91' . $defaultMobile,
+                    'message' => $message,
+                ]);
+            }
+
+        }elseif($for == 'members'){
+            $members = DB::table('members')->where('gym_id', Auth::user()->id)->get();
+            foreach($members as $member){
+                $message = "👋 Hello $member->name,\n\n$title\n\n$description\n\n$date\n\n$gymName";
+                Http::post('http://localhost:3000/send-message', [
+                    'number' => '91' . $defaultMobile,
+                    'message' => $message,
+                ]);
+            }
+        }elseif($for == 'trainers'){    
+            $trainers = DB::table('trainers')->where('gym_id', Auth::user()->id)->get();
+            foreach($trainers as $trainer){
+                $message = "👋 Hello $trainer->name,\n\n$title\n\n$description\n\n$date\n\n$gymName ";
+                Http::post('http://localhost:3000/send-message', [
+                    'number' => '91' . $defaultMobile,
+                    'message' => $message,
+                ]);
+            }
+        }
+    } catch (\Exception $e) {
+        Log::error('WhatsApp Announcement Message Failed: ' . $e->getMessage());
+        // Don't throw error to caller
+    }
+}       
+
+

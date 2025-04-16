@@ -10,7 +10,7 @@
     <title>GYM Manager</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('Website/assets/img/unnamed.webp') }}">
+    <link rel="shortcut icon" href="{{ asset('logo/5.jpg') }}">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Font -->
@@ -296,7 +296,7 @@
                                                                         <span class="form-check-stretched-bg"></span>
                                                                     </div>
                                                                     <img class="avatar avatar-sm avatar-circle"
-                                                                        src="{{ asset('') }}assets/img/160x160/img3.jpg"
+                                                                        src="{{ asset('') }}assets/img/160x160/images (1).jpg"
                                                                         alt="Image Description">
                                                                 </div>
                                                             </div>
@@ -345,7 +345,9 @@
                                 data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"
                                 data-bs-dropdown-animation>
                                 <div class="avatar avatar-sm avatar-circle">
-                                    <img class="avatar-img" src="{{ asset('') }}assets/img/160x160/img6.jpg"
+
+                                    <img class="avatar-img"
+                                        src="{{ asset('') }}assets/img/160x160/images (1).jpg"
                                         alt="Image Description">
                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                 </div>
@@ -357,7 +359,7 @@
                                     <div class="d-flex align-items-center">
                                         <div class="avatar avatar-sm avatar-circle">
                                             <img class="avatar-img"
-                                                src="{{ asset('') }}assets/img/160x160/img6.jpg"
+                                                src="{{ asset('') }}assets/img/160x160/images (1).jpg"
                                                 alt="Image Description">
                                         </div>
                                         <div class="flex-grow-1 ms-3">
@@ -423,6 +425,9 @@
 
                 <div class="navbar-vertical-content">
                     <div id="navbarVerticalMenu" class="nav nav-pills nav-vertical card-navbar-nav">
+
+
+
                         <!-- Dashboard -->
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('dashboard') }}" role="button">
@@ -431,21 +436,24 @@
                             </a>
                         </div>
 
-                        <!-- Plan -->
+
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('plans') }}" role="button">
-                                <i class="bi-clipboard-check nav-icon"></i>
-                                <span class="nav-link-title">Plan</span>
+                            <a class="nav-link dropdown-toggle " href="#navbarVerticalMenuDashboards" role="button"
+                                data-bs-toggle="collapse" data-bs-target="#navbarVerticalMenuDashboards"
+                                aria-expanded="false" aria-controls="navbarVerticalMenuDashboards">
+                                <i class="bi-house-door nav-icon"></i>
+                                <span class="nav-link-title">Set-up</span>
                             </a>
+
+                            <div id="navbarVerticalMenuDashboards" class="nav-collapse collapse "
+                                data-bs-parent="#navbarVerticalMenu">
+                                <a class="nav-link " href="{{ url('plans') }}"> <i
+                                        class="bi-clipboard-check nav-icon"></i>Membership Plan</a>
+                                <a class="nav-link " href="{{ url('trainer') }}"> <i
+                                        class="bi-person-badge nav-icon"></i> Trainers</a>
+                            </div>
                         </div>
 
-                        <!-- Trainer -->
-                        <div class="nav-item">
-                            <a class="nav-link" href="{{ url('trainer') }}" role="button">
-                                <i class="bi-person-badge nav-icon"></i>
-                                <span class="nav-link-title">Trainer</span>
-                            </a>
-                        </div>
 
                         <!-- Members -->
                         <div class="nav-item">
@@ -468,6 +476,14 @@
                             <a class="nav-link" href="{{ url('expenses') }}" role="button">
                                 <i class="bi-cash-stack nav-icon"></i>
                                 <span class="nav-link-title">Expenses</span>
+                            </a>
+                        </div>
+
+                        <!-- announcement -->
+                        <div class="nav-item">
+                            <a class="nav-link" href="{{ url('announcement') }}" role="button">
+                                <i class="bi-megaphone nav-icon"></i>
+                                <span class="nav-link-title">Announcement</span>
                             </a>
                         </div>
 

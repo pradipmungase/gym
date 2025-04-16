@@ -14,7 +14,7 @@
                     </div>
                 </div>
             </div>
-            <div id="attendance-table-container" class="text-center my-4 table-responsive datatable-custom">
+            <div id="attendance-table-container" class="text-center my-4 table-responsive datatable-custom" style="height: 800px">
                 <div class="spinner-border text-primary" role="status"></div>
                 <p class="mt-2">Loading attendance please wait...</p>
             </div>
