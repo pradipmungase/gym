@@ -70,8 +70,7 @@
                                 <input type="date" class="form-control" id="joining_date" name="joining_date" required>
                                 <div class="invalid-feedback">Joining date is required.</div>
                             </div>
-
-
+                            
 
                             <!-- Gender -->
                             <div class="col-md-3">

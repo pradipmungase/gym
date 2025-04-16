@@ -76,5 +76,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/announcement/update', [AnnouncementController::class, 'update'])->name('announcement.update');
     Route::get('/announcement/fetch', [AnnouncementController::class, 'fetchAnnouncement'])->name('announcement.fetch');
     Route::get('/announcement/view/{id}', [AnnouncementController::class, 'view'])->name('announcement.view');
+
+    Route::view('/support', 'admin.support');
+
 });
 

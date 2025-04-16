@@ -503,6 +503,15 @@
                             </a>
                         </div>
 
+                        <!-- Support -->
+
+                        <div class="nav-item">
+                            <a class="nav-link" href="{{ url('support') }}" role="button">
+                                <i class="bi-question-circle nav-icon"></i>
+                                <span class="nav-link-title">Support</span>
+                            </a>
+                        </div>
+
                         <!-- Logout -->
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('logout') }}" role="button">
