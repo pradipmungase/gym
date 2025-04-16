@@ -250,10 +250,6 @@
                         data-bs-template='<div class="tooltip d-none d-md-block" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
                         data-bs-toggle="tooltip" data-bs-placement="right" title="Expand"></i>
                 </button>
-
-                <!-- End Navbar Vertical Toggle -->
-
-
             </div>
 
             <div class="navbar-nav-wrap-content-end">
@@ -315,358 +311,6 @@
                                                             <!-- End Col -->
 
                                                             <small class="col-auto text-muted text-cap">2hr</small>
-                                                            <!-- End Col -->
-                                                        </div>
-                                                        <!-- End Row -->
-
-                                                        <a class="stretched-link" href="#"></a>
-                                                    </li>
-                                                    <!-- End Item -->
-
-                                                    <!-- Item -->
-                                                    <li class="list-group-item form-check-select">
-                                                        <div class="row">
-                                                            <div class="col-auto">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input"
-                                                                            type="checkbox" value=""
-                                                                            id="notificationCheck2" checked>
-                                                                        <label class="form-check-label"
-                                                                            for="notificationCheck2"></label>
-                                                                        <span class="form-check-stretched-bg"></span>
-                                                                    </div>
-                                                                    <div
-                                                                        class="avatar avatar-sm avatar-soft-dark avatar-circle">
-                                                                        <span class="avatar-initials">K</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <div class="col ms-n2">
-                                                                <h5 class="mb-1">Klara Hampton</h5>
-                                                                <p class="text-body fs-5">mentioned you in a comment
-                                                                </p>
-                                                                <blockquote class="blockquote blockquote-sm">
-                                                                    Nice work, love! You really nailed it. Keep it up!
-                                                                </blockquote>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <small class="col-auto text-muted text-cap">10hr</small>
-                                                            <!-- End Col -->
-                                                        </div>
-                                                        <!-- End Row -->
-
-                                                        <a class="stretched-link" href="#"></a>
-                                                    </li>
-                                                    <!-- End Item -->
-
-                                                    <!-- Item -->
-                                                    <li class="list-group-item form-check-select">
-                                                        <div class="row">
-                                                            <div class="col-auto">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input"
-                                                                            type="checkbox" value=""
-                                                                            id="notificationCheck3" checked>
-                                                                        <label class="form-check-label"
-                                                                            for="notificationCheck3"></label>
-                                                                        <span class="form-check-stretched-bg"></span>
-                                                                    </div>
-                                                                    <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img"
-                                                                            src="{{ asset('') }}assets/img/160x160/img10.jpg"
-                                                                            alt="Image Description">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <div class="col ms-n2">
-                                                                <h5 class="mb-1">Ruby Walter</h5>
-                                                                <p class="text-body fs-5">joined the Slack group HS
-                                                                    Team</p>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <small class="col-auto text-muted text-cap">3dy</small>
-                                                            <!-- End Col -->
-                                                        </div>
-                                                        <!-- End Row -->
-
-                                                        <a class="stretched-link" href="#"></a>
-                                                    </li>
-                                                    <!-- End Item -->
-
-                                                    <!-- Item -->
-                                                    <li class="list-group-item form-check-select">
-                                                        <div class="row">
-                                                            <div class="col-auto">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input"
-                                                                            type="checkbox" value=""
-                                                                            id="notificationCheck4">
-                                                                        <label class="form-check-label"
-                                                                            for="notificationCheck4"></label>
-                                                                        <span class="form-check-stretched-bg"></span>
-                                                                    </div>
-                                                                    <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img"
-                                                                            src="{{ asset('') }}assets/svg/brands/google-icon.svg"
-                                                                            alt="Image Description">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <div class="col ms-n2">
-                                                                <h5 class="mb-1">from Google</h5>
-                                                                <p class="text-body fs-5">Start using forms to capture
-                                                                    the information of prospects visiting your Google
-                                                                    website</p>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <small class="col-auto text-muted text-cap">17dy</small>
-                                                            <!-- End Col -->
-                                                        </div>
-                                                        <!-- End Row -->
-
-                                                        <a class="stretched-link" href="#"></a>
-                                                    </li>
-                                                    <!-- End Item -->
-
-                                                    <!-- Item -->
-                                                    <li class="list-group-item form-check-select">
-                                                        <div class="row">
-                                                            <div class="col-auto">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input"
-                                                                            type="checkbox" value=""
-                                                                            id="notificationCheck5">
-                                                                        <label class="form-check-label"
-                                                                            for="notificationCheck5"></label>
-                                                                        <span class="form-check-stretched-bg"></span>
-                                                                    </div>
-                                                                    <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img"
-                                                                            src="{{ asset('') }}assets/img/160x160/img7.jpg"
-                                                                            alt="Image Description">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <div class="col ms-n2">
-                                                                <h5 class="mb-1">Sara Villar</h5>
-                                                                <p class="text-body fs-5">completed <i
-                                                                        class="bi-journal-bookmark-fill text-primary"></i>
-                                                                    FD-7 task</p>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <small class="col-auto text-muted text-cap">2mn</small>
-                                                            <!-- End Col -->
-                                                        </div>
-                                                        <!-- End Row -->
-
-                                                        <a class="stretched-link" href="#"></a>
-                                                    </li>
-                                                    <!-- End Item -->
-                                                </ul>
-                                                <!-- End List Group -->
-                                            </div>
-
-                                            <div class="tab-pane fade" id="notificationNavTwo" role="tabpanel"
-                                                aria-labelledby="notificationNavTwo-tab">
-                                                <!-- List Group -->
-                                                <ul class="list-group list-group-flush navbar-card-list-group">
-                                                    <!-- Item -->
-                                                    <li class="list-group-item form-check-select">
-                                                        <div class="row">
-                                                            <div class="col-auto">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input"
-                                                                            type="checkbox" value=""
-                                                                            id="notificationCheck6">
-                                                                        <label class="form-check-label"
-                                                                            for="notificationCheck6"></label>
-                                                                        <span class="form-check-stretched-bg"></span>
-                                                                    </div>
-                                                                    <div
-                                                                        class="avatar avatar-sm avatar-soft-dark avatar-circle">
-                                                                        <span class="avatar-initials">A</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <div class="col ms-n2">
-                                                                <h5 class="mb-1">Anne Richard</h5>
-                                                                <p class="text-body fs-5">accepted your invitation to
-                                                                    join Notion</p>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <small class="col-auto text-muted text-cap">1dy</small>
-                                                            <!-- End Col -->
-                                                        </div>
-                                                        <!-- End Row -->
-
-                                                        <a class="stretched-link" href="#"></a>
-                                                    </li>
-                                                    <!-- End Item -->
-
-                                                    <!-- Item -->
-                                                    <li class="list-group-item form-check-select">
-                                                        <div class="row">
-                                                            <div class="col-auto">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input"
-                                                                            type="checkbox" value=""
-                                                                            id="notificationCheck7">
-                                                                        <label class="form-check-label"
-                                                                            for="notificationCheck7"></label>
-                                                                        <span class="form-check-stretched-bg"></span>
-                                                                    </div>
-                                                                    <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img"
-                                                                            src="{{ asset('') }}assets/img/160x160/img5.jpg"
-                                                                            alt="Image Description">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <div class="col ms-n2">
-                                                                <h5 class="mb-1">Finch Hoot</h5>
-                                                                <p class="text-body fs-5">left Slack group HS projects
-                                                                </p>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <small class="col-auto text-muted text-cap">1dy</small>
-                                                            <!-- End Col -->
-                                                        </div>
-                                                        <!-- End Row -->
-
-                                                        <a class="stretched-link" href="#"></a>
-                                                    </li>
-                                                    <!-- End Item -->
-
-                                                    <!-- Item -->
-                                                    <li class="list-group-item form-check-select">
-                                                        <div class="row">
-                                                            <div class="col-auto">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input"
-                                                                            type="checkbox" value=""
-                                                                            id="notificationCheck8">
-                                                                        <label class="form-check-label"
-                                                                            for="notificationCheck8"></label>
-                                                                        <span class="form-check-stretched-bg"></span>
-                                                                    </div>
-                                                                    <div
-                                                                        class="avatar avatar-sm avatar-dark avatar-circle">
-                                                                        <span class="avatar-initials">HS</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <div class="col ms-n2">
-                                                                <h5 class="mb-1">Htmlstream</h5>
-                                                                <p class="text-body fs-5">you earned a "Top endorsed"
-                                                                    <i class="bi-patch-check-fill text-primary"></i>
-                                                                    badge
-                                                                </p>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <small class="col-auto text-muted text-cap">6dy</small>
-                                                            <!-- End Col -->
-                                                        </div>
-                                                        <!-- End Row -->
-
-                                                        <a class="stretched-link" href="#"></a>
-                                                    </li>
-                                                    <!-- End Item -->
-
-                                                    <!-- Item -->
-                                                    <li class="list-group-item form-check-select">
-                                                        <div class="row">
-                                                            <div class="col-auto">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input"
-                                                                            type="checkbox" value=""
-                                                                            id="notificationCheck9">
-                                                                        <label class="form-check-label"
-                                                                            for="notificationCheck9"></label>
-                                                                        <span class="form-check-stretched-bg"></span>
-                                                                    </div>
-                                                                    <div class="avatar avatar-sm avatar-circle">
-                                                                        <img class="avatar-img"
-                                                                            src="{{ asset('') }}assets/img/160x160/img8.jpg"
-                                                                            alt="Image Description">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <div class="col ms-n2">
-                                                                <h5 class="mb-1">Linda Bates</h5>
-                                                                <p class="text-body fs-5">Accepted your connection</p>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <small class="col-auto text-muted text-cap">17dy</small>
-                                                            <!-- End Col -->
-                                                        </div>
-                                                        <!-- End Row -->
-
-                                                        <a class="stretched-link" href="#"></a>
-                                                    </li>
-                                                    <!-- End Item -->
-
-                                                    <!-- Item -->
-                                                    <li class="list-group-item form-check-select">
-                                                        <div class="row">
-                                                            <div class="col-auto">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input"
-                                                                            type="checkbox" value=""
-                                                                            id="notificationCheck10">
-                                                                        <label class="form-check-label"
-                                                                            for="notificationCheck10"></label>
-                                                                        <span class="form-check-stretched-bg"></span>
-                                                                    </div>
-                                                                    <div
-                                                                        class="avatar avatar-sm avatar-soft-dark avatar-circle">
-                                                                        <span class="avatar-initials">L</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <div class="col ms-n2">
-                                                                <h5 class="mb-1">Lewis Clarke</h5>
-                                                                <p class="text-body fs-5">completed <i
-                                                                        class="bi-journal-bookmark-fill text-primary"></i>
-                                                                    FD-134 task</p>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <small class="col-auto text-muted text-cap">2mts</small>
                                                             <!-- End Col -->
                                                         </div>
                                                         <!-- End Row -->
@@ -748,11 +392,6 @@
         </div>
     </header>
 
-    <!-- ========== END HEADER ========== -->
-
-    <!-- ========== MAIN CONTENT ========== -->
-    <!-- Navbar Vertical -->
-
     <aside
         class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered bg-white  ">
         <div class="navbar-vertical-container">
@@ -784,7 +423,7 @@
 
                 <div class="navbar-vertical-content">
                     <div id="navbarVerticalMenu" class="nav nav-pills nav-vertical card-navbar-nav">
-                        <!-- Collapse -->
+                        <!-- Dashboard -->
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('dashboard') }}" role="button">
                                 <i class="bi-speedometer2 nav-icon"></i>
@@ -792,43 +431,71 @@
                             </a>
                         </div>
 
-
-
+                        <!-- Plan -->
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('plans') }}" role="button">
-                                <i class="bi-people nav-icon"></i>
+                                <i class="bi-clipboard-check nav-icon"></i>
                                 <span class="nav-link-title">Plan</span>
                             </a>
                         </div>
 
+                        <!-- Trainer -->
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('trainer') }}" role="button">
-                                <i class="bi-people nav-icon"></i>
+                                <i class="bi-person-badge nav-icon"></i>
                                 <span class="nav-link-title">Trainer</span>
                             </a>
                         </div>
 
+                        <!-- Members -->
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('members') }}" role="button">
-                                <i class="bi-building nav-icon"></i>
+                                <i class="bi-people nav-icon"></i>
                                 <span class="nav-link-title">Members</span>
                             </a>
                         </div>
 
+                        <!-- Attendance -->
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('attendance') }}" role="button">
-                                <i class="bi-building nav-icon"></i>
+                                <i class="bi-calendar-check nav-icon"></i>
                                 <span class="nav-link-title">Attendance</span>
                             </a>
                         </div>
 
+                        <!-- Expenses -->
+                        <div class="nav-item">
+                            <a class="nav-link" href="{{ url('expenses') }}" role="button">
+                                <i class="bi-cash-stack nav-icon"></i>
+                                <span class="nav-link-title">Expenses</span>
+                            </a>
+                        </div>
+
+                        <!-- Reports -->
+                        <div class="nav-item">
+                            <a class="nav-link" href="#" role="button">
+                                <i class="bi-bar-chart-line nav-icon"></i>
+                                <span class="nav-link-title">Reports</span>
+                            </a>
+                        </div>
+
+                        <!-- Settings -->
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('settings') }}" role="button">
                                 <i class="bi-gear nav-icon"></i>
                                 <span class="nav-link-title">Settings</span>
                             </a>
                         </div>
+
+                        <!-- Logout -->
+                        <div class="nav-item">
+                            <a class="nav-link" href="{{ url('logout') }}" role="button">
+                                <i class="bi-box-arrow-right nav-icon"></i>
+                                <span class="nav-link-title">Logout</span>
+                            </a>
+                        </div>
                     </div>
+
                 </div>
                 <!-- End Content -->
 
@@ -841,7 +508,6 @@
                                 <button type="button" class="btn btn-ghost-secondary btn-icon rounded-circle"
                                     id="selectThemeDropdown" data-bs-toggle="dropdown" aria-expanded="false"
                                     data-bs-dropdown-animation>
-
                                 </button>
 
                                 <div class="dropdown-menu navbar-dropdown-menu navbar-dropdown-menu-borderless"
@@ -875,8 +541,6 @@
     </aside>
     @yield('content')
 
-
-
     <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
         <!-- Toast -->
         <div id="dynamicToast" class="toast text-white bg-primary border-0 rounded-3 shadow-sm fade" role="alert"
@@ -891,6 +555,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- JS Global Compulsory  -->
     <script src="{{ asset('') }}assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
@@ -914,86 +579,6 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('My.js') }}"></script>
-
-    <script>
-        (function() {
-            // STYLE SWITCHER
-            // =======================================================
-            const $dropdownBtn = document.getElementById('selectThemeDropdown') // Dropdowon trigger
-            const $variants = document.querySelectorAll(
-                `[aria-labelledby="selectThemeDropdown"] [data-icon]`) // All items of the dropdown
-
-            // Function to set active style in the dorpdown menu and set icon for dropdown trigger
-            const setActiveStyle = function() {
-                $variants.forEach($item => {
-                    if ($item.getAttribute('data-value') === HSThemeAppearance.getOriginalAppearance()) {
-                        $dropdownBtn.innerHTML = `<i class="${$item.getAttribute('data-icon')}" />`
-                        return $item.classList.add('active')
-                    }
-
-                    $item.classList.remove('active')
-                })
-            }
-
-            // Add a click event to all items of the dropdown to set the style
-            $variants.forEach(function($item) {
-                $item.addEventListener('click', function() {
-                    HSThemeAppearance.setAppearance($item.getAttribute('data-value'))
-                })
-            })
-
-            // Call the setActiveStyle on load page
-            setActiveStyle()
-
-            // Add event listener on change style to call the setActiveStyle function
-            window.addEventListener('on-hs-appearance-change', function() {
-                setActiveStyle()
-            })
-        })()
-    </script>
-    <!-- End Style Switcher JS -->
-
-    <!-- JS Plugins Init. -->
-    <script>
-        $(document).on('ready', function() {
-            // INITIALIZATION OF DATERANGEPICKER
-            // =======================================================
-            $('.js-daterangepicker').daterangepicker();
-
-            $('.js-daterangepicker-times').daterangepicker({
-                timePicker: true,
-                startDate: moment().startOf('hour'),
-                endDate: moment().startOf('hour').add(32, 'hour'),
-                locale: {
-                    format: 'M/DD hh:mm A'
-                }
-            });
-
-            var start = moment();
-            var end = moment();
-
-            function cb(start, end) {
-                $('#js-daterangepicker-predefined .js-daterangepicker-predefined-preview').html(start.format(
-                    'MMM D') + ' - ' + end.format('MMM D, YYYY'));
-            }
-
-            $('#js-daterangepicker-predefined').daterangepicker({
-                startDate: start,
-                endDate: end,
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
-                        'month').endOf('month')]
-                }
-            }, cb);
-
-            cb(start, end);
-        });
-    </script>
 
     <!-- JS Plugins Init. -->
     <script>
@@ -1044,44 +629,7 @@
         })()
     </script>
 
-    <!-- Style Switcher JS -->
-
     <script>
-        (function() {
-            // STYLE SWITCHER
-            // =======================================================
-            const $dropdownBtn = document.getElementById('selectThemeDropdown') // Dropdowon trigger
-            const $variants = document.querySelectorAll(
-                `[aria-labelledby="selectThemeDropdown"] [data-icon]`) // All items of the dropdown
-
-            // Function to set active style in the dorpdown menu and set icon for dropdown trigger
-            const setActiveStyle = function() {
-                $variants.forEach($item => {
-                    if ($item.getAttribute('data-value') === HSThemeAppearance.getOriginalAppearance()) {
-                        $dropdownBtn.innerHTML = `<i class="${$item.getAttribute('data-icon')}" />`
-                        return $item.classList.add('active')
-                    }
-
-                    $item.classList.remove('active')
-                })
-            }
-
-            // Add a click event to all items of the dropdown to set the style
-            $variants.forEach(function($item) {
-                $item.addEventListener('click', function() {
-                    HSThemeAppearance.setAppearance($item.getAttribute('data-value'))
-                })
-            })
-
-            // Call the setActiveStyle on load page
-            setActiveStyle()
-
-            // Add event listener on change style to call the setActiveStyle function
-            window.addEventListener('on-hs-appearance-change', function() {
-                setActiveStyle()
-            })
-        })()
-
         function showToast(message, typeClass) {
             const toastEl = document.getElementById('dynamicToast');
             const toastBody = document.getElementById('toastMessage');
@@ -1096,8 +644,6 @@
             const toast = new bootstrap.Toast(toastEl);
             toast.show();
         }
-    </script>
-    <script>
         @if (session()->has('success'))
             showToast(@json(session('success')), 'bg-success');
         @elseif (session()->has('error'))
@@ -1190,6 +736,49 @@
             });
         </script>
     @endif
+
+
+    <script>
+        (function() {
+            // STYLE SWITCHER
+            // =======================================================
+            const $dropdownBtn = document.getElementById('selectThemeDropdown') // Dropdowon trigger
+            const $variants = document.querySelectorAll(
+                `[aria-labelledby="selectThemeDropdown"] [data-icon]`) // All items of the dropdown
+
+            // Function to set active style in the dorpdown menu and set icon for dropdown trigger
+            const setActiveStyle = function() {
+                $variants.forEach($item => {
+                    if ($item.getAttribute('data-value') === HSThemeAppearance.getOriginalAppearance()) {
+                        $dropdownBtn.innerHTML = `<i class="${$item.getAttribute('data-icon')}" />`
+                        return $item.classList.add('active')
+                    }
+
+                    $item.classList.remove('active')
+                })
+            }
+
+            // Add a click event to all items of the dropdown to set the style
+            $variants.forEach(function($item) {
+                $item.addEventListener('click', function() {
+                    HSThemeAppearance.setAppearance($item.getAttribute('data-value'))
+                })
+            })
+
+            // Call the setActiveStyle on load page
+            setActiveStyle()
+
+            // Add event listener on change style to call the setActiveStyle function
+            window.addEventListener('on-hs-appearance-change', function() {
+                setActiveStyle()
+            })
+        })()
+    </script>
+    <!-- End Style Switcher JS -->
+
+
+
+
 </body>
 
 </html>

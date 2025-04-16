@@ -59,3 +59,45 @@ function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo
         cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
     return $angle * $earthRadius;
 }
+
+
+function sendWelcomeEmail($user)
+{
+    try {
+        $mobile = '7028143227'; // Replace with dynamic: $member->mobile ?? fallback
+
+        $gymName = Auth::user()->gym_name ?? 'Your Gym';
+        $formattedDate = Carbon::now()->format('d M Y');
+        $formattedTime = Carbon::now()->format('h:i A');
+
+        $message = "👋 Hey $user->owner_name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nWe're excited to have you on board! 💪\n\nIf you have any questions or need help, feel free to contact us at *7028143227*. 📞";
+
+
+        Http::post('http://localhost:3000/send-message', [
+            'number' => '91' . $mobile,
+            'message' => $message,
+        ]);
+    } catch (\Exception $e) {
+        Log::error('WhatsApp Attendance Message Failed: ' . $e->getMessage());
+        // Don't throw error to caller
+    }
+}
+
+function sendForgotPasswordWhatsappMessage($user)
+{
+    try {
+        $mobile = '7028143227'; // Replace with dynamic: $member->mobile ?? fallback
+        $token = encrypt($user->id);
+        $link = url('resetPassword/' . $token);
+        $message = "Hi {$user->owner_name},\nTap below to reset your password:\n$link\n\nIgnore if not requested.";
+
+        Http::post('http://localhost:3000/send-message', [
+            'number' => '91' . $mobile,
+            'message' => $message,
+        ]);
+    } catch (\Exception $e) {
+        Log::error('WhatsApp Attendance Message Failed: ' . $e->getMessage());
+        // Don't throw error to caller
+    }
+}
+

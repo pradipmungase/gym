@@ -286,13 +286,7 @@
                                     <p>Don't have an account yet? <a class="link" href="#">Sign up here</a></p>
                                 </div>
                             </div>
-                            @if (session()->has('error'))
-                                <div class="alert alert-danger mt-3" id="errorMessage">
-                                    {{ session('error') }}
-                                </div>
-                            @endif
-
-                            <!-- Email Field -->
+                                <!-- Email Field -->
                             <div class="mb-4">
                                 <label class="form-label" for="signinSrEmail">Your Mobile Number</label>
                                 <input value="7028143227" type="text" class="form-control form-control-lg"
@@ -306,7 +300,7 @@
                                 <label class="form-label w-100" for="signupSrPassword">
                                     <span class="d-flex justify-content-between align-items-center">
                                         <span>Password</span>
-                                        <a class="form-label-link mb-0" href="#">Forgot Password?</a>
+                                        <a class="form-label-link mb-0" href="{{ url('forgotPassword') }}">Forgot Password?</a>
                                     </span>
                                 </label>
                                 <div class="input-group input-group-merge">
@@ -348,7 +342,7 @@
     <!-- ========== FOOTER ========== -->
     <footer class="container-lg text-center py-10"
         style="padding-top: 0.5rem !important;padding-bottom: 0.5rem !important;">
-        <p class="mb-0">&copy; Stay Manager. All rights reserved.</p>
+        <p class="mb-0">&copy; Gym Manager. All rights reserved.</p>
     </footer>
     <!-- ========== END FOOTER ========== -->
     <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
@@ -397,6 +391,27 @@
                 icon.removeClass('bi-eye').addClass('bi-eye-slash');
             }
         });
+    </script>
+        <script>
+        function showToast(message, typeClass) {
+            const toastEl = document.getElementById('dynamicToast');
+            const toastBody = document.getElementById('toastMessage');
+
+            // Update message
+            toastBody.innerHTML = message;
+
+            // Remove old bg-* classes and add new one
+            toastEl.className = 'toast align-items-center text-white border-0 ' + typeClass;
+
+            // Show toast
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+        @if (session()->has('success'))
+            showToast(@json(session('success')), 'bg-success');
+        @elseif (session()->has('error'))
+            showToast(@json(session('error')), 'bg-danger');
+        @endif
     </script>
 </body>
 

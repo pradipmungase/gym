@@ -395,3 +395,231 @@ $(document).ready(function () {
         });
     });
 });
+
+
+
+$(document).ready(function () {
+    $('#addExpenseForm').on('submit', function (e) {
+        e.preventDefault(); // prevent default form submission
+
+        let form = $(this);
+        let formData = form.serialize();
+        let submitBtn = form.find('button[type="submit"]');
+        let originalBtnHtml = submitBtn.html();
+
+        // Clear old errors
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').text('');
+
+        // Show loader in button
+        submitBtn.html('<span class="spinner-border spinner-border-sm me-1"></span> Saving...').prop('disabled', true);
+
+        $.ajax({
+            url: "/expenses/store",
+            type: "POST",
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                showToast(response.message, 'bg-success');
+                form[0].reset();
+                $('#addExpenseModal').modal('hide');
+                fetchExpenses();
+            },
+            error: function (xhr) {
+                let errors = xhr.responseJSON.errors;
+                $.each(errors, function (field, messages) {
+                    let input = $('[name="' + field + '"]');
+                    input.addClass('is-invalid');
+                    input.next('.invalid-feedback').text(messages[0]);
+                });
+            },
+            complete: function () {
+                // Revert button after response
+                submitBtn.html(originalBtnHtml).prop('disabled', false);
+            }
+        });
+    });
+});
+
+
+function fetchExpenses(page = 1) {
+    $.ajax({
+        url: "expenses/fetch?page=" + page,
+        type: 'GET',
+        success: function (data) {
+            $('#expenses-table-container').html(data);
+        },
+        error: function () {
+            $('#expenses-table-container').html('<div class="text-danger text-center">Failed to load expenses.</div>');
+        }
+    });
+}
+ 
+
+if (window.location.pathname === '/expenses') {
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault();
+        let page = $(this).attr('href').split('page=')[1];
+        fetchExpenses(page);
+    }); 
+    fetchExpenses();
+}
+
+
+$(document).on('click', '.edit-expense-btn', function () {
+    const expense = $(this).data('expense'); // Make sure your button has data-trainer='{"id":1,...}'
+
+    $('#editExpenseId').val(expense.id);
+    $('#editName').val(expense.name);
+    $('#editAmount').val(expense.amount);
+    $('#editDate').val(expense.date);
+    $('#editDescription').val(expense.description);
+
+    $('#editExpenseModal').modal('show');
+});
+
+$(document).on('click', '.view-expense-btn', function () {
+    const expense = $(this).data('expense'); // Make sure your button has data-trainer='{"id":1,...}'
+
+    $('#viewExpenseId').val(expense.id);
+    $('#viewName').val(expense.name);
+    $('#viewAmount').val(expense.amount);
+    $('#viewDate').val(expense.date);
+    $('#viewDescription').val(expense.description);
+
+    $('#viewExpenseModal').modal('show');
+});
+
+
+$(document).ready(function () {
+    $('#editExpenseForm').on('submit', function (e) {
+        e.preventDefault();
+
+
+        let form = $(this);
+        let formData = form.serialize();
+        let submitBtn = form.find('button[type="submit"]');
+        let originalBtnHtml = submitBtn.html();
+        
+        // Clear old errors
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').text('');
+
+        // Show loader in button
+        submitBtn.html('<span class="spinner-border spinner-border-sm me-1"></span> Updating...').prop('disabled', true);
+        
+
+        $.ajax({
+            url: "/expenses/update",
+            type: "POST",
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                showToast(response.message, 'bg-success');
+                form[0].reset();
+                $('#editExpenseModal').modal('hide');
+                fetchExpenses();
+            },
+            error: function (xhr) {
+                let errors = xhr.responseJSON.errors;
+                $.each(errors, function (field, messages) {
+                    let input = $('[editName="' + field + '"]');
+                    input.addClass('is-invalid');
+                    input.next('.invalid-feedback').text(messages[0]);
+                });
+            },
+            complete: function () {
+                submitBtn.html(originalBtnHtml).prop('disabled', false);    
+            }
+        });
+    });
+});
+
+
+
+$(document).ready(function () {
+    $('#forgotPasswordForm').on('submit', function (e) {
+        e.preventDefault();
+        // Add your forgot password logic here
+        let form = $(this);
+        let formData = form.serialize();
+        let submitBtn = form.find('button[type="submit"]');
+        let originalBtnHtml = submitBtn.html();
+
+        // Clear old errors 
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').text('');
+
+        // Show loader in button
+        submitBtn.html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...').prop('disabled', true); 
+        
+        $.ajax({
+            url: "/forgotPassword",
+            type: "POST",
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },  
+            success: function (response) {
+                showToast(response.message, 'bg-success');
+            },
+            error: function (xhr) {
+                showToast(xhr.responseJSON.message, 'bg-danger');
+            },
+            complete: function () {
+                submitBtn.html(originalBtnHtml).prop('disabled', false);
+            }
+        }); 
+    });
+});
+
+
+
+$(document).ready(function () {
+    $('#resetPasswordForm').on('submit', function (e) {
+        e.preventDefault();
+        // Add your reset password logic here
+        let form = $(this);
+        let formData = form.serialize();
+        let submitBtn = form.find('button[type="submit"]');
+        let originalBtnHtml = submitBtn.html();
+
+        // Clear old errors 
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').text('');
+
+        // Show loader in button
+        submitBtn.html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...').prop('disabled', true);
+
+        $.ajax({
+            url: "/resetPassword",
+            type: "POST",
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                if (response.status == 'success') {
+                    showToast(response.message, 'bg-success');  
+                    setTimeout(function() {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    showToast(response.message, 'bg-danger');
+                }
+            },
+            error: function (xhr) {
+                showToast(xhr.responseJSON.message, 'bg-danger');
+            },
+            complete: function () {
+                submitBtn.html(originalBtnHtml).prop('disabled', false);    
+            }
+        });
+    });
+}); 
+
+

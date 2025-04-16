@@ -10,6 +10,7 @@ use App\Http\Controllers\MembersController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\ExpenseController;
 
 // Logout route
 Route::get('/logout', function () {
@@ -22,7 +23,10 @@ Route::view('/', 'Website');
 Route::view('/login', 'auth.login');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/checkLogin', [AuthController::class, 'checkLogin']);
-
+Route::view('/forgotPassword', 'auth.forgotPassword');
+Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
+Route::get('/resetPassword/{token}', [AuthController::class, 'resetPassword']);
+Route::post('/resetPassword', [AuthController::class, 'finalResetPassword']);
 Route::match(['get', 'post'], '/markAttendanceByLatLong/{gym_id}/{member_id}', [AttendanceController::class, 'markAttendanceByLatLong'])->name('members.markAttendanceByLatLong');
 
 
@@ -56,5 +60,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/trainer/update', [TrainerController::class, 'update'])->name('trainer.update');
     Route::get('/trainer/fetch', [TrainerController::class, 'fetchTrainers'])->name('trainer.fetch');
     Route::get('/trainer/view/{id}', [TrainerController::class, 'view'])->name('trainer.view');
+
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+    Route::post('/expenses/store', [ExpenseController::class, 'store'])->name('expenses.store');
+    Route::post('/expenses/update', [ExpenseController::class, 'update'])->name('expenses.update');
+    Route::get('/expenses/fetch', [ExpenseController::class, 'fetchExpenses'])->name('expenses.fetch');
+    Route::get('/expenses/view/{id}', [ExpenseController::class, 'view'])->name('expenses.view');
 });
 

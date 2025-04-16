@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Title -->
-  <title>Welcome to - Uplifty Admin!</title>
+  <title>Forgot Password - Gym Manager</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.ico') }}" />
@@ -183,41 +183,32 @@
         <div class="card card-lg mb-5">
           <div class="card-body">
             <!-- Form -->
-            <form method="POST" action="{{ route('forgotPassword') }}">
+            <form method="POST" action="#" id="forgotPasswordForm">
               @csrf
+              @method('POST')
               <div class="text-center">
                 <div class="mb-5">
                   <h1 class="display-5">Forgot Password</h1>
                 </div>
               </div>
 
-              @if ($errors->any())
-                  <div class="alert alert-danger">
-                          @foreach ($errors->all() as $error)
-                              <li>{{ $error }}</li>
-                          @endforeach
-                  </div>
-              @endif
-
-              <!-- Display success message -->
-              @if(session('success'))
-                  <div class="alert alert-success">
-                    {{ session('success') }}
-                    </div>
-              @endif
-
-              <!-- Display error message -->
-              @if(session('error'))
-                   <div class="alert alert-danger">
-                    {{ session('error') }}
-                    </div>
-              @endif
-
               <!-- Form -->
               <div class="mb-4">
-                <label class="form-label" for="signinSrEmail">Your email</label>
-                <input type="email" class="form-control form-control-lg" name="email" id="signinSrEmail" tabindex="1" placeholder="email@address.com" aria-label="email@address.com" required value="{{ old('email') }}">
-                <span class="invalid-feedback">Please enter a valid email address.</span>
+                <label class="form-label" for="signinSrEmail">Your Mobile Number</label>
+                <input type="tel" 
+                      class="form-control form-control-lg" 
+                      name="mobile" 
+                      id="mobile" 
+                      tabindex="1" 
+                      placeholder="Mobile Number"  
+                      aria-label="Mobile Number" 
+                      required 
+                      maxlength="10" 
+                      pattern="\d{10}" 
+                      title="Enter a valid 10-digit mobile number" 
+                      value="{{ old('mobile') }}">
+
+                <span class="invalid-feedback">Please enter a valid mobile number.</span>
               </div>
               <!-- End Form -->
 
@@ -233,13 +224,28 @@
     </div>
     <!-- End Content -->
   </main>
-  <!-- ========== END MAIN CONTENT ========== -->
 
-  <!-- ========== FOOTER ========== -->
-  <footer class="container-lg text-center py-10" style="padding-top: 0.5rem !important;padding-bottom: 0.5rem !important;">
-    <p class="mb-0">&copy; UpLifty. All rights reserved.</p>
-  </footer>
-  <!-- ========== END FOOTER ========== -->
+      <!-- ========== FOOTER ========== -->
+    <footer class="container-lg text-center py-10"
+        style="padding-top: 0.5rem !important;padding-bottom: 0.5rem !important;">
+        {{-- <p class="mb-0">&copy; Gym Manager. All rights reserved.</p> --}}
+    </footer>
+    <!-- ========== END FOOTER ========== -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+        <!-- Toast -->
+        <div id="dynamicToast" class="toast text-white bg-primary border-0 rounded-3 shadow-sm fade" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex align-items-center">
+                <div class="toast-body d-flex align-items-center gap-2" id="toastMessage">
+                    <i class="bi bi-info-circle-fill fs-5"></i> <!-- Bootstrap icon (optional) -->
+                    <!-- Message will be inserted here -->
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
 
 
   <!-- JS Global Compulsory  -->
@@ -254,6 +260,7 @@
 
   <!-- JS Front -->
   <script src="{{ asset('assets/js/theme.min.js') }}"></script>
+  <script src="{{ asset('My.js') }}"></script>
 
   <!-- JS Plugins Init. -->
   <script>
@@ -336,6 +343,28 @@
       })()
     </script>
 
+
+        <script>
+        function showToast(message, typeClass) {
+            const toastEl = document.getElementById('dynamicToast');
+            const toastBody = document.getElementById('toastMessage');
+
+            // Update message
+            toastBody.innerHTML = message;
+
+            // Remove old bg-* classes and add new one
+            toastEl.className = 'toast align-items-center text-white border-0 ' + typeClass;
+
+            // Show toast
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+        @if (session()->has('success'))
+            showToast(@json(session('success')), 'bg-success');
+        @elseif (session()->has('error'))
+            showToast(@json(session('error')), 'bg-danger');
+        @endif
+    </script>
   <!-- End Style Switcher JS -->
 </body>
 </html>

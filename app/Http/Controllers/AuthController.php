@@ -46,6 +46,7 @@ class AuthController extends Controller{
 
             DB::commit();
 
+            sendWelcomeEmail($user);
             session()->flash('success', 'Gym registered successfully!');
             return response()->json(['status' => 'success', 'message' => 'Gym registered successfully!'], 200);
 
@@ -68,7 +69,62 @@ class AuthController extends Controller{
             session()->flash('success', 'Welcome Back ' . Auth::user()->owner_name);
             return redirect()->intended('dashboard');
         }
-        return back()->withErrors(['email' => 'Invalid credentials']);
+        session()->flash('error', 'Invalid credentials');
+        return back()->withErrors(['mobile' => 'Invalid credentials']);
 
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'mobile' => 'required|string|digits:10|exists:users,mobile',
+        ]);
+
+        $user = User::where('mobile', $request->mobile)->first();
+
+        if (!$user) {
+            return response()->json(['status' => 'error', 'message' => 'Mobile number not found.'], 404);
+        }
+
+        sendForgotPasswordWhatsappMessage($user);
+        return response()->json(['status' => 'success', 'message' => 'Password reset link sent to whatsapp.'], 200);
+    }   
+
+    public function resetPassword($token)
+    {
+        $decryptedToken = decrypt($token);
+
+        $user = User::where('id', $decryptedToken)->first();
+
+        if (!$user) {
+            echo "User not found.";
+        }
+
+        return view('auth.resetPassword', compact('user'));
+    }       
+
+    public function finalResetPassword(Request $request)
+    {
+        $request->validate([
+            'password' => ['required', 'string', Password::min(8)
+                ->mixedCase()
+                ->letters()
+                ->numbers()
+                ->symbols()
+            ],
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+
+        $user = User::where('id', $request->id)->first();
+
+        if (!$user) {
+            return response()->json(['status' => 'error', 'message' => 'User not found.'], 404);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json(['status' => 'success', 'message' => 'Password reset successfully.'], 200);
     }
 }
