@@ -90,6 +90,41 @@ class AuthController extends Controller{
         return response()->json(['status' => 'success', 'message' => 'Password reset link sent to whatsapp.'], 200);
     }   
 
+    public function resendOtp(Request $request)
+    {
+        $request->validate([
+            'mobile' => 'required|string|digits:10|exists:users,mobile',
+        ]);
+
+        $user = User::where('mobile', $request->mobile)->first();
+
+        if (!$user) {
+            return response()->json(['status' => 'error', 'message' => 'Mobile number not found.'], 404);
+        }
+
+        sendForgotPasswordWhatsappMessage($user);
+        return response()->json(['status' => 'success', 'message' => 'OTP sent to whatsapp.'], 200);
+    }   
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|string|digits:4',
+        ]);
+        $otp = session()->get('otp');
+
+        if ($request->otp != $otp) {
+            return response()->json(['status' => 'error', 'message' => 'Invalid OTP.'], 400);
+        }
+        $user = User::where('mobile', session()->get('mobile'))->first();
+        if (!$user) {
+            return response()->json(['status' => 'error', 'message' => 'User not found.'], 404);
+        }
+        $link = url('resetPassword').'/'.encrypt($user->id);
+        session()->forget('otp');
+        session()->forget('mobile');
+        return response()->json(['status' => 'success', 'message' => 'OTP verified successfully.', 'link' => $link], 200);
+    }       
     public function resetPassword($token)
     {
         $decryptedToken = decrypt($token);

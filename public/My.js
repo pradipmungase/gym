@@ -561,6 +561,7 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
+
     $('#forgotPasswordForm').on('submit', function (e) {
         e.preventDefault();
         // Add your forgot password logic here
@@ -584,7 +585,13 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },  
             success: function (response) {
+                $('#verifyOtpModal').modal('show');
                 showToast(response.message, 'bg-success');
+
+                // Wait until modal is fully shown before starting countdown
+                $('#verifyOtpModal').on('shown.bs.modal', function () {
+                    startResendOtpCountdown();
+                });
             },
             error: function (xhr) {
                 showToast(xhr.responseJSON.message, 'bg-danger');
@@ -709,3 +716,101 @@ if (window.location.pathname === '/announcement') {
     });
     fetchAnnouncement();
 }
+
+function resendOtp(){
+    showToast("Resending OTP...", 'bg-info');
+
+    $.ajax({
+        url: "/resendOtp",
+        type: "POST",
+        data: { mobile: $('#mobile').val() },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (res) {
+            showToast(res.message, 'bg-success');
+            startResendOtpCountdown(); // Restart countdown
+        },
+        error: function (xhr) {
+            showToast(xhr.responseJSON.message, 'bg-danger');
+        }
+    });
+}
+
+
+
+function startResendOtpCountdown() {
+    let countdown = 5;
+    let $timer = $('#resendOtpTimer');
+    let $resendBtn = $('#resendOtpBtn');
+
+    // Reset UI
+    $resendBtn.addClass('d-none').off('click');
+    $timer.removeClass('d-none').text(`Resend OTP in ${countdown}s`);
+
+    let interval = setInterval(function () {
+        countdown--;
+        $timer.text(`Resend OTP in ${countdown}s`);
+
+        if (countdown <= 0) {
+            clearInterval(interval);
+            $timer.addClass('d-none');
+            $resendBtn.removeClass('d-none');
+        }
+    }, 1000);
+}
+
+
+
+
+$(document).ready(function () {
+    $('#verifyOtpForm').on('submit', function (e) {
+        e.preventDefault();
+        let form = $(this);
+        let formData = form.serialize();
+        let submitBtn = form.find('button[type="submit"]');
+        let originalBtnHtml = submitBtn.html();
+
+        // Convert button to loading state
+        submitBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verifying...')
+            .prop('disabled', true);
+
+        // Clear old errors
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').text('');
+
+        $.ajax({
+            url: "/verifyOtp",
+            type: "POST",
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                if (response.status == 'success') {
+                    $('#otpErrorMsg').hide().text('');
+                    $('#otp').removeClass('is-invalid');
+
+                    showToast(response.message, 'bg-success');
+                    setTimeout(function () {
+                        window.location.href = response.link;
+                    }, 2000);
+                } else if (response.status == 'error') {
+                    $('#otp').addClass('is-invalid');
+                    $('#otpErrorMsg').text(response.message).show();
+                    showToast(response.message, 'bg-danger');
+                }
+            },
+            error: function (xhr) {
+                $('#otp').addClass('is-invalid');
+                $('#otpErrorMsg').text(xhr.responseJSON.message).show();
+                showToast(xhr.responseJSON.message, 'bg-danger');
+            },
+            complete: function () {
+                // Restore original button state
+                submitBtn.html(originalBtnHtml).prop('disabled', false);
+            }
+        });
+    });
+});
+

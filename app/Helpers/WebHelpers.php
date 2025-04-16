@@ -3,6 +3,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 function sendWhatsAppMessageForAttendanceMarked($member)
 {
@@ -87,9 +88,11 @@ function sendForgotPasswordWhatsappMessage($user)
 {
     try {
         $mobile = '7028143227'; // Replace with dynamic: $member->mobile ?? fallback
-        $token = encrypt($user->id);
-        $link = url('resetPassword/' . $token);
-        $message = "Hi {$user->owner_name},\nTap below to reset your password:\n$link\n\nIgnore if not requested.";
+        $otp = rand(1000, 9999);
+        session(['otp' => $otp]);
+        session(['mobile' => $user->mobile]);
+
+        $message = "Hi {$user->owner_name},\nYou OTP for resetting password is:\n$otp\n\nIgnore if not requested.";
 
         Http::post('http://localhost:3000/send-message', [
             'number' => '91' . $mobile,

@@ -29,6 +29,8 @@ Route::view('/forgotPassword', 'auth.forgotPassword');
 Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
 Route::get('/resetPassword/{token}', [AuthController::class, 'resetPassword']);
 Route::post('/resetPassword', [AuthController::class, 'finalResetPassword']);
+Route::post('/resendOtp', [AuthController::class, 'resendOtp']);
+Route::post('/verifyOtp', [AuthController::class, 'verifyOtp']);
 Route::match(['get', 'post'], '/markAttendanceByLatLong/{gym_id}/{member_id}', [AttendanceController::class, 'markAttendanceByLatLong'])->name('members.markAttendanceByLatLong');
 
 
