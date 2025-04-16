@@ -10,9 +10,9 @@
     <tbody>
         @forelse ($attendance as $row)
             <tr>
-                <td class="table-column-ps-0">{{ $loop->iteration }}</td>
+                <td class="table-column-ps-0">{{ $attendance->firstItem() + $loop->index }}</td>
                 <td class="table-column-ps-0">
-                    <a class="d-flex align-items-center" href="{{ route('menbers.view', encrypt($row->id)) }}">
+                    <a class="d-flex align-items-center" href="{{ route('members.view', encrypt($row->id)) }}">
                         <div class="avatar avatar-circle">
                             @if ($row->member_image)
                                 <img class="avatar-img" src="{{ asset($row->member_image) }}" alt="Image Description">

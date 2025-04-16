@@ -11,8 +11,7 @@
     <tbody>
         @forelse ($trainers as $trainer)
             <tr>
-                <td class="table-column-ps-0">{{ $loop->iteration }}</td>
-
+                <td class="table-column-ps-0">{{ $trainers->firstItem() + $loop->index }}</td>
                 <td class="table-column-ps-0">
                     <a class="d-flex align-items-center" href="{{ route('trainer.view', encrypt($trainer->id)) }}">
                         <div class="avatar avatar-circle">

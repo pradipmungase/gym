@@ -11,7 +11,7 @@
     <tbody>
         @forelse ($plans as $plan)
             <tr>
-                <td class="table-column-ps-0">{{ $loop->iteration }}</td>
+                <td class="table-column-ps-0">{{ $plans->firstItem() + $loop->index }}</td>
                 <td>{{ $plan->name }}</td>
                 <td>{{ $plan->duration }}</td>
                 <td>{{ $plan->price }}</td>

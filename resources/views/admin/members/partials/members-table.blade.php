@@ -11,8 +11,7 @@
     <tbody>
         @forelse ($members as $member)
             <tr>
-                <td class="table-column-ps-0">{{ $loop->iteration }}</td>
-
+                <td class="table-column-ps-0">{{ $members->firstItem() + $loop->index }}</td>
                 <td class="table-column-ps-0">
                     <a class="d-flex align-items-center" href="{{ route('members.view', encrypt($member->id)) }}">
                         <div class="avatar avatar-circle">
