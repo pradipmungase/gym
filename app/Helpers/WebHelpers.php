@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Models\User;
+use App\Notifications\WebPushNotification;
+
 
 function sendWhatsAppMessageForAttendanceMarked($member)
 {
@@ -155,3 +158,22 @@ function sendAnnouncement($for, $title, $description, $date)
 }       
 
 
+function sendPushNotification(){
+        
+    $user = User::find(2); // The specific user you want to notify
+
+    if ($user->pushSubscriptions()->exists()) {
+        $user->notify(new WebPushNotification([
+            'title' => 'Personalized Notification',
+            'body' => 'Hello ' . $user->name . ', this is your custom message!',
+            'url' => url('/profile/' . $user->id),
+            'action_text' => 'View Profile',
+            'user_id' => $user->id,
+            'custom_data' => [
+                'order_id' => 123456
+            ]
+        ]));
+        
+        return response()->json(['message' => 'Dynamic notification sent to user']);
+    }
+}

@@ -12,6 +12,21 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AnnouncementController;
+use App\Models\User;
+use App\Notifications\WebPushNotification;
+
+Route::post('/webpush', function (Request $request) {
+    $user = Auth::user(); // Or get authenticated user
+    if (!$user) {
+        return response()->json(['error' => 'User not authenticated'], 401);
+    }
+    $user->updatePushSubscription(
+        $request->input('endpoint'),
+        $request->input('keys.p256dh'),
+        $request->input('keys.auth')
+    );
+    return response()->json(['success' => true]);
+});
 
 
 // Logout route
@@ -78,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/announcement/view/{id}', [AnnouncementController::class, 'view'])->name('announcement.view');
 
     Route::view('/support', 'admin.support');
+    Route::view('/permissions', 'admin.permissions');
 
 });
 

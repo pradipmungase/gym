@@ -442,7 +442,7 @@
                                 data-bs-toggle="collapse" data-bs-target="#navbarVerticalMenuDashboards"
                                 aria-expanded="false" aria-controls="navbarVerticalMenuDashboards">
                                 <i class="bi-house-door nav-icon"></i>
-                                <span class="nav-link-title">Set-up</span>
+                                <span class="nav-link-title">Set-Up</span>
                             </a>
 
                             <div id="navbarVerticalMenuDashboards" class="nav-collapse collapse "
@@ -451,6 +451,8 @@
                                         class="bi-clipboard-check nav-icon"></i>Membership Plan</a>
                                 <a class="nav-link " href="{{ url('trainer') }}"> <i
                                         class="bi-person-badge nav-icon"></i> Trainers</a>
+                                <a class="nav-link " href="{{ url('permissions') }}"> <i
+                                        class="bi-person-badge nav-icon"></i> Permissions</a>
                             </div>
                         </div>
 
@@ -675,92 +677,6 @@
             showToast(@json(session('error')), 'bg-danger');
         @endif
     </script>
-
-    @if (Auth::user()->latitude == null || Auth::user()->longitude == null)
-        <script>
-            $(document).ready(function() {
-                function requestLocation() {
-                    if ("geolocation" in navigator) {
-                        navigator.geolocation.getCurrentPosition(
-                            function(position) {
-                                const lat = position.coords.latitude;
-                                const lng = position.coords.longitude;
-
-                                $.ajax({
-                                    url: `/saveLatitudeAndLongitude`,
-                                    method: 'POST',
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    },
-                                    data: {
-                                        latitude: lat,
-                                        longitude: lng
-                                    },
-                                    success: function(response) {
-                                        if (response.success) {
-                                            // showToast(response.message, 'bg-success');
-                                        } else {
-                                            showToast(response.message, 'bg-danger');
-                                        }
-                                    },
-                                    error: function(xhr, status, error) {
-                                        showToast(xhr.responseJSON.message, 'bg-danger');
-                                    }
-                                });
-                            },
-                            function(error) {
-                                $('#scan-output').html(`
-                                <div class="text-center">
-                                    <div class="text-danger" style="font-size: 100px;">
-                                        <i class="bi bi-geo-alt-slash-fill"></i>
-                                    </div>
-                                    <div class="mt-2 fs-5">
-                                        Location access denied.<br>
-                                        Please enable it in your browser settings.
-                                    </div>
-                                </div>
-                            `);
-                            }, {
-                                enableHighAccuracy: true,
-                                timeout: 10000,
-                                maximumAge: 0
-                            }
-                        );
-                    } else {
-                        $('#scan-output').html(`
-                        <div class="text-center">
-                            <div class="text-danger" style="font-size: 100px;">
-                                <i class="bi bi-geo-alt-slash-fill"></i>
-                            </div>
-                            <div class="mt-2 fs-5">Geolocation is not supported by this browser.</div>
-                        </div>
-                    `);
-                    }
-                }
-
-                // Initial location request
-                requestLocation();
-
-                // Retry button handler
-                $(document).on('click', '#retry-location-btn', function() {
-                    requestLocation();
-                });
-
-                // Optional: detect if permission is permanently denied
-                if (navigator.permissions) {
-                    navigator.permissions.query({
-                        name: 'geolocation'
-                    }).then(function(result) {
-                        if (result.state === 'denied') {
-                            showToast(
-                                'You have permanently denied location access. Please enable it from your browser settings.',
-                                'bg-danger');
-                        }
-                    });
-                }
-            });
-        </script>
-    @endif
 
 
     <script>
