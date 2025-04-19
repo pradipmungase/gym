@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
+            $table->string('profile_picture')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

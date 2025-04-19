@@ -318,7 +318,7 @@
 
                             <!-- Remember Me Checkbox -->
                             <div class="form-check mb-4">
-                                <input class="form-check-input" type="checkbox" name="remember" id="termsCheckbox">
+                                <input checked class="form-check-input" type="checkbox" name="remember" id="termsCheckbox">
                                 <label class="form-check-label" for="termsCheckbox">Remember me</label>
                             </div>
 

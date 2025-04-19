@@ -94,6 +94,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::view('/support', 'admin.support');
     Route::view('/permissions', 'admin.permissions');
-
+    Route::view('/profile', 'admin.profile');
+    Route::post('/updateProfilePicture', [DashboardController   ::class, 'updateProfilePicture'])->name('updateProfilePicture');
 });
 

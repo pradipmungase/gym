@@ -823,3 +823,44 @@ $(document).ready(function () {
     });
 });
 
+// Shared logic for both cover and avatar upload
+function handleProfileImageUpload(file) {
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            // Update both previews
+            $('#profileCoverImg').attr('src', e.target.result);
+            $('#editAvatarImgModal').attr('src', e.target.result);
+
+            const formData = new FormData();
+            formData.append('profile_picture', file); // Single field used
+
+            $.ajax({
+                url: '/updateProfilePicture',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    showToast(response.message, 'bg-success');
+                },
+                error: function (xhr) {
+                    const res = xhr.responseJSON;
+                    const message = res?.message || 'An error occurred while uploading the image.';
+                    showToast(message, 'bg-danger');
+                }
+            });
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Bind to both inputs
+$('#profileCoverUplaoder, #editAvatarUploaderModal').on('change', function (e) {
+    const file = e.target.files[0];
+    handleProfileImageUpload(file);
+});
+

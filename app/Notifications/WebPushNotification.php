@@ -30,9 +30,8 @@ class WebPushNotification extends Notification
             ->body($this->notificationData['body'] ?? 'Default Message')
             ->action($this->notificationData['action_text'] ?? 'View', 'view_action')
             ->data([
-                'url' => $this->notificationData['url'] ?? url('/'),
+                'url' => url('/admin/dashboard'),
                 'user_id' => $notifiable->id,
-                // Add any other dynamic data you need
                 'custom_data' => $this->notificationData['custom_data'] ?? null
             ]);
     }

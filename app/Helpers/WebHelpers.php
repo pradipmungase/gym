@@ -160,14 +160,14 @@ function sendAnnouncement($for, $title, $description, $date)
 
 function sendPushNotification(){
         
-    $user = User::find(2); // The specific user you want to notify
+    $user = User::find(1); // The specific user you want to notify
 
     if ($user->pushSubscriptions()->exists()) {
         $user->notify(new WebPushNotification([
             'title' => 'Personalized Notification',
-            'body' => 'Hello ' . $user->name . ', this is your custom message!',
-            'url' => url('/profile/' . $user->id),
-            'action_text' => 'View Profile',
+            'body' => 'Hello ' . $user->gym_name . ', this is your custom message!',
+            'url' => url('/admin/dashboard'),
+            'action_text' => 'View Dashboard',
             'user_id' => $user->id,
             'custom_data' => [
                 'order_id' => 123456

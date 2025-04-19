@@ -1,115 +1,224 @@
 @extends('admin.layout.adminApp')
 @section('content')
     <script src="https://cdn.jsdelivr.net/npm/web-push@3.4.4"></script>
+    <style>
+    .spinner-border-sm {
+        width: 1rem;
+        height: 1rem;
+        border-width: .2em;
+    }
+</style>
+
     <main id="content" role="main" class="main">
         <!-- Content -->
-<div class="content container-fluid">
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col-sm">
-                <h1 class="page-header-title">Hello, <span class="user_name">{{ Auth::user()->owner_name }}</span></h1>
-                <p class="page-header-text">Please allow location and notification permissions for a better experience.</p>
+        <div class="content container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col-sm">
+                        <h1 class="page-header-title">Hello, <span class="user_name">{{ Auth::user()->owner_name }}</span>
+                        </h1>
+                        <p class="page-header-text">Please allow location and notification permissions for a better
+                            experience.</p>
+                    </div>
+                </div>
+            </div>
+
+       <!-- Permissions Cards -->
+<div class="row g-4 mt-4">
+    <!-- Location Permission -->
+    <div class="col-md-4">
+        <div class="card border-0 shadow h-100 text-center p-4">
+            <div class="card-body">
+                <i class="bi bi-geo-alt-fill fs-1 text-info mb-3"></i>
+                <h5 class="card-title">Enable Location</h5>
+                <p class="card-text">Get location-based suggestions and services.</p>
+                <p id="output"></p>
+                <button class="btn btn-outline-info" onclick="requestLocation()">Allow Location</button>
             </div>
         </div>
     </div>
 
-    <!-- Permissions Cards -->
-    <div class="row g-4 mt-4">
-        <!-- Location Permission -->
-        <div class="col-md-6">
-            <div class="card border-0 shadow h-100 text-center p-4">
-                <div class="card-body">
-                    <i class="bi bi-geo-alt-fill fs-1 text-info mb-3"></i>
-                    <h5 class="card-title">Enable Location</h5>
-                    <p class="card-text">Get location-based suggestions and services.</p>
-                    <button class="btn btn-outline-info" onclick="requestLocation()">Allow Location</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Notification Permission -->
-        <div class="col-md-6">
-            <div class="card border-0 shadow h-100 text-center p-4">
-                <div class="card-body">
-                    <i class="bi bi-bell-fill fs-1 text-warning mb-3"></i>
-                    <h5 class="card-title">Enable Notifications</h5>
-                    <p class="card-text">Stay updated with important alerts and news.</p>
-                    <button class="btn btn-outline-warning" onclick="subscribeToPush()">Allow Notifications</button>
-                </div>
+    <!-- Notification Permission -->
+    <div class="col-md-4">
+        <div class="card border-0 shadow h-100 text-center p-4">
+            <div class="card-body">
+                <i class="bi bi-bell-fill fs-1 text-warning mb-3"></i>
+                <h5 class="card-title">Enable Notifications</h5>
+                <p class="card-text">Stay updated with important alerts and news.</p>
+                <p id="output2"></p>
+                <button class="btn btn-outline-warning" onclick="subscribeToPush()">Allow Notifications</button>
             </div>
         </div>
     </div>
 
-    <!-- FAQ with Dummy Image -->
-    <div class="row mt-5">
-        <div class="col">
-            <h4>What You Get After Allowing</h4>
-            <div class="card border-0 shadow text-center p-4">
-                <img src="https://i0.wp.com/izooto.com/wp-content/uploads/2024/04/WPN-on-Desktop-2.png?fit=675%2C387&ssl=1" alt="Notification Example" class="img-fluid mb-3">
-                <p class="text-muted">Here’s an example of the kind of updates and alerts you’ll receive once you enable notifications and location access.</p>
+    <!-- Camera Permission -->
+    <div class="col-md-4">
+        <div class="card border-0 shadow h-100 text-center p-4">
+            <div class="card-body">
+                <i class="bi bi-camera-video-fill fs-1 text-success mb-3"></i>
+                <h5 class="card-title">Enable Camera</h5>
+                <p class="card-text">Access camera for scanning, video calls, and more.</p>
+                <p id="output3"></p>
+                <button class="btn btn-outline-success" onclick="requestCamera()">Allow Camera</button>
             </div>
         </div>
     </div>
 </div>
 
 
-
+            <!-- FAQ with Dummy Image -->
+            <div class="row mt-5">
+                <div class="col">
+                    <h4>What You Get After Allowing</h4>
+                    <div class="card border-0 shadow text-center p-4">
+                        <img src="https://i0.wp.com/izooto.com/wp-content/uploads/2024/04/WPN-on-Desktop-2.png?fit=675%2C387&ssl=1"
+                            alt="Notification Example" class="img-fluid mb-3">
+                        <p class="text-muted">Here’s an example of the kind of updates and alerts you’ll receive once you
+                            enable notifications and location access.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- End Content -->
     </main>
 
 
+
+
+
 <script>
-        // Store the push subscription globally
-        window.pushSubscription = null;
-        window.isPushSupported = 'serviceWorker' in navigator && 'PushManager' in window;
+    function requestLocation() {
+    const btn = document.querySelector('[onclick="requestLocation()"]');
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...`;
 
-        // Initialize service worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/serviceworker.js')
-                .then(function(registration) {
-                    console.log('ServiceWorker registration successful');
-                })
-                .catch(function(err) {
-                    console.log('ServiceWorker registration failed: ', err);
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                $.ajax({
+                    url: `/saveLatitudeAndLongitude`,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: { latitude: lat, longitude: lng },
+                    success: function(response) {
+                        $('#output').html(`<div class="text-success">Location access granted ✅</div>`);
+                        showToast(response.message, 'bg-success');
+                    },
+                    error: function(xhr) {
+                        $('#output').html(`<div class="text-danger">${xhr.responseJSON.message}</div>`);
+                        showToast('Failed to save location', 'bg-danger');
+                    },
+                    complete: function() {
+                        btn.disabled = false;
+                        btn.innerHTML = 'Allow Location';
+                    }
                 });
-        }
+            },
+            function(error) {
+                $('#output').html(`
+                    <div class="text-center text-danger">
+                        Location access denied.<br>Please enable it in your browser settings.
+                    </div>
+                `);
+                btn.disabled = false;
+                btn.innerHTML = 'Allow Location';
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+    } else {
+        $('#output').html(`<div class="text-danger">Geolocation not supported by your browser.</div>`);
+        btn.disabled = false;
+        btn.innerHTML = 'Allow Location';
+    }
+}
+async function subscribeToPush() {
+    const btn = document.querySelector('[onclick="subscribeToPush()"]');
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...`;
 
-    async function subscribeToPush() {
-        if (!window.isPushSupported) {
-            alert('Push notifications are not supported in your browser');
+    // Check for actual support instead of a custom `isPushSupported`
+    if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
+        $('#output2').html(`<div class="text-danger">Push notifications are not supported in your browser.</div>`);
+        btn.disabled = false;
+        btn.innerHTML = 'Allow Notifications';
+        return;
+    }
+
+    try {
+        // Ask permission
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+            $('#output2').html(`<div class="text-danger">Permission access denied.<br> Please enable it in your browser settings.</div>`);
+            btn.disabled = false;
+            btn.innerHTML = 'Allow Notifications';
             return;
         }
 
-        try {
-            const registration = await navigator.serviceWorker.ready;
-            const subscription = await registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: urlBase64ToUint8Array("{{ env('VAPID_PUBLIC_KEY') }}")
-            });
+        // Wait for service worker
+        const registration = await navigator.serviceWorker.ready;
 
-            // Send subscription to server with auth token
-            const response = await fetch('/webpush', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Authorization': 'Bearer ' + localStorage.getItem('auth_token') // If using API auth
-                },
-                body: JSON.stringify(subscription)
-            });
+        // Subscribe
+        const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array("{{ env('VAPID_PUBLIC_KEY') }}")
+        });
 
-            if (response.ok) {
-                alert('Successfully subscribed to push notifications!');
-            } else {
-                throw new Error('Failed to save subscription');
-            }
-        } catch (error) {
-            console.error(error);
-            alert('Failed to subscribe to push notifications');
-        }
+        // Send to backend
+        const response = await fetch('/webpush', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
+            },
+            body: JSON.stringify(subscription)
+        });
+
+        if (!response.ok) throw new Error('Failed to register subscription');
+
+        $('#output2').html(`<div class="text-success">Notifications access granted ✅</div>`);
+        showToast('Successfully subscribed to push notifications!', 'bg-success');
+
+    } catch (error) {
+        console.error('Push error:', error);
+        $('#output2').html(`<div class="text-danger">Something went wrong: ${error.message}</div>`);
+        showToast('Failed to subscribe to push notifications', 'bg-danger');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Allow Notifications';
     }
-        // Helper function to convert VAPID key
+}
+
+function requestCamera() {
+    const btn = document.querySelector('[onclick="requestCamera()"]');
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...`;
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream) {
+            showToast('Camera access granted ', 'bg-success');
+            $('#output3').html(`<div class="text-success">Camera access granted ✅</div>`);
+            stream.getTracks().forEach(track => track.stop());
+        })
+        .catch(function (error) {
+            $('#output3').html(`
+                <div class="text-center text-danger">
+                    Camera access denied.<br>Please enable it in your browser settings.
+                </div>
+            `);
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = 'Allow Camera';
+        });
+}
+
         function urlBase64ToUint8Array(base64String) {
             const padding = '='.repeat((4 - base64String.length % 4) % 4);
             const base64 = (base64String + padding)
@@ -124,94 +233,5 @@
             }
             return outputArray;
         }
-
-                        function requestLocation() {
-                    if ("geolocation" in navigator) {
-                        navigator.geolocation.getCurrentPosition(
-                            function(position) {
-                                const lat = position.coords.latitude;
-                                const lng = position.coords.longitude;
-
-                                $.ajax({
-                                    url: `/saveLatitudeAndLongitude`,
-                                    method: 'POST',
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    },
-                                    data: {
-                                        latitude: lat,
-                                        longitude: lng
-                                    },
-                                    success: function(response) {
-                                        if (response.success) {
-                                            showToast(response.message, 'bg-success');
-                                        } else {
-                                            showToast(response.message, 'bg-danger');
-                                        }
-                                    },
-                                    error: function(xhr, status, error) {
-                                        showToast(xhr.responseJSON.message, 'bg-danger');
-                                    }
-                                });
-                            },
-                            function(error) {
-                                $('#scan-output').html(`
-                                <div class="text-center">
-                                    <div class="text-danger" style="font-size: 100px;">
-                                        <i class="bi bi-geo-alt-slash-fill"></i>
-                                    </div>
-                                    <div class="mt-2 fs-5">
-                                        Location access denied.<br>
-                                        Please enable it in your browser settings.
-                                    </div>
-                                </div>
-                            `);
-                            }, {
-                                enableHighAccuracy: true,
-                                timeout: 10000,
-                                maximumAge: 0
-                            }
-                        );
-                    } else {
-                        $('#scan-output').html(`
-                        <div class="text-center">
-                            <div class="text-danger" style="font-size: 100px;">
-                                <i class="bi bi-geo-alt-slash-fill"></i>
-                            </div>
-                            <div class="mt-2 fs-5">Geolocation is not supported by this browser.</div>
-                        </div>
-                    `);
-                    }
-                }
-
-                // Retry button handler
-                $(document).on('click', '#retry-location-btn', function() {
-                    requestLocation();
-                });
-
-                // Optional: detect if permission is permanently denied
-                if (navigator.permissions) {
-                    navigator.permissions.query({
-                        name: 'geolocation'
-                    }).then(function(result) {
-                        if (result.state === 'denied') {
-                            showToast(
-                                'You have permanently denied location access. Please enable it from your browser settings.',
-                                'bg-danger');
-                        }
-                    });
-                }
 </script>
-
-
-        <script>
-            $(document).ready(function() {
-
-
-                // Initial location request
-                // requestLocation();
-
-
-            });
-        </script>
 @endsection

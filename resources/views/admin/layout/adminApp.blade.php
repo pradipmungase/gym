@@ -296,7 +296,7 @@
                                                                         <span class="form-check-stretched-bg"></span>
                                                                     </div>
                                                                     <img class="avatar avatar-sm avatar-circle"
-                                                                        src="{{ asset('') }}assets/img/160x160/images (1).jpg"
+                                                                        src="@if(Auth::user()->profile_picture){{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }}@endif"
                                                                         alt="Image Description">
                                                                 </div>
                                                             </div>
@@ -347,7 +347,7 @@
                                 <div class="avatar avatar-sm avatar-circle">
 
                                     <img class="avatar-img"
-                                        src="{{ asset('') }}assets/img/160x160/images (1).jpg"
+                                        src="@if(Auth::user()->profile_picture){{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }}@endif"
                                         alt="Image Description">
                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                 </div>
@@ -359,7 +359,7 @@
                                     <div class="d-flex align-items-center">
                                         <div class="avatar avatar-sm avatar-circle">
                                             <img class="avatar-img"
-                                                src="{{ asset('') }}assets/img/160x160/images (1).jpg"
+                                                src="@if(Auth::user()->profile_picture){{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }}@endif"
                                                 alt="Image Description">
                                         </div>
                                         <div class="flex-grow-1 ms-3">
@@ -372,18 +372,18 @@
 
                                 <div class="dropdown-divider"></div>
 
-                                <a class="dropdown-item" href="#">Profile &amp;
-                                    account</a>
-                                <a class="dropdown-item" href="{{ url('settings') }}">Settings</a>
+                                <a class="dropdown-item" href="{{ url('profile') }}">
+                                    <i class="fas fa-user me-2"></i> Profile &amp; account
+                                </a>
+
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cog me-2"></i> Settings
+                                </a>
 
                                 <div class="dropdown-divider"></div>
-
-                                <form id="logout-form" action="#" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                                <a class="dropdown-item" id="logoutBtn" href="{{ route('logout') }}">Sign
-                                    out</a>
-
+                                <a class="dropdown-item text-danger" id="logoutBtn" href="{{ route('logout') }}">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Log out
+                                </a>
 
                             </div>
                             <!-- End Account -->
@@ -516,9 +516,10 @@
 
                         <!-- Logout -->
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('logout') }}" role="button">
-                                <i class="bi-box-arrow-right nav-icon"></i>
-                                <span class="nav-link-title">Logout</span>
+                            <a class="nav-link text-danger" href="{{ url('logout') }}" role="button">
+                                <i class="bi-box-arrow-right nav-icon text-danger"></i>
+
+                                <span class="nav-link-title">Log out</span>
                             </a>
                         </div>
                     </div>
@@ -567,6 +568,34 @@
         </div>
     </aside>
     @yield('content')
+
+        <!-- Footer -->
+    <div class="footer">
+      <div class="row justify-content-between align-items-center">
+        <div class="col">
+          <p class="fs-6 mb-0">&copy; GYM Manager. <span class="d-none d-sm-inline-block">2025 GYM Manager.</span></p>
+        </div>
+        <!-- End Col -->
+
+        <div class="col-auto">
+          <div class="d-flex justify-content-end">
+            <!-- List Separator -->
+            <ul class="list-inline list-separator">
+            <ul class="list-inline">
+            <!-- Make in India Label -->
+            <li class="list-inline-item d-flex align-items-center gap-1">
+                <i class="bi bi-heart-fill text-danger"></i>
+                <span class="fw-semibold">Make in India</span>
+            </li>
+            </ul>
+            <!-- End List Separator -->
+          </div>
+        </div>
+        <!-- End Col -->
+      </div>
+      <!-- End Row -->
+    </div>
+    <!-- End Footer -->
 
     <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
         <!-- Toast -->
