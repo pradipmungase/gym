@@ -221,6 +221,7 @@
 
 <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl   footer-offset">
 
+
     <script src="{{ asset('') }}assets/js/hs.theme-appearance.js"></script>
 
     <script src="{{ asset('') }}assets/vendor/hs-navbar-vertical-aside/dist/hs-navbar-vertical-aside-mini-cache.js">

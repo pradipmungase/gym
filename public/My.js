@@ -864,3 +864,4 @@ $('#profileCoverUplaoder, #editAvatarUploaderModal').on('change', function (e) {
     handleProfileImageUpload(file);
 });
 
+

@@ -2,12 +2,12 @@
 @section('content')
     <script src="https://cdn.jsdelivr.net/npm/web-push@3.4.4"></script>
     <style>
-    .spinner-border-sm {
-        width: 1rem;
-        height: 1rem;
-        border-width: .2em;
-    }
-</style>
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+            border-width: .2em;
+        }
+    </style>
 
     <main id="content" role="main" class="main">
         <!-- Content -->
@@ -24,47 +24,47 @@
                 </div>
             </div>
 
-       <!-- Permissions Cards -->
-<div class="row g-4 mt-4">
-    <!-- Location Permission -->
-    <div class="col-md-4">
-        <div class="card border-0 shadow h-100 text-center p-4">
-            <div class="card-body">
-                <i class="bi bi-geo-alt-fill fs-1 text-info mb-3"></i>
-                <h5 class="card-title">Enable Location</h5>
-                <p class="card-text">Get location-based suggestions and services.</p>
-                <p id="output"></p>
-                <button class="btn btn-outline-info" onclick="requestLocation()">Allow Location</button>
-            </div>
-        </div>
-    </div>
+            <!-- Permissions Cards -->
+            <div class="row g-4 mt-4">
+                <!-- Location Permission -->
+                <div class="col-md-4">
+                    <div class="card border-0 shadow h-100 text-center p-4">
+                        <div class="card-body">
+                            <i class="bi bi-geo-alt-fill fs-1 text-info mb-3"></i>
+                            <h5 class="card-title">Enable Location</h5>
+                            <p class="card-text">Get location-based suggestions and services.</p>
+                            <p id="output"></p>
+                            <button class="btn btn-outline-info" onclick="requestLocation()">Allow Location</button>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Notification Permission -->
-    <div class="col-md-4">
-        <div class="card border-0 shadow h-100 text-center p-4">
-            <div class="card-body">
-                <i class="bi bi-bell-fill fs-1 text-warning mb-3"></i>
-                <h5 class="card-title">Enable Notifications</h5>
-                <p class="card-text">Stay updated with important alerts and news.</p>
-                <p id="output2"></p>
-                <button class="btn btn-outline-warning" onclick="subscribeToPush()">Allow Notifications</button>
-            </div>
-        </div>
-    </div>
+                <!-- Notification Permission -->
+                <div class="col-md-4">
+                    <div class="card border-0 shadow h-100 text-center p-4">
+                        <div class="card-body">
+                            <i class="bi bi-bell-fill fs-1 text-warning mb-3"></i>
+                            <h5 class="card-title">Enable Notifications</h5>
+                            <p class="card-text">Stay updated with important alerts and news.</p>
+                            <p id="output2"></p>
+                            <button class="btn btn-outline-warning" onclick="subscribeToPush()">Allow Notifications</button>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Camera Permission -->
-    <div class="col-md-4">
-        <div class="card border-0 shadow h-100 text-center p-4">
-            <div class="card-body">
-                <i class="bi bi-camera-video-fill fs-1 text-success mb-3"></i>
-                <h5 class="card-title">Enable Camera</h5>
-                <p class="card-text">Access camera for scanning, video calls, and more.</p>
-                <p id="output3"></p>
-                <button class="btn btn-outline-success" onclick="requestCamera()">Allow Camera</button>
+                <!-- Camera Permission -->
+                <div class="col-md-4">
+                    <div class="card border-0 shadow h-100 text-center p-4">
+                        <div class="card-body">
+                            <i class="bi bi-camera-video-fill fs-1 text-success mb-3"></i>
+                            <h5 class="card-title">Enable Camera</h5>
+                            <p class="card-text">Access camera for scanning, video calls, and more.</p>
+                            <p id="output3"></p>
+                            <button class="btn btn-outline-success" onclick="requestCamera()">Allow Camera</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
 
             <!-- FAQ with Dummy Image -->
@@ -87,89 +87,101 @@
 
 
 
-<script>
-    function requestLocation() {
-    const btn = document.querySelector('[onclick="requestLocation()"]');
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...`;
+    <script>
+        function requestLocation() {
+            const btn = document.querySelector('[onclick="requestLocation()"]');
+            btn.disabled = true;
+            btn.innerHTML =
+                `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...`;
 
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
 
-                $.ajax({
-                    url: `/saveLatitudeAndLongitude`,
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        $.ajax({
+                            url: `/saveLatitudeAndLongitude`,
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                latitude: lat,
+                                longitude: lng
+                            },
+                            success: function(response) {
+                                $('#output').html(
+                                    `<div class="text-success">Location access granted ✅</div>`);
+                                showToast(response.message, 'bg-success');
+                            },
+                            error: function(xhr) {
+                                $('#output').html(
+                                    `<div class="text-danger">${xhr.responseJSON.message}</div>`);
+                                showToast('Failed to save location', 'bg-danger');
+                            },
+                            complete: function() {
+                                btn.disabled = false;
+                                btn.innerHTML = 'Allow Location';
+                            }
+                        });
                     },
-                    data: { latitude: lat, longitude: lng },
-                    success: function(response) {
-                        $('#output').html(`<div class="text-success">Location access granted ✅</div>`);
-                        showToast(response.message, 'bg-success');
-                    },
-                    error: function(xhr) {
-                        $('#output').html(`<div class="text-danger">${xhr.responseJSON.message}</div>`);
-                        showToast('Failed to save location', 'bg-danger');
-                    },
-                    complete: function() {
-                        btn.disabled = false;
-                        btn.innerHTML = 'Allow Location';
-                    }
-                });
-            },
-            function(error) {
-                $('#output').html(`
+                    function(error) {
+                        $('#output').html(`
                     <div class="text-center text-danger">
                         Location access denied.<br>Please enable it in your browser settings.
                     </div>
                 `);
+                        btn.disabled = false;
+                        btn.innerHTML = 'Allow Location';
+                    }, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                $('#output').html(`<div class="text-danger">Geolocation not supported by your browser.</div>`);
                 btn.disabled = false;
                 btn.innerHTML = 'Allow Location';
-            },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-        );
-    } else {
-        $('#output').html(`<div class="text-danger">Geolocation not supported by your browser.</div>`);
-        btn.disabled = false;
-        btn.innerHTML = 'Allow Location';
-    }
-}
+            }
+        }
+
 async function subscribeToPush() {
     const btn = document.querySelector('[onclick="subscribeToPush()"]');
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...`;
+    const originalText = btn.innerHTML;
 
-    // Check for actual support instead of a custom `isPushSupported`
+    // Show loader
+    btn.disabled = true;
+    btn.innerHTML = `
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...`;
+
+    // Basic support check
     if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
         $('#output2').html(`<div class="text-danger">Push notifications are not supported in your browser.</div>`);
         btn.disabled = false;
-        btn.innerHTML = 'Allow Notifications';
+        btn.innerHTML = originalText;
         return;
     }
 
     try {
-        // Ask permission
+        // Ask for notification permission
         const permission = await Notification.requestPermission();
         if (permission !== 'granted') {
-            $('#output2').html(`<div class="text-danger">Permission access denied.<br> Please enable it in your browser settings.</div>`);
-            btn.disabled = false;
-            btn.innerHTML = 'Allow Notifications';
+            $('#output2').html(`<div class="text-danger">Permission access denied.<br>Please enable it in your browser settings.</div>`);
             return;
         }
 
-        // Wait for service worker
+        // Wait for the service worker to be ready
         const registration = await navigator.serviceWorker.ready;
 
-        // Subscribe
+        // Subscribe to push
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: urlBase64ToUint8Array("{{ env('VAPID_PUBLIC_KEY') }}")
         });
 
-        // Send to backend
+        // Send subscription to server
         const response = await fetch('/webpush', {
             method: 'POST',
             headers: {
@@ -180,7 +192,9 @@ async function subscribeToPush() {
             body: JSON.stringify(subscription)
         });
 
-        if (!response.ok) throw new Error('Failed to register subscription');
+        if (!response.ok) {
+            throw new Error('Server response was not OK');
+        }
 
         $('#output2').html(`<div class="text-success">Notifications access granted ✅</div>`);
         showToast('Successfully subscribed to push notifications!', 'bg-success');
@@ -191,33 +205,37 @@ async function subscribeToPush() {
         showToast('Failed to subscribe to push notifications', 'bg-danger');
     } finally {
         btn.disabled = false;
-        btn.innerHTML = 'Allow Notifications';
+        btn.innerHTML = originalText;
     }
 }
 
-function requestCamera() {
-    const btn = document.querySelector('[onclick="requestCamera()"]');
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...`;
 
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(function (stream) {
-            showToast('Camera access granted ', 'bg-success');
-            $('#output3').html(`<div class="text-success">Camera access granted ✅</div>`);
-            stream.getTracks().forEach(track => track.stop());
-        })
-        .catch(function (error) {
-            $('#output3').html(`
+        function requestCamera() {
+            const btn = document.querySelector('[onclick="requestCamera()"]');
+            btn.disabled = true;
+            btn.innerHTML =
+                `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...`;
+
+            navigator.mediaDevices.getUserMedia({
+                    video: true
+                })
+                .then(function(stream) {
+                    showToast('Camera access granted ', 'bg-success');
+                    $('#output3').html(`<div class="text-success">Camera access granted ✅</div>`);
+                    stream.getTracks().forEach(track => track.stop());
+                })
+                .catch(function(error) {
+                    $('#output3').html(`
                 <div class="text-center text-danger">
                     Camera access denied.<br>Please enable it in your browser settings.
                 </div>
             `);
-        })
-        .finally(() => {
-            btn.disabled = false;
-            btn.innerHTML = 'Allow Camera';
-        });
-}
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Allow Camera';
+                });
+        }
 
         function urlBase64ToUint8Array(base64String) {
             const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -233,5 +251,5 @@ function requestCamera() {
             }
             return outputArray;
         }
-</script>
+    </script>
 @endsection
