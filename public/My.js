@@ -202,6 +202,23 @@ if (window.location.pathname === '/attendance') {
 
 
 
+// Trigger file input when image or icon is clicked
+document.getElementById('triggerUpload').addEventListener('click', function () {
+    document.getElementById('editMemberImg').click();
+});
+
+// Preview selected image
+document.getElementById('editMemberImg').addEventListener('change', function (e) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        document.getElementById('previewMemberImg').src = e.target.result;
+    };
+    if (this.files[0]) {
+        reader.readAsDataURL(this.files[0]);
+    }
+});
+
+
 $(document).ready(function () {
     $('#addMemberForm').on('submit', function (e) {
         e.preventDefault();
@@ -210,22 +227,24 @@ $(document).ready(function () {
         $('#addMemberForm .is-invalid').removeClass('is-invalid');
         $('#addMemberForm .invalid-feedback').hide().text('');
 
-        const form = $(this);
-        const formData = form.serialize();
-        const submitBtn = form.find('button[type="submit"]');
+        const form = $(this)[0]; // Get the DOM element
+        const formData = new FormData(form); // Use FormData to include files
+        const submitBtn = $(this).find('button[type="submit"]');
 
         // Save original button text and show loading
         const originalBtnHtml = submitBtn.html();
         submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...');
 
         $.ajax({
-            url: "/members/store", // Make sure this route is correct
+            url: "/members/store", // Ensure this matches your route
             method: 'POST',
             data: formData,
+            contentType: false, // Required for FormData
+            processData: false, // Required for FormData
             success: function (response) {
                 if (response.status === 'success') {
                     $('#addMemberModal').modal('hide');
-                    form[0].reset();
+                    $('#addMemberForm')[0].reset();
                     fetchmembers();
                     showToast(response.message, 'bg-success');
                 } else {
@@ -245,12 +264,73 @@ $(document).ready(function () {
                 }
             },
             complete: function () {
-                // Re-enable button and reset its content
                 submitBtn.prop('disabled', false).html(originalBtnHtml);
             }
         });
     });
 });
+
+
+$(document).ready(function () {
+    $('#editmemberForm').on('submit', function (e) {
+        e.preventDefault();
+
+        // Clear previous errors
+        $('#editmemberForm .is-invalid').removeClass('is-invalid');
+        $('#editmemberForm .invalid-feedback').hide().text('');
+
+        const form = $(this)[0]; // Get the DOM element
+        const formData = new FormData(form); // Use FormData to include files
+        const submitBtn = $(this).find('button[type="submit"]');
+
+        // Save original button text and show loading
+        const originalBtnHtml = submitBtn.html();
+        submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...');
+
+        $.ajax({
+            url: "/members/update", // Ensure this matches your route
+            method: 'POST',
+            data: formData,
+            contentType: false, // Required for FormData
+            processData: false, // Required for FormData
+            success: function (response) {
+                if (response.status === 'success') {
+                    $('#addMemberModal').modal('hide');
+                    $('#editmemberForm')[0].reset();
+                    fetchmembers();
+                    showToast(response.message, 'bg-success');
+                } else {
+                    showToast(response.message, 'bg-danger');
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
+
+                    // Clear previous validation states
+                    $('.is-invalid').removeClass('is-invalid');
+                    $('.invalid-feedback').text('').hide();
+
+                    $.each(errors, function (key, messages) {
+                        // Capitalize first letter of the key
+                        const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
+                        const field = $(`#edit${capitalizedKey}`);
+
+                        // If field is readonly, allow error display
+                        field.addClass('is-invalid');
+                        field.siblings('.invalid-feedback').text(messages[0]).show();
+                    });
+                } else {
+                    showToast('Something went wrong. Please try again.', 'bg-danger');
+                }
+            },
+            complete: function () {
+                submitBtn.prop('disabled', false).html(originalBtnHtml);
+            }
+        });
+    });
+});
+
 
 
 if (window.location.pathname === '/members') {
@@ -284,15 +364,60 @@ if (window.location.pathname === '/members') {
             const dueAmount = finalPrice - admissionFee;
 
             planPriceField.value = planPrice.toFixed(2);
-            finalPriceField.value = finalPrice > 0 ? finalPrice.toFixed(2) : '0.00';
-            dueAmountField.value = dueAmount > 0 ? dueAmount.toFixed(2) : '0.00';
+            finalPriceField.value = finalPrice > 0 ? finalPrice.toFixed(2) : finalPrice.toFixed(2);
+            dueAmountField.value = dueAmount > 0 ? dueAmount.toFixed(2) : dueAmount.toFixed(2);
         }
 
         // Event listeners
         planSelect.addEventListener('change', calculateFinalPrice);
         discountInput.addEventListener('input', calculateFinalPrice);
         discountTypeSelect.addEventListener('change', calculateFinalPrice);
-        admissionFeeField.addEventListener('input', calculateFinalPrice); // admission fee input change
+        admissionFeeField.addEventListener('input', calculateFinalPrice);
+    });
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const planSelect = document.getElementById('editPlan');
+        const discountInput = document.getElementById('editDiscount');
+        const discountTypeSelect = document.getElementById('editDiscountType');
+        const planPriceField = document.getElementById('editPlanPrice');
+        const finalPriceField = document.getElementById('editFinalPrice');
+        const admissionFeeField = document.getElementById('editAdmissionFee');
+        const dueAmountField = document.getElementById('editDueAmount');
+
+        function calculateFinalPriceEdit() {
+            const selectedOption = planSelect.options[planSelect.selectedIndex];
+            const planPrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+            const discount = parseFloat(discountInput.value) || 0;
+            const discountType = discountTypeSelect.value;
+            const admissionFee = parseFloat(admissionFeeField.value) || 0;
+
+            let finalPrice = planPrice;
+
+            if (discount && discountType) {
+                if (discountType === 'Percentage') {
+                    finalPrice = planPrice - (planPrice * discount / 100);
+                } else if (discountType === 'Flat') {
+                    finalPrice = planPrice - discount;
+                }
+            }
+
+            const dueAmount = finalPrice - admissionFee;
+
+            planPriceField.value = planPrice.toFixed(2);
+            finalPriceField.value = finalPrice > 0 ? finalPrice.toFixed(2) : finalPrice.toFixed(2);
+            dueAmountField.value = dueAmount > 0 ? dueAmount.toFixed(2) : dueAmount.toFixed(2);
+        }
+
+        // Trigger calculation once on page load (for edit)
+        calculateFinalPriceEdit();
+
+        // Event listeners for dynamic updates
+        planSelect.addEventListener('change', calculateFinalPriceEdit);
+        discountInput.addEventListener('input', calculateFinalPriceEdit);
+        discountTypeSelect.addEventListener('change', calculateFinalPriceEdit);
+        admissionFeeField.addEventListener('input', calculateFinalPriceEdit);
     });
 
 
@@ -368,6 +493,69 @@ $(document).on('click', '.btn-edit-trainer', function () {
 
     $('#editTrainerModal').modal('show');
 });
+
+
+$('#editMemberImg').on('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#previewMemberImg').attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
+
+$('#menberImg').on('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#previewMemberImgAdd').attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
+
+$(document).on('click', '.edit-member-btn', function () {
+    const members = $(this).data('member'); // Make sure this is a valid JS object
+
+    console.log(members);
+    // Populate form fields
+    $('#editMembersId').val(members.id);
+    $('#editName').val(members.name);
+    $('#editEmail').val(members.email);
+    $('#editMobile').val(members.mobile);
+    $('#editBirthDate').val(members.birth_date);
+    const fallbackImg = "/assets/img/160x160/images (1).jpg";
+    if (members.image) {
+        $('#previewMemberImg').attr('src', 'uploads/members/' + members.image);
+    } else {
+        $('#previewMemberImg').attr('src', fallbackImg);
+    }
+    $('#editGender').val($.trim(members.gender));
+    $('#editJoiningDate').val(members.joining_date);
+
+    $('#editBatch').val($.trim(members.batch));
+    $('#editTrainer').val($.trim(members.trainer_id));
+    $('#editPlan').val(members.plan_id).trigger('change'); // In case you have JS bound on change
+    $('#editPaymentMode').val(members.payment_mode);
+    $('#editAdmissionFee').val(members.admission_fee);
+    $('#editDiscountType').val(members.discount_type);
+    $('#editDiscount').val(members.discount_inpute);
+    $('#editPlanPrice').val(members.plan_price);
+    $('#editFinalPrice').val(members.after_discount_price);
+    $('#editDueAmount').val(members.due_amount);
+
+    $('#editmemberModal').modal('show');
+});
+
 
 
 

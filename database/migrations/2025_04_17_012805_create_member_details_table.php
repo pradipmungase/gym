@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('joining_date');
             $table->date('expiry_date');
             $table->string('batch');
+            $table->string('paymentMode')->nullable();
             $table->decimal('admission_fee', 10, 2);
             $table->string('discount_type');
             $table->integer('discount_inpute')->nullable();

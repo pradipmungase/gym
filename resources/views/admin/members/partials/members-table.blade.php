@@ -13,10 +13,10 @@
             <tr>
                 <td class="table-column-ps-0">{{ $members->firstItem() + $loop->index }}</td>
                 <td class="table-column-ps-0">
-                    <a class="d-flex align-items-center" href="{{ route('members.view', encrypt($member->id)) }}">
+                    <a class="d-flex align-items-center" href="{{ route('members.view', encrypt($member->id)) }}">  
                         <div class="avatar avatar-circle">
                             @if ($member->image)
-                                <img class="avatar-img" src="{{ asset($member->image) }}" alt="Image Description">
+                             <img class="avatar-img" src="{{ asset('uploads/members/' . $member->image) }}" alt="Image Description">
                             @else
                                 <img class="avatar-img" src="{{ asset('assets/img/160x160/images (1).jpg') }}" alt="Image Description">
                             @endif
@@ -43,9 +43,9 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item edit-menber-btn" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#editMenberModal"
-                                    data-menber='@json($member)'>Edit</a>
+                                <a class="dropdown-item edit-member-btn" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#editmemberModal"
+                                    data-member='@json($member)'>Edit</a>
                             </li>
                             <li><a class="dropdown-item" href="{{ route('members.view', encrypt($member->id)) }}">View Details</a></li>
                         </ul>

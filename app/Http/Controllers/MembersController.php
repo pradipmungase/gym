@@ -28,42 +28,29 @@ class MembersController extends Controller{
 
     public function fetchmembers(Request $request)
     {
-        $members = DB::table('members')->where('gym_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
+        $members = DB::table('members')
+            ->join('member_details', 'members.id', '=', 'member_details.member_id')
+            ->where('members.gym_id', Auth::user()->id)
+            ->orderBy('members.created_at', 'desc')
+            ->select('members.*', 'member_details.*') // or specify only needed columns
+            ->paginate(10);
+
         return view('admin.members.partials.members-table', compact('members'))->render(); // returns only table partial
     }
 
     public function update(Request $request)
     {
-        $request->validate([
-            'plan_name' => 'required|string|max:255',
-            'duration'  => 'required|string', // adjust type as per your DB schema
-            'price'     => 'required|numeric|min:1',
-            'plan_id'   => 'required|exists:menbership_plans,id',
-        ]);
-
-        DB::table('menbership_plans')->where('id', $request->input('plan_id'))->update([
-            'name' => $request->input('plan_name'),
-            'duration'  => $request->input('duration'),
-            'price'     => $request->input('price'),    
-            'updated_at' => now(),
-        ]);
-
-        return response()->json(['message' => 'Plan updated successfully']);
-    }
-
-    public function store(Request $request)
-    {
+        $id = $request->editMembersId;
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email:rfc,dns|unique:members,email',
-            'mobile' => 'required|digits:10|unique:members,mobile',
+            'email' => 'required|email:rfc,dns|unique:members,email,' . $id,
+            'mobile' => 'required|digits:10|unique:members,mobile,' . $id,
             'joining_date' => 'required|date|before_or_equal:today',
             'birth_date' => 'required|date|before:today',
             'gender' => 'required|in:Male,Female,Other',
             'plan' => 'required|exists:menbership_plans,id',
             'trainer' => 'required|exists:trainers,id',
             'batch' => 'required|string|max:50',
-            'admission_fee' => 'required|numeric|min:0',
             'discount_type' => 'required|in:Flat,Percentage',
             'discount' => 'required|numeric|min:0',
             'plan_price' => 'required|numeric|min:1',
@@ -78,8 +65,109 @@ class MembersController extends Controller{
                     }
                 }
             ],
+            'menberImg'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'admission_fee' => 'nullable|numeric|min:0',
+            'due_amount' => 'required|numeric|min:0',
+        ]);
 
-            'admission_fee' => 'required|numeric|min:0',
+        DB::beginTransaction();
+
+        try {
+            $member = DB::table('members')->where('id', $id)->first();
+
+            if (!$member) {
+                return response()->json(['status' => 'error', 'message' => 'Member not found.']);
+            }
+
+            $filename = $member->image;
+
+            if ($request->hasFile('menberImg')) {
+                $image = $request->file('menberImg');
+                $filename = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('uploads/members'), $filename);
+            }
+
+            DB::table('members')->where('id', $id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'joining_date' => $request->joining_date,
+                'birth_date' => $request->birth_date,
+                'gender' => $request->gender,
+                'image' => $filename,
+                'status' => 'Active',
+                'updated_at' => now(),
+            ]);
+
+            $plan = DB::table('menbership_plans')->where('id', $request->plan)->first();
+            $duration_string = '+' . $plan->duration;
+            $expiry_date = date('Y-m-d', strtotime($request->joining_date . ' ' . $duration_string));
+
+            DB::table('member_details')->updateOrInsert(
+                ['member_id' => $id],
+                [
+                    'gym_id' => Auth::user()->id,
+                    'plan_id' => $request->plan,
+                    'trainer_id' => $request->trainer,
+                    'joining_date' => $request->joining_date,
+                    'expiry_date' => $expiry_date,
+                    'batch' => $request->batch,
+                    'admission_fee' => $request->admission_fee ?? 0,
+                    'discount_type' => $request->discount_type,
+                    'discount_inpute' => $request->discount,
+                    'after_discount_price' => $request->final_price,
+                    'plan_price' => $request->plan_price,
+                    'due_amount' => $request->due_amount,
+                    'payment_mode' => $request->paymentMode,
+                    'updated_at' => now(),
+                ]
+            );
+
+            // Optionally regenerate QR code
+            $qrCodePath = $this->generateQRCode($id);
+            DB::table('members')->where('id', $id)->update([
+                'qr_code_path' => $qrCodePath,
+            ]);
+
+            // Optionally send WhatsApp notification
+            sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath);
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message' => 'Member updated successfully!']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => 'Failed to update member.', 'error' => $e->getMessage()]);
+        }
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email:rfc,dns|unique:members,email',
+            'mobile' => 'required|digits:10|unique:members,mobile',
+            'joining_date' => 'required|date|before_or_equal:today',
+            'birth_date' => 'required|date|before:today',
+            'gender' => 'required|in:Male,Female,Other',
+            'plan' => 'required|exists:menbership_plans,id',
+            'trainer' => 'required|exists:trainers,id',
+            'batch' => 'required|string|max:50',
+            'discount_type' => 'required|in:Flat,Percentage',
+            'discount' => 'required|numeric|min:0',
+            'plan_price' => 'required|numeric|min:1',
+            'final_price' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    $planPrice = $request->input('plan_price');
+                    if ($value > $planPrice) {
+                        $fail('Final price cannot be greater than plan price.');
+                    }
+                }
+            ],
+            'menberImg'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'admission_fee' => 'nullable|numeric|min:0',
             'due_amount' => [
                 'required',
                 'numeric',
@@ -91,6 +179,11 @@ class MembersController extends Controller{
         DB::beginTransaction();
 
         try {
+            if ($request->hasFile('menberImg')) {
+                $image = $request->file('menberImg');
+                $filename = time().'_'.$image->getClientOriginalName();
+                $image->move(public_path('uploads/members'), $filename);
+            }
             $insertId = DB::table('members')->insertGetId([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -98,6 +191,7 @@ class MembersController extends Controller{
                 'joining_date' => $request->joining_date,
                 'birth_date' => $request->birth_date,
                 'gender' => $request->gender,
+                'image' => $filename ?? null,
                 'gym_id' => Auth::user()->id,
                 'status' => 'Active',
                 'created_at' => now(),
@@ -122,12 +216,13 @@ class MembersController extends Controller{
                 'joining_date' => $request->joining_date,
                 'expiry_date' => $expiry_date,
                 'batch' => $request->batch,
-                'admission_fee' => $request->admission_fee,
+                'admission_fee' => $request->admission_fee ?? 0,
                 'discount_type' => $request->discount_type,
                 'discount_inpute' => $request->discount,
                 'after_discount_price' => $request->final_price,
                 'plan_price' => $request->plan_price,
                 'due_amount' => $request->due_amount,
+                'payment_mode' => $request->paymentMode,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
