@@ -57,7 +57,7 @@
             "deleteLine:build": "hs-builder:build-delete",
             "deleteLine:dist": "hs-builder:dist-delete",
             "previewMode": false,
-            "startPath": "/index.html",
+            "startPath": "#",
             "vars": {
                 "themeFont": "https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap",
                 "version": "?v=1.0"
@@ -233,7 +233,7 @@
         class="navbar navbar-expand-lg navbar-fixed navbar-height navbar-container navbar-bordered bg-white">
         <div class="navbar-nav-wrap">
             <!-- Logo -->
-            <a class="navbar-brand" href="{{ asset('') }}index.html" aria-label="Front">
+            <a class="navbar-brand" href="#" aria-label="Front">
                 <h3 class="navbar-brand-logo" data-hs-theme-appearance="default">GYM Manager</h3>
                 <h3 class="navbar-brand-logo" data-hs-theme-appearance="dark">GYM Manager</h3>
                 <h3 class="navbar-brand-logo-mini" data-hs-theme-appearance="default">GM</h3>
@@ -251,6 +251,59 @@
                         data-bs-template='<div class="tooltip d-none d-md-block" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
                         data-bs-toggle="tooltip" data-bs-placement="right" title="Expand"></i>
                 </button>
+
+                <!-- Search Form -->
+<!-- Search Bar with Dropdown -->
+<div class="dropdown ms-2">
+  <!-- Input Group -->
+  <div class="d-none d-lg-block">
+    <div
+      class="input-group input-group-merge input-group-borderless input-group-hover-light navbar-input-group">
+      <div class="input-group-prepend input-group-text">
+        <i class="bi-search"></i>
+      </div>
+
+      <input type="search" class="js-form-search form-control" placeholder="Search Member & Trainer"
+        aria-label="Search Member & Trainer"
+        data-hs-form-search-options='{
+          "clearIcon": "#clearSearchResultsIcon",
+          "dropMenuElement": "#searchDropdownMenu",
+          "dropMenuOffset": 20,
+          "toggleIconOnFocus": true,
+          "activeClass": "focus"
+        }'>
+      <a class="input-group-append input-group-text" href="javascript:;">
+        <i id="clearSearchResultsIcon" class="bi-x-lg" style="display: none;"></i>
+      </a>
+    </div>
+  </div>
+
+  <button
+    class="js-form-search js-form-search-mobile-toggle btn btn-ghost-secondary btn-icon rounded-circle d-lg-none"
+    type="button"
+    data-hs-form-search-options='{
+      "clearIcon": "#clearSearchResultsIcon",
+      "dropMenuElement": "#searchDropdownMenu",
+      "dropMenuOffset": 20,
+      "toggleIconOnFocus": true,
+      "activeClass": "focus"
+    }'>
+    <i class="bi-search"></i>
+  </button>
+
+  <!-- Search Dropdown Results -->
+  <div id="searchDropdownMenu"
+    class="hs-form-search-menu-content dropdown-menu dropdown-menu-form-search navbar-dropdown-menu-borderless">
+    <div class="card">
+      <div class="card-body-height"></div>
+      <a class="card-footer text-center" href="javascript:;">
+        See all results <i class="bi-chevron-right small"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+                <!-- End Search Form -->
             </div>
 
             <div class="navbar-nav-wrap-content-end">
@@ -289,15 +342,15 @@
                                                             <div class="col-auto">
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                            value="" id="notificationCheck1"
-                                                                            checked>
+                                                                        <input class="form-check-input"
+                                                                            type="checkbox" value=""
+                                                                            id="notificationCheck1" checked>
                                                                         <label class="form-check-label"
                                                                             for="notificationCheck1"></label>
                                                                         <span class="form-check-stretched-bg"></span>
                                                                     </div>
                                                                     <img class="avatar avatar-sm avatar-circle"
-                                                                        src="@if(Auth::user()->profile_picture){{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }}@endif"
+                                                                        src="@if (Auth::user()->profile_picture) {{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }} @endif"
                                                                         alt="Image Description">
                                                                 </div>
                                                             </div>
@@ -348,7 +401,7 @@
                                 <div class="avatar avatar-sm avatar-circle">
 
                                     <img class="avatar-img"
-                                        src="@if(Auth::user()->profile_picture){{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }}@endif"
+                                        src="@if (Auth::user()->profile_picture) {{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }} @endif"
                                         alt="Image Description">
                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                 </div>
@@ -360,7 +413,7 @@
                                     <div class="d-flex align-items-center">
                                         <div class="avatar avatar-sm avatar-circle">
                                             <img class="avatar-img"
-                                                src="@if(Auth::user()->profile_picture){{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }}@endif"
+                                                src="@if (Auth::user()->profile_picture) {{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }} @endif"
                                                 alt="Image Description">
                                         </div>
                                         <div class="flex-grow-1 ms-3">
@@ -401,7 +454,7 @@
             <div class="navbar-vertical-footer-offset">
                 <!-- Logo -->
 
-                <a class="navbar-brand" href="{{ asset('') }}index.html" aria-label="Front">
+                <a class="navbar-brand" href="#" aria-label="Front">
                     <h3 class="navbar-brand-logo" data-hs-theme-appearance="default">GYM Manager</h3>
                     <h3 class="navbar-brand-logo" data-hs-theme-appearance="dark">GYM Manager</h3>
                     <h3 class="navbar-brand-logo-mini" data-hs-theme-appearance="default">GM</h3>
@@ -570,31 +623,32 @@
     </aside>
     @yield('content')
 
-        <!-- Footer -->
+    <!-- Footer -->
     <div class="footer">
-      <div class="row justify-content-between align-items-center">
-        <div class="col">
-          <p class="fs-6 mb-0">&copy; GYM Manager. <span class="d-none d-sm-inline-block">2025 GYM Manager.</span></p>
-        </div>
-        <!-- End Col -->
+        <div class="row justify-content-between align-items-center">
+            <div class="col">
+                <p class="fs-6 mb-0">&copy; GYM Manager. <span class="d-none d-sm-inline-block">2025 GYM
+                        Manager.</span></p>
+            </div>
+            <!-- End Col -->
 
-        <div class="col-auto">
-          <div class="d-flex justify-content-end">
-            <!-- List Separator -->
-            <ul class="list-inline list-separator">
-            <ul class="list-inline">
-            <!-- Make in India Label -->
-            <li class="list-inline-item d-flex align-items-center gap-1">
-                <i class="bi bi-heart-fill text-danger"></i>
-                <span class="fw-semibold">Make in India</span>
-            </li>
-            </ul>
-            <!-- End List Separator -->
-          </div>
+            <div class="col-auto">
+                <div class="d-flex justify-content-end">
+                    <!-- List Separator -->
+                    <ul class="list-inline list-separator">
+                        <ul class="list-inline">
+                            <!-- Make in India Label -->
+                            <li class="list-inline-item d-flex align-items-center gap-1">
+                                <i class="bi bi-heart-fill text-danger"></i>
+                                <span class="fw-semibold">Make in India</span>
+                            </li>
+                        </ul>
+                        <!-- End List Separator -->
+                </div>
+            </div>
+            <!-- End Col -->
         </div>
-        <!-- End Col -->
-      </div>
-      <!-- End Row -->
+        <!-- End Row -->
     </div>
     <!-- End Footer -->
 

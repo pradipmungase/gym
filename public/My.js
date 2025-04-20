@@ -160,7 +160,7 @@ function fetchAttendance(page = 1) {
         error: function () {
             $('#attendance-table-container').html('<div class="text-danger text-center">Failed to load attendance.</div>');
         }
-    }); 
+    });
 }
 
 
@@ -202,40 +202,48 @@ if (window.location.pathname === '/attendance') {
 
 
 
-// Trigger file input when image or icon is clicked
-document.getElementById('triggerUpload').addEventListener('click', function () {
-    document.getElementById('editMemberImg').click();
-});
-
-// Preview selected image
-document.getElementById('editMemberImg').addEventListener('change', function (e) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        document.getElementById('previewMemberImg').src = e.target.result;
-    };
-    if (this.files[0]) {
-        reader.readAsDataURL(this.files[0]);
-    }
-});
+if (window.location.pathname === '/members') {
 
 
+    // Trigger file input when image or icon is clicked
+    document.getElementById('triggerUpload').addEventListener('click', function () {
+        document.getElementById('editMemberImg').click();
+    });
+
+    // Preview selected image
+    document.getElementById('editMemberImg').addEventListener('change', function (e) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('previewMemberImg').src = e.target.result;
+        };
+        if (this.files[0]) {
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
 
 
-// Trigger file input when image or icon is clicked
-document.getElementById('triggerUploadadd').addEventListener('click', function () {
-    document.getElementById('addMemberImg').click();
-});
+    // Trigger file input when image or icon is clicked
+    document.getElementById('triggerUploadadd').addEventListener('click', function () {
+        document.getElementById('addMemberImg').click();
+    });
 
-// Preview selected image
-document.getElementById('addMemberImg').addEventListener('change', function (e) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        document.getElementById('previewMemberImgAdd').src = e.target.result;
-    };
-    if (this.files[0]) {
-        reader.readAsDataURL(this.files[0]);
-    }
-});
+    // Preview selected image
+    document.getElementById('addMemberImg').addEventListener('change', function (e) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('previewMemberImgAdd').src = e.target.result;
+        };
+        if (this.files[0]) {
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+}
+
+
+
+
+
 
 
 
@@ -692,14 +700,14 @@ function fetchExpenses(page = 1) {
         }
     });
 }
- 
+
 
 if (window.location.pathname === '/expenses') {
     $(document).on('click', '.pagination a', function (e) {
         e.preventDefault();
         let page = $(this).attr('href').split('page=')[1];
         fetchExpenses(page);
-    }); 
+    });
     fetchExpenses();
 }
 
@@ -738,14 +746,14 @@ $(document).ready(function () {
         let formData = form.serialize();
         let submitBtn = form.find('button[type="submit"]');
         let originalBtnHtml = submitBtn.html();
-        
+
         // Clear old errors
         form.find('.is-invalid').removeClass('is-invalid');
         form.find('.invalid-feedback').text('');
 
         // Show loader in button
         submitBtn.html('<span class="spinner-border spinner-border-sm me-1"></span> Updating...').prop('disabled', true);
-        
+
 
         $.ajax({
             url: "/expenses/update",
@@ -769,7 +777,7 @@ $(document).ready(function () {
                 });
             },
             complete: function () {
-                submitBtn.html(originalBtnHtml).prop('disabled', false);    
+                submitBtn.html(originalBtnHtml).prop('disabled', false);
             }
         });
     });
@@ -792,15 +800,15 @@ $(document).ready(function () {
         form.find('.invalid-feedback').text('');
 
         // Show loader in button
-        submitBtn.html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...').prop('disabled', true); 
-        
+        submitBtn.html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...').prop('disabled', true);
+
         $.ajax({
             url: "/forgotPassword",
             type: "POST",
             data: formData,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },  
+            },
             success: function (response) {
                 $('#verifyOtpModal').modal('show');
                 showToast(response.message, 'bg-success');
@@ -816,7 +824,7 @@ $(document).ready(function () {
             complete: function () {
                 submitBtn.html(originalBtnHtml).prop('disabled', false);
             }
-        }); 
+        });
     });
 });
 
@@ -847,8 +855,8 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response.status == 'success') {
-                    showToast(response.message, 'bg-success');  
-                    setTimeout(function() {
+                    showToast(response.message, 'bg-success');
+                    setTimeout(function () {
                         window.location.href = '/login';
                     }, 2000);
                 } else {
@@ -859,11 +867,11 @@ $(document).ready(function () {
                 showToast(xhr.responseJSON.message, 'bg-danger');
             },
             complete: function () {
-                submitBtn.html(originalBtnHtml).prop('disabled', false);    
+                submitBtn.html(originalBtnHtml).prop('disabled', false);
             }
         });
     });
-}); 
+});
 
 
 $(document).ready(function () {
@@ -892,14 +900,14 @@ $(document).ready(function () {
             success: function (response) {
                 showToast(response.message, 'bg-success');
                 form[0].reset();
-                $('#addAnnouncementModal').modal('hide');   
+                $('#addAnnouncementModal').modal('hide');
                 fetchAnnouncement();
             },
             error: function (xhr) {
                 let errors = xhr.responseJSON.errors;
                 $.each(errors, function (field, messages) {
                     let input = $('[name="' + field + '"]');
-                        input.addClass('is-invalid');
+                    input.addClass('is-invalid');
                     input.next('.invalid-feedback').text(messages[0]);
                 });
             },
@@ -925,7 +933,7 @@ function fetchAnnouncement(page = 1) {
     });
 }
 
-if (window.location.pathname === '/announcement') {     
+if (window.location.pathname === '/announcement') {
     $(document).on('click', '.pagination a', function (e) {
         e.preventDefault();
         let page = $(this).attr('href').split('page=')[1];
@@ -934,7 +942,7 @@ if (window.location.pathname === '/announcement') {
     fetchAnnouncement();
 }
 
-function resendOtp(){
+function resendOtp() {
     showToast("Resending OTP...", 'bg-info');
 
     $.ajax({
@@ -1073,3 +1081,138 @@ $('#profileCoverUplaoder, #editAvatarUploaderModal').on('change', function (e) {
 });
 
 
+$(document).ready(function () {
+    let $input = $('.js-form-search');
+    let $resultsBox = $('#searchDropdownMenu');
+    let $resultsBody = $resultsBox.find('.card-body-height');
+    let loaderHtml = `<div class="text-center my-4"><div class="spinner-border text-primary" role="status"></div></div>`;
+
+    // Load recent searches from localStorage
+    function renderRecentSearches() {
+        let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+        if (searches.length === 0) return;
+
+        let recentHtml = `
+      <span class="dropdown-header">Recent searches</span>
+      <div class="dropdown-item bg-transparent text-wrap">`;
+
+        searches.forEach(term => {
+            recentHtml += `<a class="btn btn-soft-dark btn-xs rounded-pill recent-search" href="#">${term} <i class="bi-search ms-1"></i></a>`;
+        });
+
+        recentHtml += `</div><div class="dropdown-divider"></div>`;
+
+        $resultsBody.prepend(recentHtml);
+    }
+
+    function addToRecentSearches(term) {
+        let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+        if (!searches.includes(term)) {
+            searches.unshift(term);
+            if (searches.length > 5) searches.pop();
+            localStorage.setItem('recentSearches', JSON.stringify(searches));
+        }
+    }
+
+    renderRecentSearches();
+
+    // Search input
+    $input.on('input', function () {
+        let keyword = $(this).val().trim();
+
+        if (keyword.length < 2) {
+            $resultsBody.html('');
+            renderRecentSearches();
+            return;
+        }
+
+        $resultsBody.html(loaderHtml);
+
+        $.ajax({
+            url: "/search",
+            type: "POST",
+            data: { keyword: keyword },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                addToRecentSearches(keyword);
+                let html = '';
+
+                // Trainers Section
+                if (response.trainers && response.trainers.length) {
+                    html += `<span class="dropdown-header">Trainers</span>`;
+                    response.trainers.forEach(trainer => {
+                        html += `
+              <a class="dropdown-item" href="/trainer/view/${trainer.encrypted_id}">
+                <div class="d-flex align-items-center">
+                  <span class="icon icon-soft-dark icon-xs icon-circle me-2">
+                    <i class="bi-person-badge"></i>
+                  </span>
+                  <div class="flex-grow-1 text-truncate">
+                    <span>${trainer.name} (${trainer.phone})</span>
+                  </div>
+                </div>
+              </a>`;
+                    });
+                    html += `<div class="dropdown-divider"></div>`;
+                }
+
+                // Members Section
+                if (response.members && response.members.length) {
+                    html += `<span class="dropdown-header">Members</span>`;
+                    response.members.forEach(member => {
+                        const imageSrc = member.image ? `/uploads/members/${member.image}` : '/assets/img/160x160/images (1).jpg';
+                        html += `
+                <a class="dropdown-item" href="/members/view/${member.encrypted_id}">
+                    <div class="d-flex align-items-center">
+                    <img class="avatar avatar-xs avatar-circle me-2" src="${imageSrc}" alt="">
+                    <div class="flex-grow-1 text-truncate">
+                        <span>${member.name}</span>
+                    </div>
+                    </div>
+                </a>`;
+                    });
+                }
+
+                if (!response.trainers?.length && !response.members?.length) {
+                    html += `<div class="text-center py-4"><em>No results found.</em></div>`;
+                }
+
+                $resultsBody.html(html);
+            },
+            error: function () {
+                $resultsBody.html(`<div class="text-danger text-center my-3">Search failed. Please try again.</div>`);
+            }
+        });
+    });
+
+    // Show/hide clear icon
+    $input.on('input', function () {
+        $('#clearSearchResultsIcon').toggle($(this).val().length > 0);
+    });
+
+    $('#clearSearchResultsIcon').on('click', function () {
+        $input.val('').trigger('input');
+        $(this).hide();
+    });
+
+    // Trigger search on clicking recent search
+    $(document).on('click', '.recent-search', function (e) {
+        e.preventDefault();
+        let term = $(this).text().trim();
+        $input.val(term).trigger('input');
+    });
+});
+
+$(document).on('mousedown', '.recent-search', function (e) {
+    e.preventDefault();     // Prevent default click behavior
+    e.stopPropagation();    // Stop event from bubbling (prevents dropdown from closing)
+
+    let term = $(this).text().trim();
+    $input.val(term);
+    $input.trigger('input');
+
+    // Optionally re-focus the input after selection
+    setTimeout(() => $input.focus(), 10);
+});

@@ -96,5 +96,7 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/permissions', 'admin.permissions');
     Route::view('/profile', 'admin.profile');
     Route::post('/updateProfilePicture', [DashboardController   ::class, 'updateProfilePicture'])->name('updateProfilePicture');
+    Route::post('/search', [DashboardController::class, 'search'])->name('search');
+
 });
 
