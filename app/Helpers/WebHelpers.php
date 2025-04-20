@@ -177,3 +177,19 @@ function sendPushNotification(){
         return response()->json(['message' => 'Dynamic notification sent to user']);
     }
 }
+
+
+function sendMarketingWhatsapp($whatsappNumber, $outputdata)
+{
+    try {
+        $mobile = $whatsappNumber; // Replace with dynamic: $member->mobile ?? fallback
+        $link = "https://yourdomain.com/login";
+        $message = "Hi {$outputdata['owner_name']},\n\nManage your gym easily using our web portal:\n{$link}\n\nThanks!";
+        return Http::post('http://localhost:3000/send-message', [
+            'number' => '91' . $mobile,
+            'message' => $message,
+        ]);
+    } catch (\Exception $e) {
+        return $e->getMessage();    
+    }
+}

@@ -14,7 +14,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AnnouncementController;
 use App\Models\User;
 use App\Notifications\WebPushNotification;
-
+use App\Http\Controllers\MarketingController;
 Route::post('/webpush', function (Request $request) {
     $user = Auth::user(); // Or get authenticated user
     if (!$user) {
@@ -97,6 +97,9 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/profile', 'admin.profile');
     Route::post('/updateProfilePicture', [DashboardController   ::class, 'updateProfilePicture'])->name('updateProfilePicture');
     Route::post('/search', [DashboardController::class, 'search'])->name('search');
+    Route::delete('/members/delete/{id}', [MembersController::class, 'delete'])->name('members.delete');
 
 });
 
+
+Route::match(['get', 'post'], '/marketing', [MarketingController::class, 'index'])->name('marketing.index');

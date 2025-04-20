@@ -1216,3 +1216,23 @@ $(document).on('mousedown', '.recent-search', function (e) {
     // Optionally re-focus the input after selection
     setTimeout(() => $input.focus(), 10);
 });
+
+
+function deleteMember(memberId){
+    if(confirm('Are you sure you want to delete this member?')){
+        $.ajax({
+            url: `/members/delete/${memberId}`,
+            type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                showToast(response.message, 'bg-success');
+                fetchmembers();
+            },
+            error: function (xhr) {
+                showToast(xhr.responseJSON.message, 'bg-danger');
+            }
+        });
+    }
+}   

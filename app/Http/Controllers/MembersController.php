@@ -33,6 +33,7 @@ class MembersController extends Controller{
         $members = DB::table('members')
             ->join('member_details', 'members.id', '=', 'member_details.member_id')
             ->where('members.gym_id', Auth::user()->id)
+            ->whereNull('members.deleted_at')
             ->orderBy('members.created_at', 'desc')
             ->select('members.*', 'member_details.*','members.id as member_id')
             ->paginate(10);
@@ -284,6 +285,15 @@ class MembersController extends Controller{
             ->select('members.*', 'member_details.*','members.id as member_id')
             ->first();
         return view('admin.members.view', compact('member'));
+    }
+
+    public function delete($id)
+    {
+        DB::table('members')->where('id', $id)->update([
+            'deleted_at' => now(),
+            'updated_at' => now(),
+        ]);
+        return response()->json(['status' => 'success', 'message' => 'Member deleted successfully!']);
     }
 
 }

@@ -59,14 +59,20 @@
                                     data-bs-target="#editmemberModal"
                                     data-member='@json($member)'>Edit</a>
                             </li>
+                            <li><a class="dropdown-item" href="{{ route('members.view', encrypt($member->member_id)) }}">Renew Membership</a></li>
+                            <li><a class="dropdown-item" href="{{ route('members.view', encrypt($member->member_id)) }}">Change Plan</a></li>
+                            <li><a class="dropdown-item" href="{{ route('members.view', encrypt($member->member_id)) }}">Add Note</a></li>
                             <li><a class="dropdown-item" href="{{ route('members.view', encrypt($member->member_id)) }}">View Details</a></li>
+                            <li><a class="dropdown-item" href="https://wa.me/{{ $member->mobile }}?text=hi" target="_blank">Whatsapp</a></li>
+                            <li><a class="dropdown-item" href="tel:{{ $member->mobile }}">Call</a></li>
+                            <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="deleteMember({{ $member->member_id }})">Delete</a></li>
                         </ul>
                     </div>
                 </td>
             </tr>
         @empty
             <tr>
-                <td colspan="5">
+                <td colspan="8">
                     <div class="d-flex flex-column align-items-center p-4">
                         <img class="mb-3" src="./assets/svg/illustrations/oc-error.svg" alt="Image Description"
                             style="width: 10rem;" data-hs-theme-appearance="default">

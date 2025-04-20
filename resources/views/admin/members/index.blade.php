@@ -96,7 +96,7 @@
 
                             <div class="col-md-6 col-lg-4">
                                 <label for="birth_date" class="form-label">Birth Date</label>
-                                <input type="date" class="form-control" id="birth_date" name="birth_date">
+                                <input type="date" class="form-control birthDate"  id="birth_date" name="birth_date" max="{{ date('Y-m-d') }}">
                             </div>
 
                             <div class="col-md-6 col-lg-4">
@@ -207,12 +207,14 @@
                                 <label for="discount" class="form-label">Discount</label>
                                 <input type="number" class="form-control" id="discount" name="discount"
                                     placeholder="e.g., 10">
+                                <div class="invalid-feedback">Discount is required.</div>
                             </div>
 
                             <div class="col-md-4 col-lg-2">
                                 <label class="form-label">Plan Price</label>
                                 <input type="text" class="form-control" value="0" name="plan_price"
                                     id="plan_price" readonly>
+                                <div class="invalid-feedback">The plan price field must be at least 0.</div>
                             </div>
 
                             <div class="col-md-4 col-lg-2">
@@ -220,12 +222,14 @@
                                         Discount)</span></label>
                                 <input type="text" class="form-control" value="0" name="final_price"
                                     id="final_price" readonly>
+                                <div class="invalid-feedback">The final price field must be at least 0.</div>
                             </div>
 
                             <div class="col-md-4 col-lg-2">
                                 <label class="form-label">Due Amount</label>
                                 <input type="text" class="form-control text-danger fw-bold" value="0"
                                     name="due_amount" id="due_amount" readonly>
+                                <div class="invalid-feedback">The due amount field must be at least 0.</div>
                             </div>
                         </div>
                     </div>
@@ -290,7 +294,7 @@
 
                             <div class="col-md-6 col-lg-4">
                                 <label for="editBirthDate" class="form-label">Birth Date</label>
-                                <input type="date" class="form-control" id="editBirthDate" name="birth_date">
+                                <input type="date" class="form-control birthDate" id="editBirthDate" name="birth_date" max="{{ date('Y-m-d') }}">
                             </div>
 
                             <div class="col-md-6 col-lg-4">
@@ -398,12 +402,14 @@
                                 <label for="editDiscount" class="form-label">Discount</label>
                                 <input type="number" class="form-control" id="editDiscount" name="discount"
                                     placeholder="e.g., 10">
+                                <div class="invalid-feedback">Discount is required.</div>
                             </div>
 
                             <div class="col-md-4 col-lg-2">
                                 <label class="form-label">Plan Price</label>
                                 <input type="text" class="form-control" value="0" name="plan_price"
                                     id="editPlanPrice" readonly>
+                                <div class="invalid-feedback">The plan price field must be at least 0.</div>
                             </div>
 
                             <div class="col-md-4 col-lg-2">
