@@ -16,6 +16,8 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Endroid\QrCode\Builder\Builder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+
 
 class MembersController extends Controller{
     
@@ -32,7 +34,7 @@ class MembersController extends Controller{
             ->join('member_details', 'members.id', '=', 'member_details.member_id')
             ->where('members.gym_id', Auth::user()->id)
             ->orderBy('members.created_at', 'desc')
-            ->select('members.*', 'member_details.*') // or specify only needed columns
+            ->select('members.*', 'member_details.*','members.id as member_id')
             ->paginate(10);
 
         return view('admin.members.partials.members-table', compact('members'))->render(); // returns only table partial
@@ -43,8 +45,20 @@ class MembersController extends Controller{
         $id = $request->editMembersId;
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email:rfc,dns|unique:members,email,' . $id,
-            'mobile' => 'required|digits:10|unique:members,mobile,' . $id,
+            'email' => [
+                'nullable',
+                'email:rfc,dns',
+                Rule::unique('members', 'email')
+                    ->ignore($id)
+                    ->whereNull('deleted_at'),
+            ],
+            'mobile' => [
+                'required',
+                'digits:10',
+                Rule::unique('members', 'mobile')
+                    ->ignore($id)
+                    ->whereNull('deleted_at'),
+            ],
             'joining_date' => 'required|date|before_or_equal:today',
             'birth_date' => 'required|date|before:today',
             'gender' => 'required|in:Male,Female,Other',
@@ -52,7 +66,7 @@ class MembersController extends Controller{
             'trainer' => 'required|exists:trainers,id',
             'batch' => 'required|string|max:50',
             'discount_type' => 'required|in:Flat,Percentage',
-            'discount' => 'required|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0',
             'plan_price' => 'required|numeric|min:1',
             'final_price' => [
                 'required',
@@ -81,8 +95,8 @@ class MembersController extends Controller{
 
             $filename = $member->image;
 
-            if ($request->hasFile('menberImg')) {
-                $image = $request->file('menberImg');
+            if ($request->hasFile('memberImg')) {
+                $image = $request->file('memberImg');
                 $filename = time() . '_' . $image->getClientOriginalName();
                 $image->move(public_path('uploads/members'), $filename);
             }
@@ -123,15 +137,6 @@ class MembersController extends Controller{
                 ]
             );
 
-            // Optionally regenerate QR code
-            $qrCodePath = $this->generateQRCode($id);
-            DB::table('members')->where('id', $id)->update([
-                'qr_code_path' => $qrCodePath,
-            ]);
-
-            // Optionally send WhatsApp notification
-            sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath);
-
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Member updated successfully!']);
         } catch (\Exception $e) {
@@ -153,7 +158,7 @@ class MembersController extends Controller{
             'trainer' => 'required|exists:trainers,id',
             'batch' => 'required|string|max:50',
             'discount_type' => 'required|in:Flat,Percentage',
-            'discount' => 'required|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0',
             'plan_price' => 'required|numeric|min:1',
             'final_price' => [
                 'required',
@@ -270,7 +275,14 @@ class MembersController extends Controller{
     public function view($id)
     {
         $id = decrypt($id);
-        $member = DB::table('members')->where('id', $id)->first();
+
+        $member = DB::table('members')
+            ->join('member_details', 'members.id', '=', 'member_details.member_id')
+            ->where('members.gym_id', Auth::user()->id)
+            ->where('members.id', $id)
+            ->orderBy('members.created_at', 'desc')
+            ->select('members.*', 'member_details.*','members.id as member_id')
+            ->first();
         return view('admin.members.view', compact('member'));
     }
 

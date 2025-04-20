@@ -5,6 +5,9 @@
             <th>Name & Email</th>
             <th>Mobile No</th>
             <th>Joining Date</th>
+            <th>Expiry Date</th>
+            <th>Due Amount</th>
+            <th>Membership Status</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -13,7 +16,7 @@
             <tr>
                 <td class="table-column-ps-0">{{ $members->firstItem() + $loop->index }}</td>
                 <td class="table-column-ps-0">
-                    <a class="d-flex align-items-center" href="{{ route('members.view', encrypt($member->id)) }}">  
+                    <a class="d-flex align-items-center" href="{{ route('members.view', encrypt($member->member_id)) }}">  
                         <div class="avatar avatar-circle">
                             @if ($member->image)
                              <img class="avatar-img" src="{{ asset('uploads/members/' . $member->image) }}" alt="Image Description">
@@ -35,6 +38,15 @@
 
                 <td>{{ $member->mobile }}</td>
                 <td>{{ \Carbon\Carbon::parse($member->joining_date)->format('d M, Y') }}</td>
+                <td class="text-danger">{{ \Carbon\Carbon::parse($member->expiry_date)->format('d M, Y') }}</td>
+                <td>{{ $member->due_amount }}</td>
+                <td>
+                    @if (\Carbon\Carbon::parse($member->expiry_date)->isPast())
+                        <span class="badge bg-danger">Expired</span>
+                    @else
+                        <span class="badge bg-success">Active</span>
+                    @endif
+                </td>
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -47,7 +59,7 @@
                                     data-bs-target="#editmemberModal"
                                     data-member='@json($member)'>Edit</a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ route('members.view', encrypt($member->id)) }}">View Details</a></li>
+                            <li><a class="dropdown-item" href="{{ route('members.view', encrypt($member->member_id)) }}">View Details</a></li>
                         </ul>
                     </div>
                 </td>

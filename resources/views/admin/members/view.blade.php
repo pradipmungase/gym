@@ -19,7 +19,7 @@
                     <div class="avatar avatar-xxl avatar-circle profile-cover-avatar">
 
                         @if ($member->image)
-                            <img class="avatar-img" src="{{ asset($member->image) }}" alt="Image Description">
+                            <img class="avatar-img" src="{{ asset('uploads/members/'.$member->image) }}" alt="Image Description">
                         @else
                             <img class="avatar-img" src="{{ asset('assets/img/160x160/images (1).jpg') }}"
                                 alt="Image Description">

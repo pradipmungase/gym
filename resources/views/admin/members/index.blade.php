@@ -1,35 +1,34 @@
 @extends('admin.layout.adminApp')
 @section('content')
-                            <style>
-                                .image-upload-wrapper {
-                                    position: relative;
-                                    display: inline-block;
-                                    cursor: pointer;
-                                }
+    <style>
+        .image-upload-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
 
-                                .image-upload-wrapper input[type="file"] {
-                                    display: none;
-                                }
+        .image-upload-wrapper input[type="file"] {
+            display: none;
+        }
 
-                                .image-upload-wrapper .upload-icon {
-                                    position: absolute;
-                                    bottom: 0;
-                                    right: 0;
-                                    background-color: rgba(0, 0, 0, 0.6);
-                                    border-radius: 50%;
-                                    padding: 6px;
-                                    color: white;
-                                    font-size: 16px;
-                                }
+        .image-upload-wrapper .upload-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            padding: 6px;
+            color: white;
+            font-size: 16px;
+        }
 
-                                .image-upload-wrapper img {
-                                    width: 100px;
-                                    height: 100px;
-                                    border-radius: 50%;
-                                    object-fit: cover;
-                                    border: 2px solid #ddd;
-                                }
-                            </style>
+        .image-upload-wrapper img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
     <main id="content" role="main" class="main">
         <div class="content container-fluid">
             <div class="page-header">
@@ -112,15 +111,15 @@
                             </div>
 
                             <div class="col-md-3 col-lg-2">
-                                <label for="menberImg" class="form-label">Member Image</label>
-                                <input accept="image/*" type="file" class="form-control" name="menberImg" id="menberImg">
-                            </div>
-
-                            <div class="col-md-3 col-lg-2">
-                                <img id="previewMemberImgAdd"
-                                    style="width: 100px;height: 100px;border-radius: 50%;object-fit: cover;"
-                                    class="avatar-img" src="{{ asset('assets/img/160x160/images (1).jpg') }}"
-                                    alt="Image Description">
+                                <label for="addMemberImg" class="form-label">Member Image</label>
+                                <div class="image-upload-wrapper" id="triggerUploadadd">
+                                    <img id="previewMemberImgAdd" src="{{ asset('assets/img/160x160/images (1).jpg') }}"
+                                        alt="Image Preview">
+                                    <span class="upload-icon">
+                                        <i class="fa fa-camera"></i>
+                                    </span>
+                                    <input type="file" accept="image/*" name="memberImg" id="addMemberImg">
+                                </div>
                             </div>
 
                             <!-- 🏋️ Training Details -->
@@ -411,14 +410,14 @@
                                 <label class="form-label">Final Price <span style="font-size: smaller;">(After
                                         Discount)</span></label>
                                 <input type="text" class="form-control" value="0" name="final_price"
-                                    id="editFinalPrice" readonly>
+                                    id="editFinal_price" readonly>
                                 <div class="invalid-feedback">The final price field must be at least 0.</div>
                             </div>
 
                             <div class="col-md-4 col-lg-2">
                                 <label class="form-label">Due Amount</label>
                                 <input type="text" class="form-control text-danger fw-bold" value="0"
-                                    name="due_amount" id="editDueAmount" readonly>
+                                    name="due_amount" id="editDue_amount" readonly>
                                 <div class="invalid-feedback">The due amount field must be at least 0.</div>
                             </div>
 

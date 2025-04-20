@@ -219,6 +219,27 @@ document.getElementById('editMemberImg').addEventListener('change', function (e)
 });
 
 
+
+
+// Trigger file input when image or icon is clicked
+document.getElementById('triggerUploadadd').addEventListener('click', function () {
+    document.getElementById('addMemberImg').click();
+});
+
+// Preview selected image
+document.getElementById('addMemberImg').addEventListener('change', function (e) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        document.getElementById('previewMemberImgAdd').src = e.target.result;
+    };
+    if (this.files[0]) {
+        reader.readAsDataURL(this.files[0]);
+    }
+});
+
+
+
+
 $(document).ready(function () {
     $('#addMemberForm').on('submit', function (e) {
         e.preventDefault();
@@ -295,7 +316,7 @@ $(document).ready(function () {
             processData: false, // Required for FormData
             success: function (response) {
                 if (response.status === 'success') {
-                    $('#addMemberModal').modal('hide');
+                    $('#editmemberModal').modal('hide');
                     $('#editmemberForm')[0].reset();
                     fetchmembers();
                     showToast(response.message, 'bg-success');
@@ -382,9 +403,9 @@ if (window.location.pathname === '/members') {
         const discountInput = document.getElementById('editDiscount');
         const discountTypeSelect = document.getElementById('editDiscountType');
         const planPriceField = document.getElementById('editPlanPrice');
-        const finalPriceField = document.getElementById('editFinalPrice');
+        const finalPriceField = document.getElementById('editFinal_price');
         const admissionFeeField = document.getElementById('editAdmissionFee');
-        const dueAmountField = document.getElementById('editDueAmount');
+        const dueAmountField = document.getElementById('editDue_amount');
 
         function calculateFinalPriceEdit() {
             const selectedOption = planSelect.options[planSelect.selectedIndex];
@@ -526,9 +547,8 @@ $('#menberImg').on('change', function (event) {
 $(document).on('click', '.edit-member-btn', function () {
     const members = $(this).data('member'); // Make sure this is a valid JS object
 
-    console.log(members);
     // Populate form fields
-    $('#editMembersId').val(members.id);
+    $('#editMembersId').val(members.member_id);
     $('#editName').val(members.name);
     $('#editEmail').val(members.email);
     $('#editMobile').val(members.mobile);
