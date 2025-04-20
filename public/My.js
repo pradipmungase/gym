@@ -1168,7 +1168,7 @@ $(document).ready(function () {
                     <div class="d-flex align-items-center">
                     <img class="avatar avatar-xs avatar-circle me-2" src="${imageSrc}" alt="">
                     <div class="flex-grow-1 text-truncate">
-                        <span>${member.name}</span>
+                        <span>${member.name} (${member.mobile})</span>
                     </div>
                     </div>
                 </a>`;

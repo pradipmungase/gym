@@ -91,12 +91,14 @@ class DashboardController extends Controller{
 
         $members = DB::table('members')
             ->where('name', 'like', '%' . $keyword . '%')
+            ->orWhere('mobile', 'like', '%' . $keyword . '%')
             ->select('id', 'name', 'image','mobile')
             ->limit(5)
             ->get();
 
         $trainers = DB::table('trainers')
             ->where('name', 'like', '%' . $keyword . '%')
+            ->orWhere('phone', 'like', '%' . $keyword . '%')
             ->select('id', 'name', 'image','phone')
             ->limit(5)
             ->get();

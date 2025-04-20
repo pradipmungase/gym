@@ -553,7 +553,7 @@
 
                         <!-- Settings -->
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('settings') }}" role="button">
+                            <a class="nav-link" href="#" role="button">
                                 <i class="bi-gear nav-icon"></i>
                                 <span class="nav-link-title">Settings</span>
                             </a>
