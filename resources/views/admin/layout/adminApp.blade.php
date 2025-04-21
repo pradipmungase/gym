@@ -50,6 +50,59 @@
         }
     </style>
 
+    <style>
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) !important;
+        }
+
+        input[type="date"] {
+            color: #fff !important;
+        }
+
+        input:focus-visible {
+            border: solid rgb(16, 206, 95) 1px !important;
+        }
+        select:focus-visible {
+            border: solid rgb(16, 206, 95) 1px !important;
+        }
+
+        /* Loader Wrapper */
+        #loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #100f0f;
+            ;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Loader Animation (simple bouncing dots) */
+        #loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #3498db;
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Spinner Animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
     <script>
         window.hs_config = {
             "autopath": "@@autopath",
@@ -220,6 +273,10 @@
 </head>
 
 <body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl   footer-offset">
+    <!-- Loader Wrapper -->
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
 
 
     <script src="{{ asset('') }}assets/js/hs.theme-appearance.js"></script>
@@ -233,7 +290,7 @@
         class="navbar navbar-expand-lg navbar-fixed navbar-height navbar-container navbar-bordered bg-white">
         <div class="navbar-nav-wrap">
             <!-- Logo -->
-            <a class="navbar-brand" href="#" aria-label="Front">
+            <a class="navbar-brand" href="{{ url('/dashboard') }}" aria-label="Front">
                 <h3 class="navbar-brand-logo" data-hs-theme-appearance="default">GYM Manager</h3>
                 <h3 class="navbar-brand-logo" data-hs-theme-appearance="dark">GYM Manager</h3>
                 <h3 class="navbar-brand-logo-mini" data-hs-theme-appearance="default">GM</h3>
@@ -253,55 +310,55 @@
                 </button>
 
                 <!-- Search Form -->
-<!-- Search Bar with Dropdown -->
-<div class="dropdown ms-2">
-  <!-- Input Group -->
-  <div class="d-none d-lg-block">
-    <div
-      class="input-group input-group-merge input-group-borderless input-group-hover-light navbar-input-group">
-      <div class="input-group-prepend input-group-text">
-        <i class="bi-search"></i>
-      </div>
+                <!-- Search Bar with Dropdown -->
+                <div class="dropdown ms-2">
+                    <!-- Input Group -->
+                    <div class="d-none d-lg-block">
+                        <div
+                            class="input-group input-group-merge input-group-borderless input-group-hover-light navbar-input-group">
+                            <div class="input-group-prepend input-group-text">
+                                <i class="bi-search"></i>
+                            </div>
 
-      <input type="search" class="js-form-search form-control" placeholder="Search Member & Trainer"
-        aria-label="Search Member & Trainer"
-        data-hs-form-search-options='{
+                            <input type="search" class="js-form-search form-control"
+                                placeholder="Search Member & Trainer" aria-label="Search Member & Trainer"
+                                data-hs-form-search-options='{
           "clearIcon": "#clearSearchResultsIcon",
           "dropMenuElement": "#searchDropdownMenu",
           "dropMenuOffset": 20,
           "toggleIconOnFocus": true,
           "activeClass": "focus"
         }'>
-      <a class="input-group-append input-group-text" href="javascript:;">
-        <i id="clearSearchResultsIcon" class="bi-x-lg" style="display: none;"></i>
-      </a>
-    </div>
-  </div>
+                            <a class="input-group-append input-group-text" href="javascript:;">
+                                <i id="clearSearchResultsIcon" class="bi-x-lg" style="display: none;"></i>
+                            </a>
+                        </div>
+                    </div>
 
-  <button
-    class="js-form-search js-form-search-mobile-toggle btn btn-ghost-secondary btn-icon rounded-circle d-lg-none"
-    type="button"
-    data-hs-form-search-options='{
+                    <button
+                        class="js-form-search js-form-search-mobile-toggle btn btn-ghost-secondary btn-icon rounded-circle d-lg-none"
+                        type="button"
+                        data-hs-form-search-options='{
       "clearIcon": "#clearSearchResultsIcon",
       "dropMenuElement": "#searchDropdownMenu",
       "dropMenuOffset": 20,
       "toggleIconOnFocus": true,
       "activeClass": "focus"
     }'>
-    <i class="bi-search"></i>
-  </button>
+                        <i class="bi-search"></i>
+                    </button>
 
-  <!-- Search Dropdown Results -->
-  <div id="searchDropdownMenu"
-    class="hs-form-search-menu-content dropdown-menu dropdown-menu-form-search navbar-dropdown-menu-borderless">
-    <div class="card">
-      <div class="card-body-height"></div>
-      <a class="card-footer text-center" href="javascript:;">
-        See all results <i class="bi-chevron-right small"></i>
-      </a>
-    </div>
-  </div>
-</div>
+                    <!-- Search Dropdown Results -->
+                    <div id="searchDropdownMenu"
+                        class="hs-form-search-menu-content dropdown-menu dropdown-menu-form-search navbar-dropdown-menu-borderless">
+                        <div class="card">
+                            <div class="card-body-height"></div>
+                            <a class="card-footer text-center" href="{{ url('members') }}">
+                                See all results <i class="bi-chevron-right small"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- End Search Form -->
             </div>
@@ -454,7 +511,7 @@
             <div class="navbar-vertical-footer-offset">
                 <!-- Logo -->
 
-                <a class="navbar-brand" href="#" aria-label="Front">
+                <a class="navbar-brand" href="{{ url('/dashboard') }}" aria-label="Front">
                     <h3 class="navbar-brand-logo" data-hs-theme-appearance="default">GYM Manager</h3>
                     <h3 class="navbar-brand-logo" data-hs-theme-appearance="dark">GYM Manager</h3>
                     <h3 class="navbar-brand-logo-mini" data-hs-theme-appearance="default">GM</h3>
@@ -627,7 +684,7 @@
     <div class="footer">
         <div class="row justify-content-between align-items-center">
             <div class="col">
-                <p class="fs-6 mb-0">&copy; GYM Manager. <span class="d-none d-sm-inline-block">2025 GYM
+                <p class="fs-6 mb-0">&copy; GYM Manager. <span class="d-none d-sm-inline-block">2025-2026 GYM
                         Manager.</span></p>
             </div>
             <!-- End Col -->

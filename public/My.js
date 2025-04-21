@@ -100,6 +100,7 @@ $(document).on('click', '.edit-plan-btn', function () {
     $('#editPlanId').val(plan.id);
     $('#editPlanName').val(plan.name);
     $('#editDuration').val(plan.duration);
+    $('#editDurationType').val(plan.duration_type);
     $('#editPrice').val(plan.price);
 
     $('#editPlanModal').modal('show');
@@ -277,7 +278,12 @@ $(document).ready(function () {
                     fetchmembers();
                     showToast(response.message, 'bg-success');
                 } else {
-                    showToast(response.message, 'bg-danger');
+                    if (response.expiry_date == 'expiry_date') {
+                        $('#joining_date').addClass('is-invalid');
+                        $('#joining_date').siblings('.invalid-feedback').text(response.message).show();
+                    }else{
+                        showToast(response.message, 'bg-success');
+                    }
                 }
             },
             error: function (xhr) {
@@ -329,7 +335,12 @@ $(document).ready(function () {
                     fetchmembers();
                     showToast(response.message, 'bg-success');
                 } else {
-                    showToast(response.message, 'bg-danger');
+                    if (response.expiry_date == 'expiry_date') {
+                        $('#editJoiningDate').addClass('is-invalid');
+                        $('#editJoiningDate').siblings('.invalid-feedback').text(response.message).show();
+                    } else {
+                        showToast(response.message, 'bg-success');
+                    }
                 }
             },
             error: function (xhr) {
@@ -563,7 +574,7 @@ $(document).on('click', '.edit-member-btn', function () {
     $('#editBirthDate').val(members.birth_date);
     const fallbackImg = "/assets/img/160x160/images (1).jpg";
     if (members.image) {
-        $('#previewMemberImg').attr('src', 'uploads/members/' + members.image);
+        $('#previewMemberImg').attr('src', members.image);
     } else {
         $('#previewMemberImg').attr('src', fallbackImg);
     }
@@ -584,6 +595,18 @@ $(document).on('click', '.edit-member-btn', function () {
     $('#editmemberModal').modal('show');
 });
 
+
+$(document).on('click', '.add-payment-btn', function () {
+    const members = $(this).data('member'); // Make sure this is a valid JS object
+
+    // Populate form fields
+    $('#addPaymentMemberId').val(members.member_id);
+    $('#addPaymentMember').val(members.name);
+    $('#addPaymentDueAmount').val(members.due_amount);
+    $('#currentDueAmount').val(members.due_amount);
+    $('#currentPlanId').val(members.plan_id);
+    $('#addPaymentModal').modal('show');
+});
 
 
 
@@ -965,7 +988,7 @@ function resendOtp() {
 
 
 function startResendOtpCountdown() {
-    let countdown = 5;
+    let countdown = 60;
     let $timer = $('#resendOtpTimer');
     let $resendBtn = $('#resendOtpBtn');
 
@@ -1218,8 +1241,8 @@ $(document).on('mousedown', '.recent-search', function (e) {
 });
 
 
-function deleteMember(memberId){
-    if(confirm('Are you sure you want to delete this member?')){
+function deleteMember(memberId) {
+    if (confirm('Are you sure you want to delete this member?')) {
         $.ajax({
             url: `/members/delete/${memberId}`,
             type: 'DELETE',
@@ -1235,4 +1258,157 @@ function deleteMember(memberId){
             }
         });
     }
-}   
+}
+
+
+if (window.location.pathname === '/members') {
+    $(document).ready(function () {
+        const amountInput = $('#addPaymentAmount');
+
+        amountInput.on('input', function () {
+            const enteredAmount = parseFloat($(this).val()) || 0;
+            const dueAmountInput = $('#addPaymentDueAmount');
+            const currentDueAmount = parseFloat($('#currentDueAmount').val()) || 0;
+            let newDueAmount = currentDueAmount - enteredAmount;
+            dueAmountInput.val(newDueAmount.toFixed(2));
+        });
+    });
+}
+
+
+
+
+$(document).ready(function () {
+    $('#addPaymentForm').on('submit', function (e) {
+        e.preventDefault(); // prevent default form submission
+
+        let form = $(this);
+        let formData = form.serialize();
+        let submitBtn = form.find('button[type="submit"]');
+        let originalBtnHtml = submitBtn.html();
+
+        // Clear old errors
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').text('');
+
+        // Change button to loader
+        submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+
+        $.ajax({
+            url: "/members/addPayment", // your Laravel route
+            type: "POST",
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                if (response.status == 'success') {
+                    showToast(response.message, 'bg-success');
+                    form[0].reset();
+                    $('#addPaymentModal').modal('hide');
+                    fetchmembers();
+                } else {
+                    showToast(response.message, 'bg-danger');
+                }
+            },
+            error: function (xhr) {
+                let errors = xhr.responseJSON.errors;
+
+                $.each(errors, function (field, messages) {
+                    let input = $('[name="' + field + '"]');
+                    input.addClass('is-invalid');
+                    input.next('.invalid-feedback').text(messages[0]);
+                });
+            },
+            complete: function () {
+                // Revert button back to original
+                submitBtn.prop('disabled', false).html(originalBtnHtml);
+            }
+        });
+    });
+});
+
+$(window).on('load', function () {
+    $('#loader-wrapper').fadeOut('slow');
+});
+
+$(document).on('submit', '.register-form', function (e) {
+    e.preventDefault();
+
+    // Clear previous validation errors
+    $('.form-control').removeClass('is-invalid');
+    $('.invalid-feedback').hide().text('');
+
+    // Disable button and show loader
+    let $btn = $('#signupBtn');
+    $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...');
+
+    $.ajax({
+        url: '/register',
+        type: 'POST',
+        data: {
+            gym_name: $('#gymName').val(),
+            owner_name: $('#ownerName').val(),
+            mobile: $('#mobile').val(),
+            password: $('#password').val()
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            if (response.status === 'success') {
+                window.location.href = '/dashboard';
+            } else {
+                showToast(response.message, 'bg-danger');
+                $btn.prop('disabled', false).html('<i class="bi bi-check-circle me-1"></i> Sign Up');
+            }
+        },
+        error: function (xhr) {
+            if (xhr.status === 422) {
+                let errors = xhr.responseJSON.errors;
+                $.each(errors, function (key, messages) {
+                    const field = $(`[name="${key}"]`);
+                    field.addClass('is-invalid');
+                    field.siblings('.invalid-feedback').text(messages[0]).show();
+                });
+
+            }
+            $btn.prop('disabled', false).html('<i class="bi bi-check-circle me-1"></i> Sign Up');
+        }
+    });
+});
+
+
+// Trigger file input when clicking the preview area
+$('#triggerUploadTrainer').on('click', function () {
+    $('#trainerImage').trigger('click');
+});
+
+// Show image preview
+$('#trainerImage').on('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $('#previewTrainerImg').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Trigger file input when clicking the preview area
+$('#triggerUploadEditTrainer').on('click', function () {
+    $('#editTrainerImage').trigger('click');
+});
+
+// Show image preview
+$('#editTrainerImage').on('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $('#previewEditTrainerImg').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+});

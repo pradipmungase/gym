@@ -39,31 +39,36 @@ class TrainerController extends Controller{
             'joining_date'     => 'required|date',
             'monthly_salary'     => 'required|numeric|min:1',
         ]);
+        DB::beginTransaction();
+        try {
+            $trainerId = DB::table('trainers')->insertGetId([
+                'name' => $request->input('name'),
+                'email'  => $request->input('email'),
+                'phone'     => $request->input('phone'),
+                'gender'     => $request->input('gender'),
+                'address'     => $request->input('address'),
+                'image'     => null,
+                'joining_date'     => $request->input('joining_date'),
+                'monthly_salary'     => $request->input('monthly_salary'),
+                'gym_id'    => Auth::user()->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-        if($request->hasFile('image')){
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('trainers'), $imageName);
-            $imagePath = 'trainers/' . $imageName;
+            if($request->hasFile('trainerImage')){
+                $image = $request->file('trainerImage');
+                $path = uploadFile($image, 'trainersProfilePicture', $trainerId);
+                DB::table('trainers')->where('id', $trainerId)->update(['image' => $path]);
+            }
+
+            DB::commit();
+
+            return response()->json(['status' => 'success', 'message' => 'Trainer added successfully']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
-
-
-        DB::table('trainers')->insert([
-            'name' => $request->input('name'),
-            'email'  => $request->input('email'),
-            'phone'     => $request->input('phone'),
-            'gender'     => $request->input('gender'),
-            'address'     => $request->input('address'),
-            'image'     => $imagePath ?? null,
-            'joining_date'     => $request->input('joining_date'),
-            'monthly_salary'     => $request->input('monthly_salary'),
-            'gym_id'    => Auth::user()->id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        return response()->json(['status' => 'success', 'message' => 'Trainer added successfully']);
-    }
+    }   
 
     public function update(Request $request)
     {
@@ -79,11 +84,9 @@ class TrainerController extends Controller{
             'trainer_id'   => 'required|exists:trainers,id',
         ]);
 
-        if($request->hasFile('image')){
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('trainers'), $imageName);
-            $imagePath = 'trainers/' . $imageName;
+        if($request->hasFile('editTrainerImage')){
+            $image = $request->file('editTrainerImage');
+            $path = uploadFile($image, 'trainersProfilePicture', $request->input('trainer_id'));
         }
 
         DB::table('trainers')->where('id', $request->input('trainer_id'))->update([
@@ -92,7 +95,7 @@ class TrainerController extends Controller{
             'phone'     => $request->input('phone'),
             'gender'     => $request->input('gender'),
             'address'     => $request->input('address'),
-            'image'     => $imagePath ?? null,
+            'image'     => $path ?? null,
             'joining_date'     => $request->input('joining_date'),
             'monthly_salary'     => $request->input('monthly_salary'),
             'updated_at' => now(),

@@ -47,8 +47,8 @@ class AuthController extends Controller{
             DB::commit();
 
             sendWelcomeEmail($user);
-            session()->flash('success', 'Gym registered successfully!');
-            return response()->json(['status' => 'success', 'message' => 'Gym registered successfully!'], 200);
+            session()->flash('success', 'Welcome to GYM Manager!');
+            return response()->json(['status' => 'success', 'message' => 'Welcome to GYM Manager!'], 200);
 
         } catch (\Exception $e) {
             DB::rollBack();

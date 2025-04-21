@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menbership_plans', function (Blueprint $table) {
+        Schema::create('member_payments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('price');
-            $table->integer('duration');
-            $table->string('duration_type');
             $table->integer('gym_id');
-            $table->softDeletes();
+            $table->integer('member_id');
+            $table->integer('plan_id');
+            $table->string('payment_mode');
+            $table->decimal('amount', 10, 2);
+            $table->decimal('due_amount', 10, 2);
+            $table->decimal('total_amount', 10, 2);
+            $table->dateTime('payment_date');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menbership_plans');
+        Schema::dropIfExists('member_payments');
     }
 };

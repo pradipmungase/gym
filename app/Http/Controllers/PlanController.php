@@ -33,7 +33,8 @@ class PlanController extends Controller{
     {
         $request->validate([
             'plan_name' => 'required|string|max:255',
-            'duration'  => 'required|string', // adjust type as per your DB schema
+            'duration'  => 'required|numeric',
+            'duration_type' => 'required|string',
             'price'     => 'required|numeric|min:1',
         ]);
 
@@ -41,6 +42,7 @@ class PlanController extends Controller{
         DB::table('menbership_plans')->insert([
             'name' => $request->input('plan_name'),
             'duration'  => $request->input('duration'),
+            'duration_type' => $request->input('duration_type'),
             'price'     => $request->input('price'),
             'gym_id'    => Auth::user()->id,
             'created_at' => now(),
@@ -54,7 +56,8 @@ class PlanController extends Controller{
     {
         $request->validate([
             'plan_name' => 'required|string|max:255',
-            'duration'  => 'required|string', // adjust type as per your DB schema
+            'duration'  => 'required|numeric',
+            'duration_type' => 'required|string',
             'price'     => 'required|numeric|min:1',
             'plan_id'   => 'required|exists:menbership_plans,id',
         ]);
@@ -62,6 +65,7 @@ class PlanController extends Controller{
         DB::table('menbership_plans')->where('id', $request->input('plan_id'))->update([
             'name' => $request->input('plan_name'),
             'duration'  => $request->input('duration'),
+            'duration_type' => $request->input('duration_type'),
             'price'     => $request->input('price'),    
             'updated_at' => now(),
         ]);

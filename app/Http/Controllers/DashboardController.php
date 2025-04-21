@@ -47,33 +47,15 @@ class DashboardController extends Controller{
 
             if ($request->hasFile('profile_picture')) {
                 $file = $request->file('profile_picture');
-
-                // Create user-specific path: public/img/user_{id}/
-                $folderPath = 'img/user_' . $user->id;
-                $fileName = 'profile_' . time() . '.' . $file->getClientOriginalExtension();
-
-                // Full destination path
-                $destinationPath = public_path($folderPath);
-
-                // Create the folder if it doesn't exist
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0755, true);
-                }
-
-                // Move the uploaded file
-                $file->move($destinationPath, $fileName);
-
-                // Save relative path to DB
-                $user->profile_picture = $folderPath . '/' . $fileName;
+                $path = uploadFile($file, 'gymOwnerProfilePicture', $user->id);
+                $user->profile_picture = $path;
                 $user->save();
-
                 return response()->json([
                     'success' => true,
                     'message' => 'Profile picture updated successfully',
                     'image_url' => asset($user->profile_picture),
                 ]);
             }
-
             return response()->json(['success' => false, 'message' => 'No image uploaded']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()]);

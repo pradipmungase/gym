@@ -98,7 +98,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/updateProfilePicture', [DashboardController   ::class, 'updateProfilePicture'])->name('updateProfilePicture');
     Route::post('/search', [DashboardController::class, 'search'])->name('search');
     Route::delete('/members/delete/{id}', [MembersController::class, 'delete'])->name('members.delete');
-
+    Route::post('/members/addPayment', [MembersController::class, 'addPayment'])->name('members.addPayment');
 });
 
 

@@ -19,7 +19,7 @@
                     <a class="d-flex align-items-center" href="{{ route('members.view', encrypt($member->member_id)) }}">  
                         <div class="avatar avatar-circle">
                             @if ($member->image)
-                             <img class="avatar-img" src="{{ asset('uploads/members/' . $member->image) }}" alt="Image Description">
+                             <img class="avatar-img" src="{{ asset($member->image) }}" alt="Image Description">
                             @else
                                 <img class="avatar-img" src="{{ asset('assets/img/160x160/images (1).jpg') }}" alt="Image Description">
                             @endif
@@ -39,7 +39,7 @@
                 <td>{{ $member->mobile }}</td>
                 <td>{{ \Carbon\Carbon::parse($member->joining_date)->format('d M, Y') }}</td>
                 <td class="text-danger">{{ \Carbon\Carbon::parse($member->expiry_date)->format('d M, Y') }}</td>
-                <td>{{ $member->due_amount }}</td>
+                <td>{{ $member->due_amount_payment }}</td>
                 <td>
                     @if (\Carbon\Carbon::parse($member->expiry_date)->isPast())
                         <span class="badge bg-danger">Expired</span>
@@ -58,6 +58,11 @@
                                 <a class="dropdown-item edit-member-btn" href="#" data-bs-toggle="modal"
                                     data-bs-target="#editmemberModal"
                                     data-member='@json($member)'>Edit</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item add-payment-btn" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#addPaymentModal"
+                                    data-member='@json($member)'>Add Payment</a>
                             </li>
                             <li><a class="dropdown-item" href="{{ route('members.view', encrypt($member->member_id)) }}">Renew Membership</a></li>
                             <li><a class="dropdown-item" href="{{ route('members.view', encrypt($member->member_id)) }}">Change Plan</a></li>

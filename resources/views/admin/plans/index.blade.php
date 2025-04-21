@@ -47,29 +47,36 @@
                                 <div class="invalid-feedback">Plan name is required.</div>
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="duration" class="form-label">
-                                    Duration <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select" id="duration" name="duration" required>
-                                    <option selected disabled value="">Select Duration</option>
-                                    <option value="1 week">1 Week</option>
-                                    <option value="1 month">1 Month</option>
-                                    <option value="6 month">6 Month</option>
-                                    <option value="1 year">1 Year</option>
-                                </select>
-                                <div class="invalid-feedback">Please select a duration.</div>
-                            </div>
-
-
-                            <!-- Mobile No -->
-                            <div class="col-md-6">
+                                                        <div class="col-md-6">
                                 <label for="price" class="form-label">
                                     Price <span class="text-danger">*</span>
                                 </label>
                                 <input type="number" class="form-control" id="price" name="price" required
                                     placeholder="e.g., 1000">
                                 <div class="invalid-feedback">Price is required.</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="duration" class="form-label">
+                                    Duration <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" class="form-control" id="duration" name="duration" required
+                                    placeholder="e.g., 30">
+                                <div class="invalid-feedback">Please select a duration.</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="durationType" class="form-label">
+                                    Duration Type<span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select" id="durationType" name="duration_type" required>
+                                    <option selected disabled value="">Select Duration Type</option>
+                                    <option value="days">Days</option>
+                                    <option value="weeks">Weeks</option>
+                                    <option value="months">Months</option>
+                                    <option value="years">Years</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a duration.</div>
                             </div>
 
                         </div>
@@ -114,29 +121,34 @@
                                 <div class="invalid-feedback">Plan name is required.</div>
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="duration" class="form-label">
-                                    Duration <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select" id="editDuration" name="duration" required>
-                                    <option selected disabled value="">Select Duration</option>
-                                    <option value="1 week">1 Week</option>
-                                    <option value="1 month">1 Month</option>
-                                    <option value="6 month">6 Month</option>
-                                    <option value="1 year">1 Year</option>
-                                </select>
-                                <div class="invalid-feedback">Please select a duration.</div>
-                            </div>
-
-
-                            <!-- Mobile No -->
-                            <div class="col-md-6">
+                                                        <div class="col-md-6">
                                 <label for="price" class="form-label">
                                     Price <span class="text-danger">*</span>
                                 </label>
                                 <input type="number" class="form-control" id="editPrice" name="price" required
                                     placeholder="e.g., 1000">
                                 <div class="invalid-feedback">Price is required.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editDuration" class="form-label">
+                                    Duration <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" class="form-control" id="editDuration" name="duration" required
+                                    placeholder="e.g., 30">
+                            </div>  
+
+                            <div class="col-md-6">
+                                <label for="duration" class="form-label">
+                                    Duration <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select" id="editDurationType" name="duration_type" required>
+                                    <option selected disabled value="">Select Duration</option>
+                                    <option value="days">Days</option>
+                                    <option value="weeks">Weeks</option>
+                                    <option value="months">Months</option>
+                                    <option value="years">Years</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a duration.</div>
                             </div>
 
                         </div>

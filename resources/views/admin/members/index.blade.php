@@ -354,7 +354,11 @@
 
                             <!-- 💳 Payment Information -->
                             <div class="col-12">
-                                <h5 class="border-bottom pb-2 mt-4">💳 Payment Information</h5>
+                                <h5 class="border-bottom pb-2 mt-4">💳 Payment Information &nbsp;&nsc;
+                                    <small class="text-warning">Note: If you want to change the plan, please select the new plan
+                                    and then update the payment information very carefully.</small>
+                                </h5>
+                                
                             </div>
 
                             <div class="col-md-6 col-lg-4">
@@ -434,6 +438,81 @@
                     <div class="modal-footer px-4">
                         <button type="submit" id="editPlanBtn" class="btn btn-success">
                             <i class="bi bi-check-circle me-1"></i> Update
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div class="modal fade" id="addPaymentModal" tabindex="-1" aria-labelledby="addPaymentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <form id="addPaymentForm" method="POST" action="#">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header text-white">
+                        <h5 class="modal-title" id="addPaymentModalLabel">
+                            <i class="bi bi-person-plus-fill me-2"></i> Add Payment
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body px-4">
+                        <div class="row gy-4">
+                            <input type="hidden" value="" name="addPaymentMemberId" id="addPaymentMemberId">
+                            <div class="col-md-12 col-lg-12">
+                                <label for="addPaymentMember" class="form-label"> Member Name<span class="text-danger">*</span></label>
+                                <input type="text" readonly class="form-control" id="addPaymentMember" name="member_name" required
+                                    placeholder="e.g., John Doe">
+                                <div class="invalid-feedback">Member is required.</div>
+                            </div>
+
+                            <div class="col-md-12 col-lg-12">
+                                <label for="addPaymentDate" class="form-label"> Payment Date <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="addPaymentDate" name="payment_date" required>
+                                <div class="invalid-feedback">Payment date is required.</div>
+                            </div>
+
+                            <div class="col-md-12 col-lg-12">
+                                <label for="addPaymentMode" class="form-label"> Payment Mode <span class="text-danger">*</span></label>
+                                <select class="form-select" id="addPaymentMode" name="payment_mode" required>
+                                    <option selected disabled value="">Select Payment Mode</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Phone Pay">Phone Pay</option>
+                                    <option value="Google Pay">Google Pay</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <div class="invalid-feedback">Payment mode is required.</div>
+                            </div>
+
+                            <div class="col-md-12 col-lg-12">
+                                <label for="addPaymentAmount" class="form-label"> Amount <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="addPaymentAmount" name="amount" required
+                                    placeholder="e.g., 1000">
+                                <div class="invalid-feedback">Amount is required.</div>
+                            </div>
+
+                            <input type="hidden" id="currentDueAmount" name="currentDueAmount" value="">
+                            <input type="hidden" id="currentPlanId" name="currentPlanId" value="">
+
+                            <div class="col-md-12 col-lg-12">
+                                <label for="addPaymentDueAmount" class="form-label"> Due Amount</label>
+                                <input type="number" readonly class="form-control text-danger fw-bold" id="addPaymentDueAmount" name="due_amount" required>
+                                <div class="invalid-feedback">Due amount is required.</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer px-4">
+                        <button type="submit" id="editPlanBtn" class="btn btn-success">
+                            <i class="bi bi-check-circle me-1"></i> Add Payment
                         </button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel
