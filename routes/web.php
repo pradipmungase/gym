@@ -37,15 +37,15 @@ Route::get('/logout', function () {
 
 
 Route::view('/', 'Website');
-Route::view('/login', 'auth.login');
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/checkLogin', [AuthController::class, 'checkLogin']);
+Route::view('/login', 'auth.login')->name('login');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/checkLogin', [AuthController::class, 'checkLogin'])->name('checkLogin');
 Route::view('/forgotPassword', 'auth.forgotPassword');
-Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
-Route::get('/resetPassword/{token}', [AuthController::class, 'resetPassword']);
-Route::post('/resetPassword', [AuthController::class, 'finalResetPassword']);
-Route::post('/resendOtp', [AuthController::class, 'resendOtp']);
-Route::post('/verifyOtp', [AuthController::class, 'verifyOtp']);
+Route::post('/forgotPassword', [AuthController::class, 'forgotPassword'])->name('forgotPassword');
+Route::get('/resetPassword/{token}', [AuthController::class, 'resetPassword'])->name('resetPassword');
+Route::post('/resetPassword', [AuthController::class, 'finalResetPassword'])->name('finalResetPassword');
+Route::post('/resendOtp', [AuthController::class, 'resendOtp'])->name('resendOtp');
+Route::post('/verifyOtp', [AuthController::class, 'verifyOtp'])->name('verifyOtp');
 Route::match(['get', 'post'], '/markAttendanceByLatLong/{gym_id}/{member_id}', [AttendanceController::class, 'markAttendanceByLatLong'])->name('members.markAttendanceByLatLong');
 
 
