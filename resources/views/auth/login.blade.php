@@ -283,10 +283,11 @@
                             <div class="text-center">
                                 <div class="mb-5">
                                     <h1 class="display-5">Sign in</h1>
-<p>Don't have an account yet? <a class="link" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Sign up here</a></p>
+                                    <p>Don't have an account yet? <a class="link" href="#"
+                                            data-bs-toggle="modal" data-bs-target="#signupModal">Sign up here</a></p>
                                 </div>
                             </div>
-                                <!-- Email Field -->
+                            <!-- Email Field -->
                             <div class="mb-4">
                                 <label class="form-label" for="signinSrEmail">Your Mobile Number</label>
                                 <input value="7028143227" type="text" class="form-control form-control-lg"
@@ -300,7 +301,8 @@
                                 <label class="form-label w-100" for="signupSrPassword">
                                     <span class="d-flex justify-content-between align-items-center">
                                         <span>Password</span>
-                                        <a class="form-label-link mb-0" href="{{ url('forgotPassword') }}">Forgot Password?</a>
+                                        <a class="form-label-link mb-0" href="{{ url('forgotPassword') }}">Forgot
+                                            Password?</a>
                                     </span>
                                 </label>
                                 <div class="input-group input-group-merge">
@@ -318,7 +320,8 @@
 
                             <!-- Remember Me Checkbox -->
                             <div class="form-check mb-4">
-                                <input checked class="form-check-input" type="checkbox" name="remember" id="termsCheckbox">
+                                <input checked class="form-check-input" type="checkbox" name="remember"
+                                    id="termsCheckbox">
                                 <label class="form-check-label" for="termsCheckbox">Remember me</label>
                             </div>
 
@@ -337,64 +340,74 @@
         </div>
         <!-- End Content -->
 
-<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <form id="register-form" class="register-form" method="POST" action="#">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header text-white bg-dark">
-                    <h5 class="modal-title" id="signupModalLabel">
-                        <i class="bi bi-person-plus-fill me-2"></i> Sign Up
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body px-4">
-                    <div class="row gy-4">
-                        <div class="col-12">
-                            <label for="gymName" class="form-label">GYM Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="gymName" name="gym_name" required placeholder="e.g., FitZone Gym">
-                            <div class="invalid-feedback">Gym name is required.</div>
+        <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <form id="register-form" class="register-form" method="POST" action="#">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header text-white bg-dark">
+                            <h5 class="modal-title" id="signupModalLabel">
+                                <i class="bi bi-person-plus-fill me-2"></i> Sign Up
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
 
-                        <div class="col-12">
-                            <label for="ownerName" class="form-label">Owner Full Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="ownerName" name="owner_name" required placeholder="e.g., John Doe">
-                            <div class="invalid-feedback">Owner name is required.</div>
-                        </div>
+                        <div class="modal-body px-4">
+                            <div class="row gy-4">
+                                <div class="col-12">
+                                    <label for="gymName" class="form-label">GYM Name <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="gymName" name="gym_name"
+                                        required placeholder="e.g., FitZone Gym">
+                                    <div class="invalid-feedback">Gym name is required.</div>
+                                </div>
 
-                        <div class="col-12">
-                            <label for="mobile" class="form-label">Mobile Number <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" id="mobile" name="mobile" required placeholder="e.g., 9876543210">
-                                <div class="invalid-feedback">Mobile number is required.</div>
-                        </div>
+                                <div class="col-12">
+                                    <label for="ownerName" class="form-label">Owner Full Name <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="ownerName" name="owner_name"
+                                        required placeholder="e.g., John Doe">
+                                    <div class="invalid-feedback">Owner name is required.</div>
+                                </div>
 
-                        <div class="col-12">
-                            <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="password" name="password" required placeholder="Enter password">
-                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                    <i class="bi bi-eye-slash" id="passwordIcon"></i>
-                                </button>
-                            <div class="invalid-feedback">Password is required.</div>
+                                <div class="col-12">
+                                    <label for="mobile" class="form-label">Mobile Number <span
+                                            class="text-danger">*</span></label>
+                                    <input type="tel" class="form-control" id="mobile" name="mobile"
+                                        required placeholder="e.g., 9876543210">
+                                    <div class="invalid-feedback">Mobile number is required.</div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="password" class="form-label">Password <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            required placeholder="Enter password">
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                            <i class="bi bi-eye-slash" id="passwordIcon"></i>
+                                        </button>
+                                        <div class="invalid-feedback">Password is required.</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="modal-footer px-4">
-                    <button type="submit" id="signupBtn" class="btn btn-success register-btn">
-                        <span class="btn-text"><i class="bi bi-check-circle me-1"></i> Sign Up</span>
-                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle me-1"></i> Cancel
-                    </button>
-                </div>
+                        <div class="modal-footer px-4">
+                            <button type="submit" id="signupBtn" class="btn btn-success register-btn">
+                                <span class="btn-text"><i class="bi bi-check-circle me-1"></i> Sign Up</span>
+                                <span class="spinner-border spinner-border-sm d-none" role="status"
+                                    aria-hidden="true"></span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="bi bi-x-circle me-1"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-</div>
+        </div>
 
 
 
@@ -406,7 +419,7 @@
     <footer class="container-lg text-center py-10"
         style="padding-top: 0.5rem !important;padding-bottom: 0.5rem !important;">
         <p class="fs-6 mb-0">&copy; GYM Manager. <span class="d-none d-sm-inline-block">2025-2026 GYM
-                        Manager.</span></p>
+                Manager.</span></p>
     </footer>
     <!-- ========== END FOOTER ========== -->
     <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
@@ -457,7 +470,7 @@
             }
         });
     </script>
-        <script>
+    <script>
         function showToast(message, typeClass) {
             const toastEl = document.getElementById('dynamicToast');
             const toastBody = document.getElementById('toastMessage');
@@ -479,15 +492,15 @@
         @endif
 
 
-            $('#togglePassword').on('click', function () {
-        const passwordInput = $('#password');
-        const icon = $('#passwordIcon');
-        const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+        $('#togglePassword').on('click', function() {
+            const passwordInput = $('#password');
+            const icon = $('#passwordIcon');
+            const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
 
-        passwordInput.attr('type', type);
-        icon.toggleClass('bi-eye');
-        icon.toggleClass('bi-eye-slash');
-    });
+            passwordInput.attr('type', type);
+            icon.toggleClass('bi-eye');
+            icon.toggleClass('bi-eye-slash');
+        });
     </script>
 </body>
 
