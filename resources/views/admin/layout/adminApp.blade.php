@@ -55,16 +55,16 @@
             filter: invert(1) !important;
         }
 
-        input[type="date"] {
+        /* input[type="date"] {
             color: #fff !important;
         }
 
         input:focus-visible {
-            border: solid rgb(16, 206, 95) 1px !important;
+            border: solid white 1px !important;
         }
         select:focus-visible {
-            border: solid rgb(16, 206, 95) 1px !important;
-        }
+            border: solid white 1px !important;
+        } */
 
         /* Loader Wrapper */
         #loader-wrapper {

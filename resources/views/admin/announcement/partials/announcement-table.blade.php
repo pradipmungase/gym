@@ -6,7 +6,6 @@
             <th class="table-column-ps-0">For</th>
             <th>Description</th>
             <th>Date</th>
-            {{-- <th>Action</th> --}}
         </tr>
     </thead>
     <tbody>
@@ -17,28 +16,6 @@
                 <td>{{ ucfirst($announcement->for) }}</td>
                 <td>{{ ucfirst($announcement->description) }}</td>
                 <td>{{ \Carbon\Carbon::parse($announcement->date)->format('d M, Y') }}</td>
-                {{-- <td>
-                    <div>
-                        <div class="dropdown">
-                            <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Options
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item edit-announcement-btn" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#editAnnouncementModal"
-                                        data-announcement='@json($announcement)'>Edit</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item view-announcement-btn" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#viewAnnouncementModal"
-                                        data-announcement='@json($announcement)'>View Details</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </td> --}}
             </tr>
         @empty
             <tr>

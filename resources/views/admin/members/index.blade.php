@@ -43,16 +43,161 @@
                     </div>
                 </div>
             </div>
-            <div id="members-table-container" class="text-center my-4 table-responsive datatable-custom"
-                style="height: 800px">
-                <div class="spinner-border text-primary" role="status"></div>
-                <p class="mt-2">Loading members please wait...</p>
+
+            <div class="card">
+                <!-- Header -->
+                <div class="card-header card-header-content-md-between">
+                    <div class="mb-2 mb-md-0">
+                        <form>
+                            <!-- Search -->
+                            <div class="input-group input-group-merge input-group-flush">
+                                <div class="input-group-prepend input-group-text">
+                                    <i class="bi-search"></i>
+                                </div>
+                                <input id="searchMember" type="search" class="form-control" placeholder="Search members"
+                                    aria-label="Search members">
+                            </div>
+                            <!-- End Search -->
+                        </form>
+                    </div>
+
+                    <div class="d-grid d-sm-flex justify-content-md-end align-items-sm-center gap-2">
+                        <!-- Dropdown -->
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-white btn-sm dropdown-toggle w-100"
+                                id="usersExportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi-download me-2"></i> Export
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-sm-end" aria-labelledby="usersExportDropdown">
+                                <span class="dropdown-header">Options</span>
+                                <a id="export-copy" class="dropdown-item" href="javascript:;">
+                                    <img class="avatar avatar-xss avatar-4x3 me-2"
+                                        src="./assets/svg/illustrations/copy-icon.svg" alt="Image Description">
+                                    Copy
+                                </a>
+                                <a id="export-print" class="dropdown-item" href="javascript:;">
+                                    <img class="avatar avatar-xss avatar-4x3 me-2"
+                                        src="./assets/svg/illustrations/print-icon.svg" alt="Image Description">
+                                    Print
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <span class="dropdown-header">Download options</span>
+                                <a id="export-excel" class="dropdown-item" href="javascript:;">
+                                    <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/brands/excel-icon.svg"
+                                        alt="Image Description">
+                                    Excel
+                                </a>
+                                <a id="export-csv" class="dropdown-item" href="javascript:;">
+                                    <img class="avatar avatar-xss avatar-4x3 me-2"
+                                        src="./assets/svg/components/placeholder-csv-format.svg" alt="Image Description">
+                                    .CSV
+                                </a>
+                                <a id="export-pdf" class="dropdown-item" href="javascript:;">
+                                    <img class="avatar avatar-xss avatar-4x3 me-2" src="./assets/svg/brands/pdf-icon.svg"
+                                        alt="Image Description">
+                                    PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- End Dropdown -->
+
+                        <!-- Dropdown -->
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-white btn-sm w-100" id="memberFilterDropdown"
+                                data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                <i class="bi-filter me-1"></i> Filter <span
+                                    class="badge bg-soft-dark text-dark rounded-circle ms-1"></span>
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-sm-end dropdown-card card-dropdown-filter-centered"
+                                aria-labelledby="memberFilterDropdown" style="min-width: 22rem;">
+                                <!-- Card -->
+                                <div class="card">
+                                    <div class="card-header card-header-content-between">
+                                        <h5 class="card-header-title">Filter Members</h5>
+
+                                        <!-- Toggle Button -->
+                                        <button type="button"
+                                            class="filterCloseBtn  btn btn-ghost-secondary btn-icon btn-sm ms-2">
+                                            <i class="bi-x-lg"></i>
+                                        </button>
+                                        <!-- End Toggle Button -->
+                                    </div>
+
+                                    <div class="card-body">
+                                        {{-- <form> --}}
+                                        <div class="mb-4">
+                                            <small class="text-cap text-body">Gender</small>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="All"
+                                                            name="gender" id="filterGenderAll" checked>
+                                                        <label class="form-check-label" for="filterGenderAll">All</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="Male"
+                                                            name="gender" id="filterGenderMale">
+                                                        <label class="form-check-label"
+                                                            for="filterGenderMale">Male</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="Female"
+                                                            name="gender" id="filterGenderFemale">
+                                                        <label class="form-check-label"
+                                                            for="filterGenderFemale">Female</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Row -->
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm mb-8">
+                                                <small class="text-cap text-body">User Status</small>
+                                                <select class="form-select form-select-sm" id="filterStatus">
+                                                    <option value="">Any</option>
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                            <!-- End Col -->
+
+                                            <!-- End Col -->
+                                        </div>
+                                        <!-- End Row -->
+
+                                        <div class="d-grid mt-3">
+                                            <button class="btn btn-primary" id="applyFilters">Apply</button>
+                                        </div>
+                                        {{-- </form> --}}
+                                    </div>
+                                </div>
+                                <!-- End Card -->
+                            </div>
+                        </div>
+                        <!-- End Dropdown -->
+                    </div>
+                </div>
+                <!-- End Header -->
+                <div id="members-table-container" class="text-center my-4 table-responsive datatable-custom position-relative" style="height: 800px">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2">Loading...</p>
+                </div>
             </div>
 
         </div>
     </main>
 
-    <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <form id="addMemberForm" method="POST" action="#" enctype="multipart/form-data">
                 @csrf
@@ -61,7 +206,7 @@
                         <h5 class="modal-title" id="addMemberModalLabel">
                             <i class="bi bi-person-plus-fill me-2"></i> Add New Member
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body px-4">
@@ -96,11 +241,13 @@
 
                             <div class="col-md-6 col-lg-4">
                                 <label for="birth_date" class="form-label">Birth Date</label>
-                                <input type="date" class="form-control birthDate"  id="birth_date" name="birth_date" max="{{ date('Y-m-d') }}">
+                                <input type="date" class="form-control birthDate" id="birth_date" name="birth_date"
+                                    max="{{ date('Y-m-d') }}">
                             </div>
 
                             <div class="col-md-6 col-lg-4">
-                                <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
+                                <label for="gender" class="form-label">Gender <span
+                                        class="text-danger">*</span></label>
                                 <select class="form-select" id="gender" name="gender" required>
                                     <option selected disabled value="">Select gender</option>
                                     <option value="Male">Male</option>
@@ -237,7 +384,7 @@
                         <button type="submit" class="btn btn-success">
                             <i class="bi bi-check-circle me-1"></i> Submit
                         </button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel
                         </button>
                     </div>
@@ -257,7 +404,7 @@
                         <h5 class="modal-title" id="editmemberModalLabel">
                             <i class="bi bi-person-plus-fill me-2"></i> Edit member
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
 
@@ -294,7 +441,8 @@
 
                             <div class="col-md-6 col-lg-4">
                                 <label for="editBirthDate" class="form-label">Birth Date</label>
-                                <input type="date" class="form-control birthDate" id="editBirthDate" name="birth_date" max="{{ date('Y-m-d') }}">
+                                <input type="date" class="form-control birthDate" id="editBirthDate"
+                                    name="birth_date" max="{{ date('Y-m-d') }}">
                             </div>
 
                             <div class="col-md-6 col-lg-4">
@@ -355,10 +503,11 @@
                             <!-- 💳 Payment Information -->
                             <div class="col-12">
                                 <h5 class="border-bottom pb-2 mt-4">💳 Payment Information &nbsp;&nsc;
-                                    <small class="text-warning">Note: If you want to change the plan, please select the new plan
-                                    and then update the payment information very carefully.</small>
+                                    <small class="text-warning">Note: If you want to change the plan, please select the new
+                                        plan
+                                        and then update the payment information very carefully.</small>
                                 </h5>
-                                
+
                             </div>
 
                             <div class="col-md-6 col-lg-4">
@@ -439,7 +588,7 @@
                         <button type="submit" id="editPlanBtn" class="btn btn-success">
                             <i class="bi bi-check-circle me-1"></i> Update
                         </button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel
                         </button>
                     </div>
@@ -448,7 +597,7 @@
         </div>
     </div>
 
-    
+
     <div class="modal fade" id="addPaymentModal" tabindex="-1" aria-labelledby="addPaymentModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-md">
@@ -459,7 +608,7 @@
                         <h5 class="modal-title" id="addPaymentModalLabel">
                             <i class="bi bi-person-plus-fill me-2"></i> Add Payment
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
 
@@ -467,20 +616,24 @@
                         <div class="row gy-4">
                             <input type="hidden" value="" name="addPaymentMemberId" id="addPaymentMemberId">
                             <div class="col-md-12 col-lg-12">
-                                <label for="addPaymentMember" class="form-label"> Member Name<span class="text-danger">*</span></label>
-                                <input type="text" readonly class="form-control" id="addPaymentMember" name="member_name" required
-                                    placeholder="e.g., John Doe">
+                                <label for="addPaymentMember" class="form-label"> Member Name<span
+                                        class="text-danger">*</span></label>
+                                <input type="text" readonly class="form-control" id="addPaymentMember"
+                                    name="member_name" required placeholder="e.g., John Doe">
                                 <div class="invalid-feedback">Member is required.</div>
                             </div>
 
                             <div class="col-md-12 col-lg-12">
-                                <label for="addPaymentDate" class="form-label"> Payment Date <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="addPaymentDate" name="payment_date" required>
+                                <label for="addPaymentDate" class="form-label"> Payment Date <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="addPaymentDate" name="payment_date"
+                                    required>
                                 <div class="invalid-feedback">Payment date is required.</div>
                             </div>
 
                             <div class="col-md-12 col-lg-12">
-                                <label for="addPaymentMode" class="form-label"> Payment Mode <span class="text-danger">*</span></label>
+                                <label for="addPaymentMode" class="form-label"> Payment Mode <span
+                                        class="text-danger">*</span></label>
                                 <select class="form-select" id="addPaymentMode" name="payment_mode" required>
                                     <option selected disabled value="">Select Payment Mode</option>
                                     <option value="Cash">Cash</option>
@@ -492,7 +645,8 @@
                             </div>
 
                             <div class="col-md-12 col-lg-12">
-                                <label for="addPaymentAmount" class="form-label"> Amount <span class="text-danger">*</span></label>
+                                <label for="addPaymentAmount" class="form-label"> Amount <span
+                                        class="text-danger">*</span></label>
                                 <input type="number" class="form-control" id="addPaymentAmount" name="amount" required
                                     placeholder="e.g., 1000">
                                 <div class="invalid-feedback">Amount is required.</div>
@@ -503,7 +657,8 @@
 
                             <div class="col-md-12 col-lg-12">
                                 <label for="addPaymentDueAmount" class="form-label"> Due Amount</label>
-                                <input type="number" readonly class="form-control text-danger fw-bold" id="addPaymentDueAmount" name="due_amount" required>
+                                <input type="number" readonly class="form-control text-danger fw-bold"
+                                    id="addPaymentDueAmount" name="due_amount" required>
                                 <div class="invalid-feedback">Due amount is required.</div>
                             </div>
 
@@ -514,7 +669,7 @@
                         <button type="submit" id="editPlanBtn" class="btn btn-success">
                             <i class="bi bi-check-circle me-1"></i> Add Payment
                         </button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel
                         </button>
                     </div>

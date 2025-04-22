@@ -123,10 +123,30 @@ function fetchPlans(page = 1) {
 }
 
 
-function fetchmembers(page = 1) {
+// function fetchmembers(page = 1) {
+//     $.ajax({
+//         url: "members/fetch?page=" + page,
+//         type: 'GET',
+//         success: function (data) {
+//             $('#members-table-container').html(data);
+//         },
+//         error: function () {
+//             $('#members-table-container').html('<div class="text-danger text-center">Failed to load members.</div>');
+//         }
+//     });
+// }
+
+
+function fetchmembers(page = 1, query = '', genders = [], status = '') {
     $.ajax({
-        url: "members/fetch?page=" + page,
+        url: "members/fetch",
         type: 'GET',
+        data: {
+            page: page,
+            query: query,
+            genders: genders,
+            status: status
+        },
         success: function (data) {
             $('#members-table-container').html(data);
         },
@@ -135,6 +155,34 @@ function fetchmembers(page = 1) {
         }
     });
 }
+
+
+$('#searchMember').on('keyup', function () {
+    let query = $(this).val();
+    fetchmembers(1, query);
+});
+
+
+$('#applyFilters').on('click', function () {
+    let query = $('#searchMember').val();
+    let genders = [];
+
+    // Gather checked gender checkboxes
+    $('input[name="gender"]:checked').each(function () {
+        genders.push($(this).val());
+    });
+
+    let status = $('#filterStatus').val();
+    $('#memberFilterDropdown').click();
+
+    fetchmembers(1, query, genders, status);
+});
+
+$('.filterCloseBtn').on('click', function () {
+    $('#memberFilterDropdown').click();
+});
+
+
 
 
 function fetchTrainers(page = 1) {
@@ -1412,3 +1460,34 @@ $('#editTrainerImage').on('change', function (event) {
         reader.readAsDataURL(file);
     }
 });
+
+$('.clearFromDataWithError').on('click', function () {
+    resetAllModals();
+});
+
+// data-bs-dismiss="modal"
+
+
+
+
+function resetAllModals() {
+    // Close all open modals
+    $('.modal').modal('hide');
+
+    // Clear form inputs and errors inside each modal
+    $('.modal').each(function () {
+        const modal = $(this);
+
+        // Reset forms
+        modal.find('form').trigger('reset');
+
+        // Remove validation error classes
+        modal.find('.is-invalid').removeClass('is-invalid');
+        modal.find('.invalid-feedback').text('').hide();
+
+        // Optional: Clear file input previews or custom fields if needed
+        modal.find('input[type="file"]').val('');
+        modal.find('select').val('').trigger('change'); // for select2
+        modal.find('textarea').val('');
+    });
+}

@@ -1,5 +1,5 @@
 <table class="table">
-    <thead>
+    <thead class="thead-light">
         <tr>
             <th class="table-column-ps-0">Sr No</th>
             <th>Name & Email</th>
@@ -44,10 +44,15 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
                                 <a class="dropdown-item btn-edit-trainer"
-                                    data-trainer='@json($trainer)'>Edit
+                                    data-trainer='@json($trainer)'>
+                                    <i class="bi bi-pencil me-2"></i> Edit
                                 </a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ route('trainer.view', encrypt($trainer->id)) }}">View Details</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('trainer.view', encrypt($trainer->id)) }}">
+                                    <i class="bi bi-eye me-2"></i> View Details
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </td>

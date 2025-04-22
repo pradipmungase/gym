@@ -336,7 +336,7 @@
                         <h5 class="modal-title" id="verifyOtpModalLabel">
                             <i class="bi bi-check-circle me-2"></i> Verify OTP
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
 
@@ -364,7 +364,7 @@
                         <button type="submit" id="submitTenantBtn" class="btn btn-success">
                             <i class="bi bi-check-circle me-1"></i> Verify OTP
                         </button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel
                         </button>
                     </div>

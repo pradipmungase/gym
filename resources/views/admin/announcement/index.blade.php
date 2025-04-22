@@ -32,7 +32,7 @@
                         <h5 class="modal-title" id="addAnnouncementModalLabel">
                             <i class="bi bi-person-plus-fill me-2"></i> Add New Announcement
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
 
@@ -91,7 +91,7 @@
                         <button type="submit" id="submitTenantBtn" class="btn btn-success">
                             <i class="bi bi-check-circle me-1"></i> Submit
                         </button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel
                         </button>
                     </div>

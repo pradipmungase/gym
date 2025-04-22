@@ -1,4 +1,4 @@
-{{-- Laravel pagination --}}
+<hr>
 <div class="d-flex justify-content-end mt-3">
     @if ($data->lastPage() > 1)
         <nav>

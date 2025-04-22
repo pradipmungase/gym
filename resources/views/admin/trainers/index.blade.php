@@ -62,7 +62,7 @@
                         <h5 class="modal-title" id="addTrainerModalLabel">
                             <i class="bi bi-person-plus-fill me-2"></i> Add New Trainer
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
 
@@ -155,7 +155,7 @@
                         <button type="submit" class="btn btn-success">
                             <i class="bi bi-check-circle me-1"></i> Submit
                         </button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel
                         </button>
                     </div>
@@ -175,7 +175,7 @@
                         <h5 class="modal-title" id="editTrainerModalLabel">
                             <i class="bi bi-pencil-square me-2"></i> Edit Trainer
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
 
@@ -273,7 +273,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-save me-1"></i> Update
                         </button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel
                         </button>
                     </div>

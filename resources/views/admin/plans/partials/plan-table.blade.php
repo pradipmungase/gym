@@ -26,9 +26,15 @@
                                 <li>
                                     <a class="dropdown-item edit-plan-btn" href="#" data-bs-toggle="modal"
                                         data-bs-target="#editPlanModal"
-                                        data-plan='@json($plan)'>Edit</a>
+                                        data-plan='@json($plan)'>
+                                        <i class="bi bi-pencil me-2"></i> Edit
+                                    </a>
                                 </li>
-                                <li><a class="dropdown-item" href="{{ route('plans.view', encrypt($plan->id)) }}">View Details</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('plans.view', encrypt($plan->id)) }}">
+                                        <i class="bi bi-eye me-2"></i> View Details
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>

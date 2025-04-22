@@ -30,18 +30,39 @@ class MembersController extends Controller{
 
     public function fetchmembers(Request $request)
     {
+        $query = $request->input('query');
+        $genders = $request->input('genders', []);
+        $status = $request->input('status');
 
         $latestPayments = DB::table('member_payments as mp1')
             ->select('mp1.*')
             ->whereRaw('mp1.id = (SELECT mp2.id FROM member_payments mp2 WHERE mp2.member_id = mp1.member_id ORDER BY mp2.id DESC LIMIT 1)');
 
-        $members = DB::table('members')
+        $membersQuery = DB::table('members')
             ->join('member_details', 'members.id', '=', 'member_details.member_id')
             ->joinSub($latestPayments, 'member_payments', function ($join) {
                 $join->on('members.id', '=', 'member_payments.member_id');
             })
             ->where('members.gym_id', Auth::user()->id)
-            ->whereNull('members.deleted_at')
+            ->whereNull('members.deleted_at');
+
+        if ($query) {
+            $membersQuery->where(function ($q) use ($query) {
+                $q->where('members.name', 'like', "%$query%")
+                ->orWhere('members.mobile', 'like', "%$query%")
+                ->orWhere('members.email', 'like', "%$query%");
+            });
+        }
+
+        if (!empty($genders) && !in_array('All', $genders)) {
+            $membersQuery->whereIn('members.gender', $genders);
+        }
+
+        if ($status) {
+            $membersQuery->where('members.status', $status);
+        }
+
+        $members = $membersQuery
             ->orderBy('members.created_at', 'desc')
             ->select(
                 'members.*',
@@ -52,8 +73,7 @@ class MembersController extends Controller{
             )
             ->paginate(10);
 
-
-        return view('admin.members.partials.members-table', compact('members'))->render(); // returns only table partial
+        return view('admin.members.partials.members-table', compact('members'))->render();
     }
 
 
@@ -236,7 +256,7 @@ class MembersController extends Controller{
 
             if ($request->hasFile('memberImg')) {
                 $image = $request->file('memberImg');
-                $path = uploadFile($image, 'memberProfilePicture', $id);
+                $filename = uploadFile($image, 'memberProfilePicture', $id);
             }
 
             DB::table('members')->where('id', $id)->update([
@@ -246,7 +266,7 @@ class MembersController extends Controller{
                 'joining_date' => $request->joining_date,
                 'birth_date' => $request->birth_date,
                 'gender' => $request->gender,
-                'image' => $path,
+                'image' => $filename,
                 'status' => 'Active',
                 'updated_at' => now(),
             ]);

@@ -28,12 +28,16 @@
                                 <li>
                                     <a class="dropdown-item edit-expense-btn" href="#" data-bs-toggle="modal"
                                         data-bs-target="#editExpenseModal"
-                                        data-expense='@json($expense)'>Edit</a>
+                                        data-expense='@json($expense)'>
+                                        <i class="bi bi-pencil me-2"></i> Edit
+                                    </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item view-expense-btn" href="#" data-bs-toggle="modal"
                                         data-bs-target="#viewExpenseModal"
-                                        data-expense='@json($expense)'>View Details</a>
+                                        data-expense='@json($expense)'>
+                                        <i class="bi bi-eye me-2"></i> View Details
+                                    </a>
                                 </li>
                             </ul>
                         </div>
