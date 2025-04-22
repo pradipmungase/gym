@@ -187,7 +187,8 @@
                     </div>
                 </div>
                 <!-- End Header -->
-                <div id="members-table-container" class="text-center my-4 table-responsive datatable-custom position-relative" style="height: 800px">
+                <div id="members-table-container"
+                    class="text-center my-4 table-responsive datatable-custom position-relative" style="">
                     <div class="spinner-border text-primary" role="status"></div>
                     <p class="mt-2">Loading...</p>
                 </div>
@@ -206,8 +207,8 @@
                         <h5 class="modal-title" id="addMemberModalLabel">
                             <i class="bi bi-person-plus-fill me-2"></i> Add New Member
                         </h5>
-                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body px-4">
                         <div class="row gy-4">
@@ -256,19 +257,28 @@
                                 </select>
                                 <div class="invalid-feedback">Gender is required.</div>
                             </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="d-flex align-items-center">
+                                    <!-- Avatar -->
+                                    <label class="avatar avatar-xl avatar-circle" for="avatarUploader">
+                                        <img id="avatarImg" class="avatar-img"
+                                            src="{{ asset('assets/img/160x160/images (1).jpg') }}"
+                                            alt="Image Description">
+                                    </label>
 
-                            <div class="col-md-3 col-lg-2">
-                                <label for="addMemberImg" class="form-label">Member Image</label>
-                                <div class="image-upload-wrapper" id="triggerUploadadd">
-                                    <img id="previewMemberImgAdd" src="{{ asset('assets/img/160x160/images (1).jpg') }}"
-                                        alt="Image Preview">
-                                    <span class="upload-icon">
-                                        <i class="fa fa-camera"></i>
-                                    </span>
-                                    <input type="file" accept="image/*" name="memberImg" id="addMemberImg">
+                                    <div class="d-flex gap-3 ms-4">
+                                        <div class="form-attachment-btn btn btn-sm btn-primary">Upload photo
+                                            <input type="file" accept="image/*" name="memberImg"
+                                                class="js-file-attach form-attachment-btn-label" id="avatarUploader"
+                                                data-hs-file-attach-options='{"textTarget": "#avatarImg","mode": "image","targetAttr": "src","resetTarget": ".js-file-attach-reset-img","resetImg": "../assets/img/160x160/images (1).jpg","allowTypes": [".png", ".jpeg", ".jpg"]}'>
+                                        </div>
+                                        <!-- End Avatar -->
+
+                                        <button type="button"
+                                            class="js-file-attach-reset-img btn btn-white btn-sm">Delete</button>
+                                    </div>
                                 </div>
                             </div>
-
                             <!-- 🏋️ Training Details -->
                             <div class="col-12">
                                 <h5 class="border-bottom pb-2 mt-4">🏋️ Training Details</h5>
@@ -371,8 +381,7 @@
                                     id="final_price" readonly>
                                 <div class="invalid-feedback">The final price field must be at least 0.</div>
                             </div>
-
-                            <div class="col-md-4 col-lg-2">
+                            <div class="col-md-5 col-lg-4">
                                 <label class="form-label">Due Amount</label>
                                 <input type="text" class="form-control text-danger fw-bold" value="0"
                                     name="due_amount" id="due_amount" readonly>
@@ -404,8 +413,8 @@
                         <h5 class="modal-title" id="editmemberModalLabel">
                             <i class="bi bi-person-plus-fill me-2"></i> Edit member
                         </h5>
-                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body px-4">
@@ -456,7 +465,7 @@
                                 </select>
                                 <div class="invalid-feedback">Gender is required.</div>
                             </div>
-                            <div class="col-md-3 col-lg-2">
+                            {{-- <div class="col-md-3 col-lg-2">
                                 <label for="editMemberImg" class="form-label">Member Image</label>
                                 <div class="image-upload-wrapper" id="triggerUpload">
                                     <img id="previewMemberImg" src="{{ asset('assets/img/160x160/images (1).jpg') }}"
@@ -466,7 +475,34 @@
                                     </span>
                                     <input type="file" accept="image/*" name="memberImg" id="editMemberImg">
                                 </div>
+                            </div> --}}
+
+
+
+                            <div class="col-md-6 col-lg-4">
+                                <div class="d-flex align-items-center">
+                                    <!-- Avatar -->
+                                    <label class="avatar avatar-xl avatar-circle" for="avatarUploader">
+                                        <img id="previewMemberImg" class="avatar-img"
+                                            src="{{ asset('assets/img/160x160/images (1).jpg') }}"
+                                            alt="Image Description">
+                                    </label>
+
+                                    <div class="d-flex gap-3 ms-4">
+                                        <div class="form-attachment-btn btn btn-sm btn-primary">Upload photo
+                                            <input type="file" accept="image/*" name="memberImg"
+                                                class="js-file-attach form-attachment-btn-label" id="avatarUploader"
+                                                data-hs-file-attach-options='{"textTarget": "#previewMemberImg","mode": "image","targetAttr": "src","resetTarget": ".js-file-attach-reset-img","resetImg": "../assets/img/160x160/images (1).jpg","allowTypes": [".png", ".jpeg", ".jpg"]}'>
+                                        </div>
+                                        <!-- End Avatar -->
+
+                                        <button type="button"
+                                            class="js-file-attach-reset-img btn btn-white btn-sm">Delete</button>
+                                    </div>
+                                </div>
                             </div>
+
+
                             <!-- 🏋️ Training Details -->
                             <div class="col-md-6 col-lg-4">
                                 <label for="editJoiningDate" class="form-label">Joining Date <span
@@ -573,7 +609,7 @@
                                 <div class="invalid-feedback">The final price field must be at least 0.</div>
                             </div>
 
-                            <div class="col-md-4 col-lg-2">
+                            <div class="col-md-5 col-lg-4">
                                 <label class="form-label">Due Amount</label>
                                 <input type="text" class="form-control text-danger fw-bold" value="0"
                                     name="due_amount" id="editDue_amount" readonly>
@@ -608,8 +644,8 @@
                         <h5 class="modal-title" id="addPaymentModalLabel">
                             <i class="bi bi-person-plus-fill me-2"></i> Add Payment
                         </h5>
-                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body px-4">

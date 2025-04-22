@@ -251,52 +251,6 @@ if (window.location.pathname === '/attendance') {
 
 
 
-if (window.location.pathname === '/members') {
-
-
-    // Trigger file input when image or icon is clicked
-    document.getElementById('triggerUpload').addEventListener('click', function () {
-        document.getElementById('editMemberImg').click();
-    });
-
-    // Preview selected image
-    document.getElementById('editMemberImg').addEventListener('change', function (e) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('previewMemberImg').src = e.target.result;
-        };
-        if (this.files[0]) {
-            reader.readAsDataURL(this.files[0]);
-        }
-    });
-
-
-    // Trigger file input when image or icon is clicked
-    document.getElementById('triggerUploadadd').addEventListener('click', function () {
-        document.getElementById('addMemberImg').click();
-    });
-
-    // Preview selected image
-    document.getElementById('addMemberImg').addEventListener('change', function (e) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('previewMemberImgAdd').src = e.target.result;
-        };
-        if (this.files[0]) {
-            reader.readAsDataURL(this.files[0]);
-        }
-    });
-
-}
-
-
-
-
-
-
-
-
-
 $(document).ready(function () {
     $('#addMemberForm').on('submit', function (e) {
         e.preventDefault();
@@ -323,6 +277,7 @@ $(document).ready(function () {
                 if (response.status === 'success') {
                     $('#addMemberModal').modal('hide');
                     $('#addMemberForm')[0].reset();
+                    $('.js-file-attach-reset-img').click();
                     fetchmembers();
                     showToast(response.message, 'bg-success');
                 } else {
@@ -337,11 +292,23 @@ $(document).ready(function () {
             error: function (xhr) {
                 if (xhr.status === 422) {
                     const errors = xhr.responseJSON.errors;
+                    let firstErrorField = null;
+
                     $.each(errors, function (key, messages) {
                         const field = $(`#${key}`);
                         field.addClass('is-invalid');
                         field.siblings('.invalid-feedback').text(messages[0]).show();
+
+                        // Store the first invalid field to focus
+                        if (!firstErrorField) {
+                            firstErrorField = field;
+                        }
                     });
+
+                    // Focus the first error field
+                    if (firstErrorField) {
+                        firstErrorField.focus();
+                    }
                 } else {
                     showToast('Something went wrong. Please try again.', 'bg-danger');
                 }
@@ -399,6 +366,8 @@ $(document).ready(function () {
                     $('.is-invalid').removeClass('is-invalid');
                     $('.invalid-feedback').text('').hide();
 
+                    let firstErrorField = null;
+
                     $.each(errors, function (key, messages) {
                         // Capitalize first letter of the key
                         const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
@@ -407,7 +376,17 @@ $(document).ready(function () {
                         // If field is readonly, allow error display
                         field.addClass('is-invalid');
                         field.siblings('.invalid-feedback').text(messages[0]).show();
+
+                        // Focus first error field
+                        if (!firstErrorField) {
+                            firstErrorField = field;
+                        }
                     });
+
+                    // Set focus after all error messages are applied
+                    if (firstErrorField) {
+                        firstErrorField.focus();
+                    }
                 } else {
                     showToast('Something went wrong. Please try again.', 'bg-danger');
                 }
@@ -547,6 +526,13 @@ $(document).ready(function () {
             error: function (xhr) {
                 if (xhr.status === 422) {
                     const errors = xhr.responseJSON.errors;
+
+                    // Clear previous validation states
+                    $('.is-invalid').removeClass('is-invalid');
+                    $('.invalid-feedback').text('').hide();
+
+                    let firstErrorField = null;
+
                     $.each(errors, function (key, messages) {
                         const field = $(`[name="${key}"]`);
                         field.addClass('is-invalid');
@@ -554,7 +540,17 @@ $(document).ready(function () {
                         // Show the invalid-feedback directly below the input
                         const feedback = field.closest('.form-group, .mb-3, .col-md-6').find('.invalid-feedback');
                         feedback.text(messages[0]).show();
+
+                        if (!firstErrorField) {
+                            firstErrorField = field;
+                        }
                     });
+
+                    // Focus the first field with an error
+                    if (firstErrorField) {
+                        firstErrorField.focus();
+                    }
+
                 } else {
                     showToast('Something went wrong. Please try again.', 'bg-danger');
                 }
@@ -608,6 +604,14 @@ $('#menberImg').on('change', function (event) {
 
         reader.readAsDataURL(file);
     }
+});
+
+$(document).on('click', '.js-file-attach-reset-img', function () {
+    // Reset image to default
+    $('#previewMemberImg').attr('src', 'assets/img/160x160/images (1).jpg');
+
+    // Clear the file input
+    $('#avatarUploader').val('');
 });
 
 
@@ -692,6 +696,13 @@ $(document).ready(function () {
             error: function (xhr) {
                 if (xhr.status === 422) {
                     const errors = xhr.responseJSON.errors;
+
+                    // Clear previous validation states within the form
+                    $('#editTrainerForm .is-invalid').removeClass('is-invalid');
+                    $('#editTrainerForm .invalid-feedback').text('').hide();
+
+                    let firstErrorField = null;
+
                     $.each(errors, function (key, messages) {
                         const field = $(`#editTrainerForm [name="${key}"]`);
                         field.addClass('is-invalid');
@@ -699,7 +710,17 @@ $(document).ready(function () {
                         // Show the invalid-feedback near the input
                         const feedback = field.closest('.form-group, .mb-3, .col-md-6').find('.invalid-feedback');
                         feedback.text(messages[0]).show();
+
+                        // Set focus on the first invalid field
+                        if (!firstErrorField) {
+                            firstErrorField = field;
+                        }
                     });
+
+                    if (firstErrorField) {
+                        firstErrorField.focus();
+                    }
+
                 } else {
                     showToast('Something went wrong. Please try again.', 'bg-danger');
                 }
@@ -1412,17 +1433,38 @@ $(document).on('submit', '.register-form', function (e) {
             }
         },
         error: function (xhr) {
+            // Re-enable button in any case
+            $btn.prop('disabled', false).html('<i class="bi bi-check-circle me-1"></i> Sign Up');
+
             if (xhr.status === 422) {
                 let errors = xhr.responseJSON.errors;
+
+                // Clear previous validation
+                $('.is-invalid').removeClass('is-invalid');
+                $('.invalid-feedback').text('').hide();
+
+                let firstErrorField = null;
+
                 $.each(errors, function (key, messages) {
                     const field = $(`[name="${key}"]`);
                     field.addClass('is-invalid');
+
+                    // Display error
                     field.siblings('.invalid-feedback').text(messages[0]).show();
+
+                    // Set focus on first invalid field
+                    if (!firstErrorField) {
+                        firstErrorField = field;
+                    }
                 });
 
+                if (firstErrorField) {
+                    firstErrorField.focus();
+                }
+            } else {
+                showToast('Something went wrong. Please try again.', 'bg-danger');
             }
-            $btn.prop('disabled', false).html('<i class="bi bi-check-circle me-1"></i> Sign Up');
-        }
+        },
     });
 });
 
@@ -1465,10 +1507,6 @@ $('.clearFromDataWithError').on('click', function () {
     resetAllModals();
 });
 
-// data-bs-dismiss="modal"
-
-
-
 
 function resetAllModals() {
     // Close all open modals
@@ -1489,5 +1527,6 @@ function resetAllModals() {
         modal.find('input[type="file"]').val('');
         modal.find('select').val('').trigger('change'); // for select2
         modal.find('textarea').val('');
+        $('.js-file-attach-reset-img').click();
     });
 }

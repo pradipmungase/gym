@@ -101,6 +101,14 @@
                 transform: rotate(360deg);
             }
         }
+
+        .card-table,
+        .table,
+        .table-responsive,
+        .dropdown,
+        .dropdown-menu {
+            overflow: visible !important;
+        }
     </style>
 
     <script>
@@ -747,6 +755,7 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('My.js') }}"></script>
+    <script src="{{ asset('') }}assets/vendor/hs-file-attach/dist/hs-file-attach.min.js"></script>
 
     <!-- JS Plugins Init. -->
     <script>
@@ -857,7 +866,13 @@
         })()
     </script>
     <!-- End Style Switcher JS -->
-
+    <script>
+        (function() {
+            // INITIALIZATION OF FILE ATTACH
+            // =======================================================
+            new HSFileAttach('.js-file-attach')
+        })();
+    </script>
 
 
 
