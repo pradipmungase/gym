@@ -188,7 +188,7 @@
                 </div>
                 <!-- End Header -->
                 <div id="members-table-container"
-                    class="text-center my-4 table-responsive datatable-custom position-relative" style="">
+                    class="text-center my-4 table-responsive datatable-custom position-relative">
                     <div class="spinner-border text-primary" role="status"></div>
                     <p class="mt-2">Loading...</p>
                 </div>
@@ -253,7 +253,6 @@
                                     <option selected disabled value="">Select gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
                                 </select>
                                 <div class="invalid-feedback">Gender is required.</div>
                             </div>
@@ -344,7 +343,7 @@
                             </div>
 
                             <div class="col-md-6 col-lg-4">
-                                <label for="admission_fee" class="form-label">Admission Fee</label>
+                                <label for="admission_fee" class="form-label">Admission Fee <small class="text-muted"> (First payment at time of joining)</small></label>
                                 <input type="number" class="form-control" id="admission_fee" name="admission_fee"
                                     placeholder="Enter admission fee">
                                 <div class="invalid-feedback">Admission fee is required.</div>
@@ -461,23 +460,9 @@
                                     <option selected disabled value="">Select gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
                                 </select>
                                 <div class="invalid-feedback">Gender is required.</div>
                             </div>
-                            {{-- <div class="col-md-3 col-lg-2">
-                                <label for="editMemberImg" class="form-label">Member Image</label>
-                                <div class="image-upload-wrapper" id="triggerUpload">
-                                    <img id="previewMemberImg" src="{{ asset('assets/img/160x160/images (1).jpg') }}"
-                                        alt="Image Preview">
-                                    <span class="upload-icon">
-                                        <i class="fa fa-camera"></i>
-                                    </span>
-                                    <input type="file" accept="image/*" name="memberImg" id="editMemberImg">
-                                </div>
-                            </div> --}}
-
-
 
                             <div class="col-md-6 col-lg-4">
                                 <div class="d-flex align-items-center">
@@ -571,7 +556,7 @@
                             </div>
 
                             <div class="col-md-6 col-lg-4">
-                                <label for="editAdmissionFee" class="form-label">Admission Fee</label>
+                                <label for="editAdmissionFee" class="form-label">Admission Fee <small class="text-muted"> (First payment at time of joining)</small></label>
                                 <input type="number" class="form-control" id="editAdmissionFee" name="admission_fee"
                                     placeholder="Enter admission fee">
                                 <div class="invalid-feedback">Admission fee is required.</div>

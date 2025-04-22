@@ -118,8 +118,11 @@
 
         /* Green color when checked */
         .form-check-input:checked {
-            background-color: #198754 !important; /* Bootstrap 'success' color */
-            border-color: #198754 !important;
+            background-color: #2F6AD9 !important; /* Bootstrap 'success' color */
+            border-color: #2F6AD9 !important;
+        }
+        .datatable-custom{
+            overflow: visible !important;
         }
     </style>
 
