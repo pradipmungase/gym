@@ -517,6 +517,7 @@ $(document).ready(function () {
                 if (response.status === 'success') {
                     $('#addTrainerModal').modal('hide');
                     $('#addTrainerForm')[0].reset();
+                    $('.js-file-attach-reset-img').click();
                     fetchTrainers();
                     showToast(response.message, 'bg-success');
                 } else {
@@ -575,6 +576,13 @@ $(document).on('click', '.btn-edit-trainer', function () {
     $('#editJoiningDate').val(trainer.joining_date);
     $('#editMonthlySalary').val(trainer.monthly_salary);
 
+    const fallbackImg = "/assets/img/160x160/images (1).jpg";
+    if (trainer.image) {
+        $('#previewEditTrainerImg').attr('src', trainer.image);
+    } else {
+        $('#previewEditTrainerImg').attr('src', fallbackImg);
+    }
+    
     $('#editTrainerModal').modal('show');
 });
 
@@ -609,6 +617,7 @@ $('#menberImg').on('change', function (event) {
 $(document).on('click', '.js-file-attach-reset-img', function () {
     // Reset image to default
     $('#previewMemberImg').attr('src', 'assets/img/160x160/images (1).jpg');
+    $('#previewEditTrainerImg').attr('src', 'assets/img/160x160/images (1).jpg');
 
     // Clear the file input
     $('#avatarUploader').val('');
@@ -1468,40 +1477,6 @@ $(document).on('submit', '.register-form', function (e) {
     });
 });
 
-
-// Trigger file input when clicking the preview area
-$('#triggerUploadTrainer').on('click', function () {
-    $('#trainerImage').trigger('click');
-});
-
-// Show image preview
-$('#trainerImage').on('change', function (event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            $('#previewTrainerImg').attr('src', e.target.result);
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-// Trigger file input when clicking the preview area
-$('#triggerUploadEditTrainer').on('click', function () {
-    $('#editTrainerImage').trigger('click');
-});
-
-// Show image preview
-$('#editTrainerImage').on('change', function (event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            $('#previewEditTrainerImg').attr('src', e.target.result);
-        };
-        reader.readAsDataURL(file);
-    }
-});
 
 $('.clearFromDataWithError').on('click', function () {
     resetAllModals();

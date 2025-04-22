@@ -135,19 +135,29 @@
                                 <div class="invalid-feedback">Monthly salary is required.</div>
                             </div>
 
+                            <div class="col-md-6 col-lg-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- Avatar -->
+                                    <label class="avatar avatar-xl avatar-circle" for="avatarUploader">
+                                        <img id="avatarImgTrainer" class="avatar-img"
+                                            src="{{ asset('assets/img/160x160/images (1).jpg') }}"
+                                            alt="Image Description">
+                                    </label>
 
-                            <div class="col-md-3 col-lg-2">
-                                <label for="trainerImage" class="form-label">Trainer Image</label>
-                                <div class="image-upload-wrapper" id="triggerUploadTrainer" style="cursor: pointer;">
-                                    <img id="previewTrainerImg" src="{{ asset('assets/img/160x160/images (1).jpg') }}"
-                                        alt="Image Preview" style="width: 100%; height: auto;">
-                                    <span class="upload-icon">
-                                        <i class="fa fa-camera"></i>
-                                    </span>
+                                    <div class="d-flex gap-3 ms-4">
+                                        <div class="form-attachment-btn btn btn-sm btn-primary">Upload photo
+                                            <input type="file" accept="image/*" name="trainerImage"
+                                                class="js-file-attach form-attachment-btn-label" id="avatarUploader"
+                                                data-hs-file-attach-options='{"textTarget": "#avatarImgTrainer","mode": "image","targetAttr": "src","resetTarget": ".js-file-attach-reset-img","resetImg": "../assets/img/160x160/images (1).jpg","allowTypes": [".png", ".jpeg", ".jpg"]}'>
+                                        </div>
+                                        <!-- End Avatar -->
+
+                                        <button type="button"
+                                            class="js-file-attach-reset-img btn btn-white btn-sm">Delete</button>
+                                    </div>
                                 </div>
-                                <input type="file" accept="image/*" name="trainerImage" id="trainerImage"
-                                    style="display: none;">
                             </div>
+
                         </div>
                     </div>
 
@@ -250,19 +260,29 @@
 
 
 
-                            <div class="col-md-3 col-lg-2">
-                                <label for="editTrainerImage" class="form-label">Trainer Image</label>
-                                <div class="image-upload-wrapper" id="triggerUploadEditTrainer" style="cursor: pointer;">
-                                    <img id="previewEditTrainerImg" src="{{ asset('assets/img/160x160/images (1).jpg') }}"
-                                        alt="Image Preview" style="width: 100%; height: auto;">
-                                    <span class="upload-icon">
-                                        <i class="fa fa-camera"></i>
-                                    </span>
-                                </div>
-                                <input type="file" accept="image/*" name="editTrainerImage" id="editTrainerImage"
-                                    style="display: none;">
-                            </div>
+                     
+                                                        <div class="col-md-6 col-lg-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- Avatar -->
+                                    <label class="avatar avatar-xl avatar-circle" for="avatarUploader">
+                                        <img id="previewEditTrainerImg" class="avatar-img"
+                                            src="{{ asset('assets/img/160x160/images (1).jpg') }}"
+                                            alt="Image Description">
+                                    </label>
 
+                                    <div class="d-flex gap-3 ms-4">
+                                        <div class="form-attachment-btn btn btn-sm btn-primary">Upload photo
+                                            <input type="file" accept="image/*" name="editTrainerImage"
+                                                class="js-file-attach form-attachment-btn-label" id="avatarUploader"
+                                                data-hs-file-attach-options='{"textTarget": "#previewEditTrainerImg","mode": "image","targetAttr": "src","resetTarget": ".js-file-attach-reset-img","resetImg": "../assets/img/160x160/images (1).jpg","allowTypes": [".png", ".jpeg", ".jpg"]}'>
+                                        </div>
+                                        <!-- End Avatar -->
+
+                                        <button type="button"
+                                            class="js-file-attach-reset-img btn btn-white btn-sm">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
 
 
 

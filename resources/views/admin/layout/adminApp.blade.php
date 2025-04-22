@@ -107,7 +107,7 @@
         .table-responsive,
         .dropdown,
         .dropdown-menu {
-            overflow: visible !important;
+            /* overflow: visible !important; */
         }
     </style>
 
