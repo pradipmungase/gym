@@ -16,7 +16,7 @@
             </div>
             <div id="expenses-table-container" class="text-center my-4 table-responsive datatable-custom" style="height: 800px">
                 <div class="spinner-border text-primary" role="status"></div>
-                <p class="mt-2">Loading expenses please wait...</p>
+                <p class="mt-2">Loading attendance please wait...</p>
             </div>
 
         </div>

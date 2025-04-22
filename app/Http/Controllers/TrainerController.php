@@ -181,7 +181,14 @@ class TrainerController extends Controller{
     {
         $id = decrypt($id);
         $trainer = DB::table('trainers')->where('id', $id)->first();
-        return view('admin.trainers.view', compact('trainer'));
+
+        $trainerMembers = DB::table('member_details')
+            ->where('trainer_id', $id)
+            ->join('members', 'member_details.member_id', '=', 'members.id')
+            ->select('members.*', 'member_details.expiry_date') // Select member columns and expiry_date from member_details
+            ->get();
+
+        return view('admin.trainers.view', compact('trainer','trainerMembers'));
     }
 
 
