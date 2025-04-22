@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+
 
 class TrainerController extends Controller{
     
@@ -29,16 +31,48 @@ class TrainerController extends Controller{
     }
     public function store(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'email'  => 'required|string|unique:trainers,email', // adjust type as per your DB schema
-            'phone'     => 'required|numeric|min:1|unique:trainers,phone',
-            'gender'     => 'required|string',
-            'address'     => 'required|string',
-            'image'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'joining_date'     => 'required|date',
-            'monthly_salary'     => 'required|numeric|min:1',
+            'email' => 'required|string|email|unique:trainers,email',
+            'phone' => [
+                'required',
+                'regex:/^[6-9]\d{9}$/',
+                Rule::unique('trainers', 'phone'),
+            ],
+            'gender' => 'required|string',
+            'address' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'joining_date' => 'required|date',
+            'monthly_salary' => 'required|numeric|min:1',
+        ], [
+            'name.required' => 'Trainer name is required.',
+            'name.max' => 'Name should not exceed 255 characters.',
+
+            'email.required' => 'Email is required.',
+            'email.email' => 'Enter a valid email address.',
+            'email.unique' => 'This email is already taken.',
+
+            'phone.required' => 'Phone number is required.',
+            'phone.regex' => 'Enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.',
+            'phone.unique' => 'This phone number is already in use.',
+
+            'gender.required' => 'Please select a gender.',
+
+            'address.required' => 'Address is required.',
+
+            'image.image' => 'The file must be an image.',
+            'image.mimes' => 'Allowed image types are jpeg, png, jpg, gif, svg.',
+            'image.max' => 'Image size must not exceed 2MB.',
+
+            'joining_date.required' => 'Joining date is required.',
+            'joining_date.date' => 'Enter a valid joining date.',
+
+            'monthly_salary.required' => 'Monthly salary is required.',
+            'monthly_salary.numeric' => 'Monthly salary must be a number.',
+            'monthly_salary.min' => 'Monthly salary must be at least 1.',
         ]);
+
         DB::beginTransaction();
         try {
             $trainerId = DB::table('trainers')->insertGetId([
@@ -74,15 +108,54 @@ class TrainerController extends Controller{
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email'  => 'required|string|unique:trainers,email,' . $request->input('trainer_id'), // adjust type as per your DB schema
-            'phone'     => 'required|numeric|min:1|unique:trainers,phone,' . $request->input('trainer_id'),
-            'gender'     => 'required|string',
-            'address'     => 'required|string',
-            'image'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'joining_date'     => 'required|date',
-            'monthly_salary'     => 'required|numeric|min:1',
-            'trainer_id'   => 'required|exists:trainers,id',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                Rule::unique('trainers', 'email')->ignore($request->input('trainer_id')),
+            ],
+            'phone' => [
+                'required',
+                'regex:/^[6-9]\d{9}$/', // Indian mobile number validation
+                Rule::unique('trainers', 'phone')->ignore($request->input('trainer_id')),
+            ],
+            'gender' => 'required|string',
+            'address' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'joining_date' => 'required|date',
+            'monthly_salary' => 'required|numeric|min:1',
+            'trainer_id' => 'required|exists:trainers,id',
+        ], [
+            'name.required' => 'Trainer name is required.',
+            'name.max' => 'Trainer name should not exceed 255 characters.',
+
+            'email.required' => 'Email is required.',
+            'email.email' => 'Enter a valid email address.',
+            'email.unique' => 'This email is already in use.',
+
+            'phone.required' => 'Mobile number is required.',
+            'phone.regex' => 'Enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.',
+            'phone.unique' => 'This mobile number is already in use.',
+
+            'gender.required' => 'Gender is required.',
+
+            'address.required' => 'Address is required.',
+
+            'image.image' => 'The file must be an image.',
+            'image.mimes' => 'Only jpeg, png, jpg, gif, svg formats are allowed.',
+            'image.max' => 'Image size must not exceed 2MB.',
+
+            'joining_date.required' => 'Joining date is required.',
+            'joining_date.date' => 'Provide a valid joining date.',
+
+            'monthly_salary.required' => 'Monthly salary is required.',
+            'monthly_salary.numeric' => 'Salary must be a number.',
+            'monthly_salary.min' => 'Monthly salary must be at least 1.',
+
+            'trainer_id.required' => 'Trainer ID is required.',
+            'trainer_id.exists' => 'Selected trainer does not exist.',
         ]);
+
 
         if($request->hasFile('editTrainerImage')){
             $image = $request->file('editTrainerImage');

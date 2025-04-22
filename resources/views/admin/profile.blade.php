@@ -116,12 +116,12 @@
             <!-- Card -->
             <div id="emailSection" class="card">
               <div class="card-header">
-                <h4 class="card-title">Mobile number</h4>
+                <h4 class="card-title">Change your mobile number</h4>
               </div>
 
               <!-- Body -->
               <div class="card-body">
-                <p>Your current mobile number is <span class="fw-semibold">{{ Auth::user()->mobile }}</span></p>
+                <p>Your current mobile number is <span class="fw-semibold text-success">{{ Auth::user()->mobile }}</span></p>
 
                 <!-- Form -->
                 <form>
@@ -217,7 +217,7 @@
 
               <!-- Body -->
               <div class="card-body">
-                <p class="card-text">When you delete your account, you lose access to Front account services, and we permanently delete your personal data. You can cancel the deletion for 14 days.</p>
+                <p class="card-text">When you delete your account, you lose access to GYM Manager. account services, and we permanently delete your personal data.</p>
 
                 <div class="mb-4">
                   <!-- Form Check -->

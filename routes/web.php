@@ -99,6 +99,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/search', [DashboardController::class, 'search'])->name('search');
     Route::delete('/members/delete/{id}', [MembersController::class, 'delete'])->name('members.delete');
     Route::post('/members/addPayment', [MembersController::class, 'addPayment'])->name('members.addPayment');
+
+    Route::post('/members/updateStatus', [MembersController::class, 'updateStatus'])->name('members.updateStatus');
 });
 
 

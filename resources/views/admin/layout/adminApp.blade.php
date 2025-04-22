@@ -10,7 +10,7 @@
     <title>GYM Manager</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('logo/5.jpg') }}">
+    {{-- <link rel="shortcut icon" href="{{ asset('logo/5.jpg') }}"> --}}
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Font -->
@@ -85,7 +85,7 @@
         #loader {
             width: 50px;
             height: 50px;
-            border: 5px solid #3498db;
+            border: 5px solid #377dff;
             border-top: 5px solid transparent;
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -108,6 +108,18 @@
         .dropdown,
         .dropdown-menu {
             /* overflow: visible !important; */
+        }
+
+            /* Optional: Custom small switch */
+        .form-switch.form-switch-sm .form-check-input {
+            height: 1rem;
+            width: 2rem;
+        }
+
+        /* Green color when checked */
+        .form-check-input:checked {
+            background-color: #198754 !important; /* Bootstrap 'success' color */
+            border-color: #198754 !important;
         }
     </style>
 

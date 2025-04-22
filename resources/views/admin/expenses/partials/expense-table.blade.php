@@ -1,7 +1,7 @@
 <table class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
     <thead class="thead-light">
         <tr>
-            <th class="table-column-ps-0">Sr no</th>
+            <th class="table-column-ps-0">#</th>
             <th class="table-column-ps-0">Expense Name</th>
             <th>Amount</th>
             <th>Date</th>
@@ -14,7 +14,7 @@
             <tr>
                 <td class="table-column-ps-0">{{ $expenses->firstItem() + $loop->index }}</td>
                 <td>{{ $expense->name }}</td>
-                <td>{{ $expense->amount }}</td>
+                <td class="text-warning">₹ {{ number_format($expense->amount, 2) }}</td>
                 <td>{{ \Carbon\Carbon::parse($expense->date)->format('d M, Y') }}</td>
                 <td>{{ $expense->description }}</td>
                 <td>

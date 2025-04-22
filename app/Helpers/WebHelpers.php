@@ -196,25 +196,30 @@ function sendMarketingWhatsapp($whatsappNumber, $outputdata)
 }
 
 function sendWhatsAppMessageForMemberPayment($mobile, $name, $total_amount, $payment_mode, $due_amount, $payment_date){
-    $gymName = Auth::user()->gym_name ?? 'Your Gym';
-    $mobile = '7028143227';
-    $formattedDate = Carbon::parse($payment_date)->format('d M Y');
-    $formattedTime = Carbon::parse($payment_date)->format('h:i A');
-    $paymentMode = $payment_mode ?? 'Cash';
-    
-    $message = "👋 Hi {$name},\n\n"
-         . "💰 Your payment of ₹{$total_amount} has been successfully received.\n\n"
-         . "📅 Date: {$formattedDate}\n"
-         . "⏰ Time: {$formattedTime}\n"
-         . "💳 Payment Mode: {$paymentMode}\n"
-         . "💸 Due Amount Remaining: ₹{$due_amount}\n\n"
-         . "If you have any questions, feel free to contact us at 📞 *7028143227*.\n\n"
-         . "🏋️‍♂️ $gymName";
+    try {
+        $gymName = Auth::user()->gym_name ?? 'Your Gym';
+        $mobile = '7028143227';
+        $formattedDate = Carbon::parse($payment_date)->format('d M Y');
+        $formattedTime = Carbon::parse($payment_date)->format('h:i A');
+        $paymentMode = $payment_mode ?? 'Cash';
+        
+        $message = "👋 Hi {$name},\n\n"
+            . "💰 Your payment of ₹{$total_amount} has been successfully received.\n\n"
+            . "📅 Date: {$formattedDate}\n"
+            . "⏰ Time: {$formattedTime}\n"
+            . "💳 Payment Mode: {$paymentMode}\n"
+            . "💸 Due Amount Remaining: ₹{$due_amount}\n\n"
+            . "If you have any questions, feel free to contact us at 📞 *7028143227*.\n\n"
+            . "🏋️‍♂️ $gymName";
 
-    return Http::post('http://localhost:3000/send-message', [
-        'number' => '91' . $mobile,
-        'message' => $message,
-    ]);
+        Http::post('http://localhost:3000/send-message', [
+            'number' => '91' . $mobile,
+                'message' => $message,
+            ]);
+    } catch (\Exception $e) {
+        Log::error('WhatsApp Member Payment Message Failed: ' . $e->getMessage());
+        // Don't throw error to caller
+    }
 }   
 
 

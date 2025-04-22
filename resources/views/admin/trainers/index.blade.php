@@ -153,7 +153,7 @@
                                         <!-- End Avatar -->
 
                                         <button type="button"
-                                            class="js-file-attach-reset-img btn btn-white btn-sm">Delete</button>
+                                            class="js-file-attach-reset-img btn btn-outline-danger btn-sm">Delete</button>
                                     </div>
                                 </div>
                             </div>
@@ -279,7 +279,7 @@
                                         <!-- End Avatar -->
 
                                         <button type="button"
-                                            class="js-file-attach-reset-img btn btn-white btn-sm">Delete</button>
+                                            class="js-file-attach-reset-img btn btn-outline-danger btn-sm">Delete</button>
                                     </div>
                                 </div>
                             </div>

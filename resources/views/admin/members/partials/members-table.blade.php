@@ -2,12 +2,12 @@
     class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
     <thead class="thead-light">
         <tr>
-            <th class="">Sr No</th>
+            <th class="">#</th>
             <th>Name & Email</th>
             <th>Mobile No</th>
-            <th>Joining Date</th>
-            <th>Expiry Date</th>
+            <th>Joining Date & Expiry Date</th>
             <th>Due Amount</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -38,18 +38,23 @@
                 </td>
 
                 <td>{{ $member->mobile }}</td>
-                <td>{{ \Carbon\Carbon::parse($member->joining_date)->format('d M, Y') }}</td>
-                @if (\Carbon\Carbon::parse($member->expiry_date)->isPast())
-                    <td class="text-danger">
-                        {{ \Carbon\Carbon::parse($member->expiry_date)->format('d M, Y') }}
-                    </td>
-                @else
-                    <td class="text-success">
-                        {{ \Carbon\Carbon::parse($member->expiry_date)->format('d M, Y') }}
-                    </td>
-                @endif
-                <td class="text-danger">{{ $member->due_amount_payment }}</td>
-
+                <td>{{ \Carbon\Carbon::parse($member->joining_date)->format('d M, Y') }}
+                    <br>
+                    @if (\Carbon\Carbon::parse($member->expiry_date)->isPast())
+                            {{ \Carbon\Carbon::parse($member->expiry_date)->format('d M, Y') }}
+                    @else
+                        <span class="text-success">
+                            {{ \Carbon\Carbon::parse($member->expiry_date)->format('d M, Y') }}
+                        </span>
+                    @endif                
+                </td>
+                <td class="text-danger">₹ {{ number_format($member->due_amount_payment, 2) }}</td>
+                <td>
+                    <div class="form-check form-switch form-switch-sm">
+                        <input class="form-check-input" onclick="updateUserStatus({{ $member->member_id }})" type="checkbox" role="switch" 
+                            @if ($member->status == 'Active') checked @endif data-member-id="{{ $member->member_id }}">
+                    </div>
+                </td>
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown"

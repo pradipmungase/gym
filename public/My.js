@@ -1505,3 +1505,27 @@ function resetAllModals() {
         $('.js-file-attach-reset-img').click();
     });
 }
+
+
+
+function updateUserStatus(memberId) {
+    var status = document.querySelector(`[data-member-id="${memberId}"]`).checked ? 'Active' : 'Inactive';
+
+    // Send an AJAX request to update the user's status
+    $.ajax({
+        url: '/members/updateStatus', // Make sure this is the correct route
+        type: 'POST',
+        data: {
+            member_id: memberId,
+            status: status
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+        },
+        error: function (xhr, status, error) {
+            showToast(xhr.responseJSON.message, 'bg-danger');
+        }
+    });
+}
