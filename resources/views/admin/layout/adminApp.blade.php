@@ -46,6 +46,9 @@
     <!-- Manifest File link -->
     <link rel="manifest" href="{{ asset('/PWA/manifest.json') }}">
 
+
+    <link rel="stylesheet" href="{{ asset('') }}assets/vendor/flatpickr/dist/flatpickr.min.css">
+
     <style data-hs-appearance-onload-styles>
         * {
             transition: unset !important;
@@ -108,14 +111,6 @@
             }
         }
 
-        .card-table,
-        .table,
-        .table-responsive,
-        .dropdown,
-        .dropdown-menu {
-            /* overflow: visible !important; */
-        }
-
         /* Optional: Custom small switch */
         .form-switch.form-switch-sm .form-check-input {
             height: 1rem;
@@ -127,10 +122,6 @@
             background-color: #2F6AD9 !important;
             /* Bootstrap 'success' color */
             border-color: #2F6AD9 !important;
-        }
-
-        .datatable-custom {
-            overflow: visible !important;
         }
 
         .dropdown-menu-end[data-bs-popper] {
@@ -821,6 +812,11 @@
     <script src="{{ asset('My.js') }}"></script>
     <script src="{{ asset('') }}assets/vendor/hs-file-attach/dist/hs-file-attach.min.js"></script>
 
+    <script src="{{ asset('') }}assets/vendor/appear/dist/appear.min.js"></script>
+    <script src="{{ asset('') }}assets/vendor/hs-counter/dist/hs-counter.min.js"></script>
+
+    <script src="{{ asset('') }}assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="{{ asset('') }}assets/js/hs.flatpickr.js"></script>
     <!-- JS Plugins Init. -->
     <script>
         (function() {
@@ -975,6 +971,21 @@
         });
     </script>
 
+    <script>
+    (function() {
+        // INITIALIZATION OF COUNTER
+        // =======================================================
+        new HSCounter('.js-counter')
+    })();
+    </script>
+
+    <script>
+    (function() {
+        // INITIALIZATION OF FLATPICKR
+        // =======================================================
+        HSCore.components.HSFlatpickr.init('.js-flatpickr')
+    })();
+    </script>
 </body>
 
 </html>

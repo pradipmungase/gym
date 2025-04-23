@@ -29,6 +29,43 @@
                 </div>
             </div>
 
+
+
+            <div class="row text-center">
+  <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
+    <div class="js-counter h1 mb-1"
+          data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>52147</div>
+    <span>Code Lines</span>
+  </div>
+
+  <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
+    <div class="js-counter h1 mb-1"
+          data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>24583</div>
+    <span>Projects</span>
+  </div>
+
+  <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
+    <div class="js-counter h1 mb-1"
+          data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>7348</div>
+    <span>Working Hours</span>
+  </div>
+
+  <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
+    <div class="js-counter h1 mb-1"
+          data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>87904</div>
+    <span>Job Offers</span>
+  </div>
+</div>
+<!-- End Row -->
+
             <!-- Row 1 -->
             <div class="row mt-4">
                 <!-- Card 1 -->
