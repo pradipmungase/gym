@@ -58,11 +58,14 @@ class AuthController extends Controller{
     public function checkLogin(Request $request)
     {
         $request->validate([
-            'mobile' => 'required',
+            'mobile_for_login' => 'required',
             'password' => 'required',
         ]);
 
-        $credentials = $request->only('mobile', 'password');
+        $credentials = [
+            'mobile' => $request->input('mobile_for_login'),
+            'password' => $request->input('password'),
+        ];
         $remember = $request->has('remember'); // true if checkbox checked
 
         if (Auth::attempt($credentials, $remember)) {
@@ -70,7 +73,7 @@ class AuthController extends Controller{
             return redirect()->intended('dashboard');
         }
         session()->flash('error', 'Invalid credentials');
-        return back()->withErrors(['mobile' => 'Invalid credentials']);
+        return back()->withErrors(['mobile_for_login' => 'Invalid credentials']);
 
     }
 

@@ -1,7 +1,7 @@
 <table class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
     <thead class="thead-light">
         <tr>
-            <th class="table-column-ps-0">Sr no</th>
+            <th class="table-column-ps-0">#</th>
             <th class="table-column-ps-0">Plan Name</th>
             <th>Duration</th>
             <th>Price</th>

@@ -291,7 +291,7 @@
                             <div class="mb-4">
                                 <label class="form-label" for="signinSrEmail">Your Mobile Number</label>
                                 <input value="7028143227" type="text" class="form-control form-control-lg"
-                                    name="mobile" id="signinSrEmail" tabindex="1" placeholder="919876543210"
+                                    name="mobile_for_login" id="signinSrEmail" tabindex="1" placeholder="9876543210"
                                     required>
                                 <span class="invalid-feedback">Please enter a valid mobile number.</span>
                             </div>
