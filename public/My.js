@@ -1188,42 +1188,12 @@ $(document).ready(function () {
     let $resultsBody = $resultsBox.find('.card-body-height');
     let loaderHtml = `<div class="text-center my-4"><div class="spinner-border text-primary" role="status"></div></div>`;
 
-    // Load recent searches from localStorage
-    function renderRecentSearches() {
-        let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
-        if (searches.length === 0) return;
-
-        let recentHtml = `
-      <span class="dropdown-header">Recent searches</span>
-      <div class="dropdown-item bg-transparent text-wrap">`;
-
-        searches.forEach(term => {
-            recentHtml += `<a class="btn btn-soft-dark btn-xs rounded-pill recent-search" href="#">${term} <i class="bi-search ms-1"></i></a>`;
-        });
-
-        recentHtml += `</div><div class="dropdown-divider"></div>`;
-
-        $resultsBody.prepend(recentHtml);
-    }
-
-    function addToRecentSearches(term) {
-        let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
-        if (!searches.includes(term)) {
-            searches.unshift(term);
-            if (searches.length > 5) searches.pop();
-            localStorage.setItem('recentSearches', JSON.stringify(searches));
-        }
-    }
-
-    renderRecentSearches();
-
     // Search input
     $input.on('input', function () {
         let keyword = $(this).val().trim();
-
+        $resultsBody.html('');
         if (keyword.length < 2) {
             $resultsBody.html('');
-            renderRecentSearches();
             return;
         }
 
@@ -1237,7 +1207,6 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
-                addToRecentSearches(keyword);
                 let html = '';
 
                 // Trainers Section
@@ -1263,7 +1232,7 @@ $(document).ready(function () {
                 if (response.members && response.members.length) {
                     html += `<span class="dropdown-header">Members</span>`;
                     response.members.forEach(member => {
-                        const imageSrc = member.image ? `/uploads/members/${member.image}` : '/assets/img/160x160/images (1).jpg';
+                        const imageSrc = member.image ? `${member.image}` : '/assets/img/160x160/images (1).jpg';
                         html += `
                 <a class="dropdown-item" href="/members/view/${member.encrypted_id}">
                     <div class="d-flex align-items-center">
@@ -1298,24 +1267,85 @@ $(document).ready(function () {
         $(this).hide();
     });
 
-    // Trigger search on clicking recent search
-    $(document).on('click', '.recent-search', function (e) {
-        e.preventDefault();
-        let term = $(this).text().trim();
-        $input.val(term).trigger('input');
-    });
 });
 
-$(document).on('mousedown', '.recent-search', function (e) {
-    e.preventDefault();     // Prevent default click behavior
-    e.stopPropagation();    // Stop event from bubbling (prevents dropdown from closing)
 
-    let term = $(this).text().trim();
-    $input.val(term);
-    $input.trigger('input');
+$(document).ready(function () {
+    let $input = $('.mobileViewSearch');
+    let $resultsBody = $('#mobileViewSearchResults');
+    // let $resultsBody = $resultsBox.find('.card-body-height');
+    let loaderHtml = `<div class="text-center my-4"><div class="spinner-border text-primary" role="status"></div></div>`;
 
-    // Optionally re-focus the input after selection
-    setTimeout(() => $input.focus(), 10);
+    // Search input
+    $input.on('input', function () {
+        let keyword = $(this).val().trim();
+        $resultsBody.html('');
+        $('.searchesDisplayHere').html('');
+        if (keyword.length < 2) {
+            $resultsBody.html('');
+            return;
+        }
+
+        $resultsBody.html(loaderHtml);
+
+        $.ajax({
+            url: "/search",
+            type: "POST",
+            data: { keyword: keyword },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                let html = '';
+
+                // Trainers Section
+                if (response.trainers && response.trainers.length) {
+                    html += `<span class="dropdown-header">Trainers</span>`;
+                    response.trainers.forEach(trainer => {
+                        html += `
+              <a class="dropdown-item" href="/trainer/view/${trainer.encrypted_id}">
+                <div class="d-flex align-items-center">
+                  <span class="icon icon-soft-dark icon-xs icon-circle me-2">
+                    <i class="bi-person-badge"></i>
+                  </span>
+                  <div class="flex-grow-1 text-truncate">
+                    <span>${trainer.name} (${trainer.phone})</span>
+                  </div>
+                </div>
+              </a>`;
+                    });
+                    html += `<div class="dropdown-divider"></div>`;
+                }
+
+                // Members Section
+                if (response.members && response.members.length) {
+                    html += `<span class="dropdown-header">Members</span>`;
+                    response.members.forEach(member => {
+                        const imageSrc = member.image ? `${member.image}` : '/assets/img/160x160/images (1).jpg';
+                        html += `
+                <a class="dropdown-item" href="/members/view/${member.encrypted_id}">
+                    <div class="d-flex align-items-center">
+                    <img class="avatar avatar-xs avatar-circle me-2" src="${imageSrc}" alt="">
+                    <div class="flex-grow-1 text-truncate">
+                        <span>${member.name} (${member.mobile})</span>
+                    </div>
+                    </div>
+                </a>`;
+                    });
+                }
+
+                if (!response.trainers?.length && !response.members?.length) {
+                    html += `<div class="text-center py-4"><em>No results found.</em></div>`;
+                }
+                $resultsBody.html(html);
+            },
+            error: function () {
+                $resultsBody.html(`<div class="text-danger text-center my-3">Search failed. Please try again.</div>`);
+            }
+        });
+    });
+
+
 });
 
 

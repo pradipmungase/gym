@@ -40,6 +40,12 @@
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+    <meta name= "apple-mobile-web-app-status-bar" content="#aa7700">
+    <meta name="theme-color" content="black">
+
+    <!-- Manifest File link -->
+    <link rel="manifest" href="{{ asset('/PWA/manifest.json') }}">
+
     <style data-hs-appearance-onload-styles>
         * {
             transition: unset !important;
@@ -110,7 +116,7 @@
             /* overflow: visible !important; */
         }
 
-            /* Optional: Custom small switch */
+        /* Optional: Custom small switch */
         .form-switch.form-switch-sm .form-check-input {
             height: 1rem;
             width: 2rem;
@@ -118,11 +124,20 @@
 
         /* Green color when checked */
         .form-check-input:checked {
-            background-color: #2F6AD9 !important; /* Bootstrap 'success' color */
+            background-color: #2F6AD9 !important;
+            /* Bootstrap 'success' color */
             border-color: #2F6AD9 !important;
         }
-        .datatable-custom{
+
+        .datatable-custom {
             overflow: visible !important;
+        }
+        .bi-search{
+            color: #fff;
+        }
+        .bi-arrow-bar-right{
+            color: #fff;
+            font-size: large;
         }
     </style>
 
@@ -321,7 +336,7 @@
             </a>
             <!-- End Logo -->
 
-            <div class="navbar-nav-wrap-content-start">
+            <div class="navbar-nav-wrap-content-start" style="width: 10px;">
                 <!-- Navbar Vertical Toggle -->
                 <button type="button" class="js-navbar-vertical-aside-toggle-invoker navbar-aside-toggler">
                     <i class="bi-arrow-bar-left navbar-toggler-short-align"
@@ -332,8 +347,7 @@
                         data-bs-toggle="tooltip" data-bs-placement="right" title="Expand"></i>
                 </button>
 
-                <!-- Search Form -->
-                <!-- Search Bar with Dropdown -->
+                <!-- End Search Form -->
                 <div class="dropdown ms-2">
                     <!-- Input Group -->
                     <div class="d-none d-lg-block">
@@ -343,15 +357,15 @@
                                 <i class="bi-search"></i>
                             </div>
 
-                            <input type="search" class="js-form-search form-control"
-                                placeholder="Search Member & Trainer" aria-label="Search Member & Trainer"
+                            <input type="search" class="js-form-search form-control" placeholder="Search in front"
+                                aria-label="Search in front"
                                 data-hs-form-search-options='{
-          "clearIcon": "#clearSearchResultsIcon",
-          "dropMenuElement": "#searchDropdownMenu",
-          "dropMenuOffset": 20,
-          "toggleIconOnFocus": true,
-          "activeClass": "focus"
-        }'>
+                       "clearIcon": "#clearSearchResultsIcon",
+                       "dropMenuElement": "#searchDropdownMenu",
+                       "dropMenuOffset": 20,
+                       "toggleIconOnFocus": true,
+                       "activeClass": "focus"
+                     }'>
                             <a class="input-group-append input-group-text" href="javascript:;">
                                 <i id="clearSearchResultsIcon" class="bi-x-lg" style="display: none;"></i>
                             </a>
@@ -362,37 +376,74 @@
                         class="js-form-search js-form-search-mobile-toggle btn btn-ghost-secondary btn-icon rounded-circle d-lg-none"
                         type="button"
                         data-hs-form-search-options='{
-      "clearIcon": "#clearSearchResultsIcon",
-      "dropMenuElement": "#searchDropdownMenu",
-      "dropMenuOffset": 20,
-      "toggleIconOnFocus": true,
-      "activeClass": "focus"
-    }'>
+                       "clearIcon": "#clearSearchResultsIcon",
+                       "dropMenuElement": "#searchDropdownMenu",
+                       "dropMenuOffset": 20,
+                       "toggleIconOnFocus": true,
+                       "activeClass": "focus"
+                     }'>
                         <i class="bi-search"></i>
                     </button>
+                    <!-- End Input Group -->
 
-                    <!-- Search Dropdown Results -->
+                    <!-- Card Search Content -->
                     <div id="searchDropdownMenu"
                         class="hs-form-search-menu-content dropdown-menu dropdown-menu-form-search navbar-dropdown-menu-borderless">
                         <div class="card">
-                            <div class="card-body-height"></div>
+                            <!-- Body -->
+                            <div class="card-body-height">
+                                <div class="d-lg-none">
+                                    <div class="input-group input-group-merge navbar-input-group mb-5">
+                                        <div class="input-group-prepend input-group-text">
+                                            <i class="bi-search"></i>
+                                        </div>
+
+                                        <input type="search" class="form-control mobileViewSearch"
+                                            placeholder="Search Member & Trainer" aria-label="Search Member & Trainer">
+                                        <a class="input-group-append input-group-text" href="javascript:;">
+                                            <i class="bi-x-lg"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="mobileViewSearchResults"></div>
+                                <div class="dropdown-divider"></div>
+                                <span class="dropdown-header text-center searchesDisplayHere">Searches display
+                                    here.</span>
+                                <div class="dropdown-divider"></div>
+
+                            </div>
+                            <!-- End Body -->
+
+                            <!-- Footer -->
                             <a class="card-footer text-center" href="{{ url('members') }}">
                                 See all results <i class="bi-chevron-right small"></i>
                             </a>
+                            <!-- End Footer -->
                         </div>
                     </div>
-                </div>
+                    <!-- End Card Search Content -->
 
-                <!-- End Search Form -->
+                </div>
+                
+
             </div>
 
             <div class="navbar-nav-wrap-content-end">
                 <!-- Navbar -->
                 <ul class="navbar-nav">
-                    <li class="nav-item d-none d-sm-inline-block">
+                    <li class="nav-item d-sm-inline-block">
+                        <button id="installBtn" type="button"
+                            class="btn btn-ghost-secondary btn-icon rounded-circle" style="color: white;left: 10px;"
+                            title="Install App">
+                            <i class="bi bi-file-arrow-down"></i>
+                        </button>
+                    </li>
+
+                    <li class="nav-item  d-sm-inline-block">
                         <!-- Notification -->
                         <div class="dropdown">
-                            <button type="button" class="btn btn-ghost-secondary btn-icon rounded-circle"
+                            <button style="color: white;" type="button"
+                                class="btn btn-ghost-secondary btn-icon rounded-circle"
                                 id="navbarNotificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false"
                                 data-bs-auto-close="outside" data-bs-dropdown-animation>
                                 <i class="bi-bell"></i>
@@ -787,7 +838,6 @@
                 // =======================================================
                 new HSFormSearch('.js-form-search')
 
-
                 // INITIALIZATION OF BOOTSTRAP DROPDOWN
                 // =======================================================
                 HSBsDropdown.init()
@@ -890,6 +940,42 @@
     </script>
 
 
+    <script>
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        // Listen for the install prompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); // Prevent automatic prompt
+            deferredPrompt = e; // Save the event for triggering later
+            installBtn.style.display = 'inline-block'; // Show the install button
+        });
+
+        // Handle the install button click
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // Show the install prompt
+                const {
+                    outcome
+                } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null; // Clear the saved prompt
+                installBtn.style.display = 'none'; // Optionally hide the button
+            }
+        });
+
+        // Optionally register the service worker when page loads
+        window.addEventListener('load', async () => {
+            if ('serviceWorker' in navigator) {
+                try {
+                    await navigator.serviceWorker.register('serviceworker.js');
+                    // console.log('SW registered');
+                } catch (e) {
+                    // console.log('SW registration failed:', e);
+                }
+            }
+        });
+    </script>
 
 </body>
 

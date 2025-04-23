@@ -1,0 +1,22 @@
+{
+	"name": "GYM Manager",
+	"short_name": "GYM Manager",
+	"start_url": "index.html",
+	"display": "standalone",
+	"background_color": "#5900b3",
+	"theme_color": "black",
+	"scope": ".",
+	"description": "GYM Manager is a powerful gym management portal that helps you manage your gym operations efficiently.",
+	"icons": [
+		{
+			"src": "images/images.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "images/images.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
+}
