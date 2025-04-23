@@ -31,40 +31,7 @@
 
 
 
-            <div class="row text-center">
-  <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
-    <div class="js-counter h1 mb-1"
-          data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>52147</div>
-    <span>Code Lines</span>
-  </div>
 
-  <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
-    <div class="js-counter h1 mb-1"
-          data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>24583</div>
-    <span>Projects</span>
-  </div>
-
-  <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
-    <div class="js-counter h1 mb-1"
-          data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>7348</div>
-    <span>Working Hours</span>
-  </div>
-
-  <div class="col-lg-3 col-sm-6 mb-5 mb-lg-0">
-    <div class="js-counter h1 mb-1"
-          data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>87904</div>
-    <span>Job Offers</span>
-  </div>
-</div>
-<!-- End Row -->
 
             <!-- Row 1 -->
             <div class="row mt-4">
@@ -73,8 +40,13 @@
                     <div class="card text-white bg-primary shadow rounded-3 mb-2">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title">Total Users</h5>
-                                <h3>1234</h3>
+
+                                <div class="js-counter h1 mb-1"
+                                    data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>52147</div>
+                                <span>Total Members</span>
+
                             </div>
                             <i class="bi bi-people-fill fs-1"></i>
                         </div>
@@ -86,8 +58,11 @@
                     <div class="card text-white bg-success shadow rounded-3 mb-2">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title">Active Businesses</h5>
-                                <h3>456</h3>
+                                <div class="js-counter h1 mb-1"
+                                    data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>52147</div>
+                                <span>Total Members</span>
                             </div>
                             <i class="bi bi-briefcase-fill fs-1"></i>
                         </div>
@@ -99,8 +74,11 @@
                     <div class="card text-white bg-primary shadow rounded-3 mb-2">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title">Consumers</h5>
-                                <h3>789</h3>
+                                <div class="js-counter h1 mb-1"
+                                    data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>52147</div>
+                                <span>Total Members</span>
                             </div>
                             <i class="bi bi-person-badge-fill fs-1"></i>
                         </div>
@@ -112,8 +90,11 @@
                     <div class="card text-white bg-danger shadow rounded-3 mb-2">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title">Reports</h5>
-                                <h3>32</h3>
+                                <div class="js-counter h1 mb-1"
+                                    data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>52147</div>
+                                <span>Total Members</span>
                             </div>
                             <i class="bi bi-flag-fill fs-1"></i>
                         </div>
@@ -128,8 +109,11 @@
                     <div class="card text-white bg-info shadow rounded-3 mb-2">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title">New Signups</h5>
-                                <h3>78</h3>
+                                <div class="js-counter h1 mb-1"
+                                    data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>52147</div>
+                                <span>Total Members</span>
                             </div>
                             <i class="bi bi-person-plus-fill fs-1"></i>
                         </div>
@@ -141,8 +125,11 @@
                     <div class="card text-white bg-secondary shadow rounded-3 mb-2">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title">Pending Requests</h5>
-                                <h3>24</h3>
+                                <div class="js-counter h1 mb-1"
+                                    data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>52147</div>
+                                <span>Total Members</span>
                             </div>
                             <i class="bi bi-hourglass-split fs-1"></i>
                         </div>
@@ -154,8 +141,11 @@
                     <div class="card text-white bg-success shadow rounded-3 mb-2">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title">Total Categories</h5>
-                                <h3>112</h3>
+                                <div class="js-counter h1 mb-1"
+                                    data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>52147</div>
+                                <span>Total Members</span>
                             </div>
                             <i class="bi bi-tags-fill fs-1"></i>
                         </div>
@@ -167,8 +157,11 @@
                     <div class="card text-white bg-light text-dark shadow rounded-3 mb-2">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="card-title">Subscriptions</h5>
-                                <h3>54</h3>
+                                <div class="js-counter h1 mb-1"
+                                    data-hs-counter-options='{
+           "isCommaSeparated": true
+         }'>52147</div>
+                                <span>Total Members</span>
                             </div>
                             <i class="bi bi-card-checklist fs-1"></i>
                         </div>

@@ -127,7 +127,6 @@
         .dropdown-menu-end[data-bs-popper] {
             right: -70px !important;
         }
-
     </style>
 
     <script>
