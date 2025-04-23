@@ -132,13 +132,11 @@
         .datatable-custom {
             overflow: visible !important;
         }
-        .bi-search{
-            color: #fff;
+
+        .dropdown-menu-end[data-bs-popper] {
+            right: -70px !important;
         }
-        .bi-arrow-bar-right{
-            color: #fff;
-            font-size: large;
-        }
+
     </style>
 
     <script>
@@ -424,7 +422,7 @@
                     <!-- End Card Search Content -->
 
                 </div>
-                
+
 
             </div>
 
@@ -433,7 +431,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item d-sm-inline-block">
                         <button id="installBtn" type="button"
-                            class="btn btn-ghost-secondary btn-icon rounded-circle" style="color: white;left: 10px;"
+                            class="btn btn-ghost-secondary btn-icon rounded-circle" style="left: 10px;"
                             title="Install App">
                             <i class="bi bi-file-arrow-down"></i>
                         </button>
@@ -442,7 +440,7 @@
                     <li class="nav-item  d-sm-inline-block">
                         <!-- Notification -->
                         <div class="dropdown">
-                            <button style="color: white;" type="button"
+                            <button type="button"
                                 class="btn btn-ghost-secondary btn-icon rounded-circle"
                                 id="navbarNotificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false"
                                 data-bs-auto-close="outside" data-bs-dropdown-animation>
@@ -451,7 +449,7 @@
                             </button>
 
                             <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless"
-                                aria-labelledby="navbarNotificationsDropdown" style="width: 25rem;">
+                                aria-labelledby="navbarNotificationsDropdown" style="width: 23rem;">
                                 <div class="card">
                                     <!-- Header -->
                                     <div class="card-header card-header-content-between">

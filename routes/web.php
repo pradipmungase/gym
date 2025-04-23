@@ -15,6 +15,7 @@ use App\Http\Controllers\AnnouncementController;
 use App\Models\User;
 use App\Notifications\WebPushNotification;
 use App\Http\Controllers\MarketingController;
+
 Route::post('/webpush', function (Request $request) {
     $user = Auth::user(); // Or get authenticated user
     if (!$user) {
@@ -37,7 +38,9 @@ Route::get('/logout', function () {
 
 
 Route::view('/', 'Website');
-Route::view('/login', 'auth.login')->name('login');
+Route::middleware('guest')->group(function () {
+    Route::view('/login', 'auth.login')->name('login');
+});
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/checkLogin', [AuthController::class, 'checkLogin'])->name('checkLogin');
 Route::view('/forgotPassword', 'auth.forgotPassword');

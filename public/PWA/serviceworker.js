@@ -1,20 +1,20 @@
 {
-	"name":"PWA Tutorial",
-	"short_name":"PWA",
-	"start_url":"index.html",
+	"name":"GYM Manager",
+	"short_name":"GYM Manager",
+	"start_url":"http://127.0.0.1:8080/dashboard",
 	"display":"standalone",
 	"background_color":"#5900b3",
 	"theme_color":"black",
 	"scope": ".",
-	"description":"This is a PWA tutorial.",
+	"description":"GYM Manager is a powerful gym management portal that helps you manage your gym operations efficiently.",
 	"icons":[
 	{
-	"src":"images/icon-192x192.png",					 
+	"src":"images/images.png",					 
 	"sizes":"192x192",
 	"type":"image/png"
 	},
 	{
-	"src":"images/icon-512x512.png",
+	"src":"images/images.png",
 	"sizes":"512x512",
 	"type":"image/png"
 	}
