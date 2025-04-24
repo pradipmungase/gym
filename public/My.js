@@ -285,7 +285,7 @@ $(document).ready(function () {
                         $('#joining_date').addClass('is-invalid');
                         $('#joining_date').siblings('.invalid-feedback').text(response.message).show();
                     }else{
-                        showToast(response.message, 'bg-success');
+                        showToast(response.message, 'bg-danger');
                     }
                 }
             },
@@ -421,18 +421,20 @@ if (window.location.pathname === '/members') {
             let finalPrice = planPrice;
 
             if (discount && discountType) {
-                if (discountType === 'Percentage') {
+                if (discountType === 'percentage') {
                     finalPrice = planPrice - (planPrice * discount / 100);
-                } else if (discountType === 'Flat') {
+                } else if (discountType === 'flat') {
                     finalPrice = planPrice - discount;
                 }
             }
 
             const dueAmount = finalPrice - admissionFee;
 
-            planPriceField.value = planPrice.toFixed(2);
-            finalPriceField.value = finalPrice > 0 ? finalPrice.toFixed(2) : finalPrice.toFixed(2);
-            dueAmountField.value = dueAmount > 0 ? dueAmount.toFixed(2) : dueAmount.toFixed(2);
+            planPriceField.value = planPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            finalPriceField.value = finalPrice > 0 ? finalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : finalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            dueAmountField.value = dueAmount > 0 ? dueAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : finalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
         }
 
         // Event listeners
@@ -463,18 +465,18 @@ if (window.location.pathname === '/members') {
             let finalPrice = planPrice;
 
             if (discount && discountType) {
-                if (discountType === 'Percentage') {
+                if (discountType === 'percentage') {
                     finalPrice = planPrice - (planPrice * discount / 100);
-                } else if (discountType === 'Flat') {
+                } else if (discountType === 'flat') {
                     finalPrice = planPrice - discount;
                 }
             }
 
             const dueAmount = finalPrice - admissionFee;
 
-            planPriceField.value = planPrice.toFixed(2);
-            finalPriceField.value = finalPrice > 0 ? finalPrice.toFixed(2) : finalPrice.toFixed(2);
-            dueAmountField.value = dueAmount > 0 ? dueAmount.toFixed(2) : dueAmount.toFixed(2);
+            planPriceField.value = planPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            finalPriceField.value = finalPrice > 0 ? finalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : finalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            dueAmountField.value = dueAmount > 0 ? dueAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : finalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
         // Trigger calculation once on page load (for edit)
@@ -663,8 +665,8 @@ $(document).on('click', '.add-payment-btn', function () {
     // Populate form fields
     $('#addPaymentMemberId').val(members.member_id);
     $('#addPaymentMember').val(members.name);
-    $('#addPaymentDueAmount').val(members.due_amount);
-    $('#currentDueAmount').val(members.due_amount);
+    $('#addPaymentDueAmount').val(members.due_amount ? members.due_amount : members.final_price);
+    $('#currentDueAmount').val(members.due_amount ? members.due_amount : members.final_price);
     $('#currentPlanId').val(members.plan_id);
     $('#addPaymentModal').modal('show');
 });
@@ -1539,7 +1541,7 @@ function resetAllModals() {
 
 
 function updateUserStatus(memberId) {
-    var status = document.querySelector(`[data-member-id="${memberId}"]`).checked ? 'Active' : 'Inactive';
+    var status = document.querySelector(`[data-member-id="${memberId}"]`).checked ? 'active' : 'inactive';
 
     // Send an AJAX request to update the user's status
     $.ajax({
@@ -1559,3 +1561,173 @@ function updateUserStatus(memberId) {
         }
     });
 }
+
+$(document).on('submit', '#addNoteForm', function (e) {
+    e.preventDefault();
+
+    let form = $(this);
+    let formData = form.serialize();
+    let submitBtn = form.find('button[type="submit"]');
+    let originalBtnHtml = submitBtn.html();
+
+    // Clear old errors
+    form.find('.is-invalid').removeClass('is-invalid');
+    form.find('.invalid-feedback').text('');
+
+    // Change button to loader
+    submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+
+    $.ajax({
+        url: "/members/addNote",
+        type: "POST",
+        data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            showToast(response.message, 'bg-success');
+            form[0].reset();
+            $('#addNoteModel').modal('hide');
+            fetchmembers();
+        },
+        error: function (xhr) {
+            let errors = xhr.responseJSON.errors;
+
+            $.each(errors, function (field, messages) {
+                let input = $('[name="' + field + '"]');
+                input.addClass('is-invalid');
+                input.next('.invalid-feedback').text(messages[0]);
+            });
+        },
+        complete: function () {
+            submitBtn.prop('disabled', false).html(originalBtnHtml);
+        }
+    });
+});
+
+$(document).on('click', '.add-note-btn', function () {
+    let member = $(this).data('member');
+    $('#addNoteMemberId').val(member.member_id);
+    $('#addNote').val(member.note);
+    $('#addNoteModel').modal('show');
+});
+
+$(document).on('click', '.change-plan-btn', function () {
+    let member = $(this).data('member');
+    $('#changePlanMemberId').val(member.member_id);
+    $('#changePlan').val(member.plan_id);
+    // Enable all options first (clear previous disabled states)
+    $('#changePlan option').prop('disabled', false);
+    // Then disable only the currently selected option
+    $('#changePlan option:selected').prop('disabled', true);
+    $('#changeCurrentPlanPrice').val(member.plan_price);
+    $('#changeCurrentPlanDueAmount').val(member.due_amount);
+    $('#changeCurrentPlanPaidAmount').val(member.plan_price - member.due_amount);
+    $('#changePlanModel').modal('show');
+});
+
+
+
+if (window.location.pathname === '/members') {
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const planSelect = document.getElementById('changePlan');
+        const newPlanPriceField = document.getElementById('changeNewPlanPrice');
+        const newDueAmountField = document.getElementById('changeNewPlanDueAmount');
+        const newDueAmountForValidation = document.getElementById('newDueAmountForValidation');
+
+
+        function calculateNewPlan() {
+            const selectedOption = planSelect.options[planSelect.selectedIndex];
+            const planPrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+            const currentPlanPrice = parseFloat($('#changeCurrentPlanPrice').val()) || 0;
+            const currentPlanDueAmount = parseFloat($('#changeCurrentPlanDueAmount').val()) || 0;
+
+            let newDueAmount = (currentPlanPrice - currentPlanDueAmount) - planPrice;
+            newDueAmountForValidation.value = newDueAmount;
+
+
+            newPlanPriceField.value = planPrice > 0 ? planPrice.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) : planPrice.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            // Calculate absolute value for display (removing negative sign)
+            const displayAmount = Math.abs(newDueAmount);
+
+            newDueAmountField.value = displayAmount.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            // Apply appropriate class based on original value
+            if (newDueAmount > 0) {
+                newDueAmountField.classList.remove('text-danger');
+                newDueAmountField.classList.add('text-success');
+            } else if (newDueAmount < 0) {
+                newDueAmountField.classList.remove('text-success');
+                newDueAmountField.classList.add('text-danger');
+            } else {
+                // For zero amount
+                newDueAmountField.classList.remove('text-success', 'text-danger');
+            }
+        }
+        // Event listeners for dynamic updates
+        planSelect.addEventListener('change', calculateNewPlan);
+    });
+}
+
+
+
+
+$(document).on('submit', '#changePlanForm', function (e) {
+    e.preventDefault();
+
+    let form = $(this);
+    let formData = form.serialize();
+    let submitBtn = form.find('button[type="submit"]');
+    let originalBtnHtml = submitBtn.html();
+
+    // Clear old errors
+    form.find('.is-invalid').removeClass('is-invalid');
+    form.find('.invalid-feedback').text('');
+
+    // Change button to loader
+    submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+
+    $.ajax({
+        url: "/members/changePlan",
+        type: "POST",
+        data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            // showToast(response.message, 'bg-success');
+            // form[0].reset();
+            // $('#changePlanModel').modal('hide');
+            // fetchmembers();
+        },
+        error: function (xhr) {
+            let errors = xhr.responseJSON.errors;
+            $.each(errors, function (field, messages) {
+                if (field == 'newDueAmountForValidation') {
+                    // Target the new_due_amount field's invalid-feedback div
+                    $('#changeNewPlanDueAmount').addClass('is-invalid');
+                    $('#changeNewPlanDueAmount').next('.invalid-feedback').text(messages[0]);
+                } else {
+                    // Default behavior for other fields
+                    let input = $('[name="' + field + '"]');
+                    input.addClass('is-invalid');
+                    input.next('.invalid-feedback').text(messages[0]);
+                }
+            });
+        },
+        complete: function () {
+            submitBtn.prop('disabled', false).html(originalBtnHtml);
+        }
+    });
+});

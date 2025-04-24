@@ -13,16 +13,19 @@ return new class extends Migration
     {
         Schema::create('member_payments', function (Blueprint $table) {
             $table->id();
-            $table->integer('gym_id');
             $table->integer('member_id');
-            $table->integer('plan_id');
-            $table->string('payment_mode');
-            $table->decimal('amount', 10, 2);
+            $table->integer('membership_id');
+            $table->integer('gym_id');
+
+            $table->enum('payment_mode', ['cash','phone Ppay','google pay','other'])->default('cash');
+            $table->decimal('amount_paid', 10, 2);
             $table->decimal('due_amount', 10, 2);
             $table->decimal('total_amount', 10, 2);
             $table->dateTime('payment_date');
+
             $table->timestamps();
         });
+
     }
 
     /**

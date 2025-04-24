@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
+            $table->integer('gym_id');
             $table->string('name');
             $table->string('email')->unique()->nullable();
             $table->string('mobile');
-            $table->string('qr_code_path')->nullable();
-            $table->date('joining_date');
+            $table->string('qr_code_path');
             $table->date('birth_date')->nullable();
-            $table->string('status');
-            $table->string('image')->nullable();
-            $table->string('address')->nullable();
-            $table->string('gender');
+            $table->enum('gender', ['male', 'female']);
             $table->integer('age')->nullable();
-            $table->integer('gym_id');
+            $table->enum('status', ['active', 'inactive']);
+            $table->string('image')->nullable();
+            $table->text('address')->nullable();
+            $table->text('note')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -42,21 +42,21 @@
                         </td>
 
                         <td>{{ $member->mobile }}</td>
-                        <td>{{ \Carbon\Carbon::parse($member->joining_date)->format('d M, Y') }}
+                        <td>{{ \Carbon\Carbon::parse($member->start_date)->format('d M, Y') }}
                             <br>
-                            @if (\Carbon\Carbon::parse($member->expiry_date)->isPast())
-                                {{ \Carbon\Carbon::parse($member->expiry_date)->format('d M, Y') }}
+                            @if (\Carbon\Carbon::parse($member->end_date)->isPast())
+                                {{ \Carbon\Carbon::parse($member->end_date)->format('d M, Y') }}
                             @else
                                 <span class="text-success">
-                                    {{ \Carbon\Carbon::parse($member->expiry_date)->format('d M, Y') }}
+                                    {{ \Carbon\Carbon::parse($member->end_date)->format('d M, Y') }}
                                 </span>
                             @endif
                         </td>
-                        <td class="text-danger">₹ {{ number_format($member->due_amount_payment, 2) }}</td>
+                        <td class="text-danger">₹ {{ $member->due_amount  ? number_format($member->due_amount, 2) : number_format($member->final_price, 2) }}</td>
                         <td>
                             <div class="form-check form-switch form-switch-sm">
                                 <input class="form-check-input" onclick="updateUserStatus({{ $member->member_id }})"
-                                    type="checkbox" role="switch" @if ($member->status == 'Active') checked @endif
+                                    type="checkbox" role="switch" @if ($member->member_status == 'active') checked @endif
                                     data-member-id="{{ $member->member_id }}">
                             </div>
                         </td>
@@ -82,12 +82,12 @@
                                         href="{{ route('members.view', encrypt($member->member_id)) }}">
                                         <i class="bi bi-arrow-repeat me-2"></i> Renew Membership
                                     </a>
-                                    <a class="dropdown-item"
-                                        href="{{ route('members.view', encrypt($member->member_id)) }}">
+                                    <a class="dropdown-item change-plan-btn"
+                                        href="#" data-bs-toggle="modal" data-bs-target="#changePlanModel" data-member='@json($member)'>
                                         <i class="bi bi-sliders2-vertical me-2"></i> Change Plan
                                     </a>
-                                    <a class="dropdown-item"
-                                        href="{{ route('members.view', encrypt($member->member_id)) }}">
+                                    <a class="dropdown-item add-note-btn"
+                                        href="#" data-bs-toggle="modal" data-bs-target="#addNoteModel" data-member='@json($member)'>
                                         <i class="bi bi-journal-text me-2"></i> Add Note
                                     </a>
                                     <a class="dropdown-item"

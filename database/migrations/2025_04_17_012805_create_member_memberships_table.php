@@ -11,24 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('member_details', function (Blueprint $table) {
+        Schema::create('member_memberships', function (Blueprint $table) {
             $table->id();
             $table->integer('member_id');
             $table->integer('gym_id');
             $table->integer('plan_id');
-            $table->integer('trainer_id');
-            $table->date('joining_date');
-            $table->date('expiry_date');
+            $table->integer('trainer_id')->nullable();
+
+            $table->date('start_date');
+            $table->date('end_date');
             $table->string('batch');
-            $table->string('paymentMode')->nullable();
-            $table->decimal('admission_fee', 10, 2);
-            $table->string('discount_type');
-            $table->integer('discount_inpute')->nullable();
+
+            // Discount info
+            $table->enum('discount_type', ['percentage', 'flat'])->nullable();
+            $table->decimal('discount_value', 10, 2)->nullable();
+
             $table->decimal('plan_price', 10, 2);
-            $table->decimal('after_discount_price', 10, 2);
-            $table->decimal('due_amount', 10, 2);
+            $table->decimal('discount_price', 10, 2)->nullable();
+            $table->decimal('final_price', 10, 2);
+
+            $table->enum('status', ['active', 'expired', 'cancelled','changed'])->default('active');
+
             $table->timestamps();
         });
+
     }
 
     /**

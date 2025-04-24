@@ -51,7 +51,7 @@
 
                         <li class="list-inline-item">
                             <i class="bi-calendar-week me-1"></i>
-                            <span>{{ \Carbon\Carbon::parse($member->joining_date)->format('d M, Y') }}</span>
+                            <span>{{ \Carbon\Carbon::parse($member->start_date)->format('d M, Y') }}</span>
                         </li>
                     </ul>
                 </div>
@@ -82,7 +82,7 @@
                             <i class="fas fa-calendar-check"></i> Expiry Date
                         </div>
                         <div class="col-6 ps-5">
-                            {{ \Carbon\Carbon::parse($member->expiry_date)->format('d M, Y') ?? 'N/A' }}</div>
+                            {{ \Carbon\Carbon::parse($member->end_date)->format('d M, Y') ?? 'N/A' }}</div>
                     </div>
 
                     <div class="row mb-3">
@@ -153,8 +153,8 @@
                                 @foreach ($memberPayments as $index => $payment)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $payment->payment_mode }}</td>
-                                        <td class="text-success">₹ {{ number_format($payment->amount, 2) }}</td>
+                                        <td>{{ ucfirst($payment->payment_mode) }}</td>
+                                        <td class="text-success">₹ {{ number_format($payment->amount_paid, 2) }}</td>
                                         <td class="text-danger">₹ {{ number_format($payment->due_amount, 2) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d M, Y') }}</td>
                                     </tr>

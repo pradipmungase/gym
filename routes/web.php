@@ -104,6 +104,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/members/addPayment', [MembersController::class, 'addPayment'])->name('members.addPayment');
 
     Route::post('/members/updateStatus', [MembersController::class, 'updateStatus'])->name('members.updateStatus');
+    Route::post('/members/addNote', [MembersController::class, 'addNote'])->name('members.addNote');
+    Route::post('/members/changePlan', [MembersController::class, 'changePlan'])->name('members.changePlan');
 });
 
 

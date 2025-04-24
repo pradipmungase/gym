@@ -77,7 +77,7 @@ class TrainerController extends Controller{
         try {
             $trainerId = DB::table('trainers')->insertGetId([
                 'name' => $request->input('name'),
-                'email'  => $request->input('email'),
+                'email'  => strtolower($request->input('email')),
                 'phone'     => $request->input('phone'),
                 'gender'     => $request->input('gender'),
                 'address'     => $request->input('address'),
@@ -164,7 +164,7 @@ class TrainerController extends Controller{
 
         DB::table('trainers')->where('id', $request->input('trainer_id'))->update([
             'name' => $request->input('name'),
-            'email'  => $request->input('email'),
+            'email'  => strtolower($request->input('email')),
             'phone'     => $request->input('phone'),
             'gender'     => $request->input('gender'),
             'address'     => $request->input('address'),

@@ -334,16 +334,17 @@
                                 <label for="paymentMode" class="form-label">Payment Mode</label>
                                 <select class="form-select" id="paymentMode" name="paymentMode">
                                     <option selected disabled value="">Select Payment Mode</option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Phone Pay">Phone Pay</option>
-                                    <option value="Google Pay">Google Pay</option>
-                                    <option value="Other">Other</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="phone pay">Phone Pay</option>
+                                    <option value="google pay">Google Pay</option>
+                                    <option value="other">Other</option>
                                 </select>
                                 <div class="invalid-feedback">Payment selection is required.</div>
                             </div>
 
                             <div class="col-md-6 col-lg-4">
-                                <label for="admission_fee" class="form-label">Admission Fee <small class="text-muted"> (First payment at time of joining)</small></label>
+                                <label for="admission_fee" class="form-label">Admission Fee <small class="text-muted">
+                                        (First payment at time of joining)</small></label>
                                 <input type="number" class="form-control" id="admission_fee" name="admission_fee"
                                     placeholder="Enter admission fee">
                                 <div class="invalid-feedback">Admission fee is required.</div>
@@ -353,8 +354,8 @@
                                 <label for="discount_type" class="form-label">Discount Type</label>
                                 <select class="form-select" id="discount_type" name="discount_type">
                                     <option value="" selected>Select Discount Type</option>
-                                    <option value="Flat" selected>Flat</option>
-                                    <option value="Percentage">Percentage</option>
+                                    <option value="flat" selected>Flat</option>
+                                    <option value="percentage">Percentage</option>
                                 </select>
                                 <div class="invalid-feedback">Discount type is required.</div>
                             </div>
@@ -376,8 +377,8 @@
                             <div class="col-md-4 col-lg-2">
                                 <label class="form-label">Final Price <span style="font-size: smaller;">(After
                                         Discount)</span></label>
-                                <input type="text" class="form-control" value="0" name="final_price"
-                                    id="final_price" readonly>
+                                <input type="text" class="form-control text-success" value="0"
+                                    name="final_price" id="final_price" readonly>
                                 <div class="invalid-feedback">The final price field must be at least 0.</div>
                             </div>
                             <div class="col-md-5 col-lg-4">
@@ -547,16 +548,17 @@
                                 <label for="editPaymentMode" class="form-label">Payment Mode</label>
                                 <select class="form-select" id="editPaymentMode" name="paymentMode">
                                     <option selected disabled value="">Select Payment Mode</option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Phone Pay">Phone Pay</option>
-                                    <option value="Google Pay">Google Pay</option>
-                                    <option value="Other">Other</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="phone pay">Phone Pay</option>
+                                    <option value="google pay">Google Pay</option>
+                                    <option value="other">Other</option>
                                 </select>
                                 <div class="invalid-feedback">Payment selection is required.</div>
                             </div>
 
                             <div class="col-md-6 col-lg-4">
-                                <label for="editAdmissionFee" class="form-label">Admission Fee <small class="text-muted"> (First payment at time of joining)</small></label>
+                                <label for="editAdmissionFee" class="form-label">Admission Fee <small class="text-muted">
+                                        (First payment at time of joining)</small></label>
                                 <input type="number" class="form-control" id="editAdmissionFee" name="admission_fee"
                                     placeholder="Enter admission fee">
                                 <div class="invalid-feedback">Admission fee is required.</div>
@@ -566,8 +568,8 @@
                                 <label for="editDiscountType" class="form-label">Discount Type <span
                                         class="text-danger">*</span></label>
                                 <select class="form-select" id="editDiscountType" name="discount_type" required>
-                                    <option value="Flat" selected>Flat</option>
-                                    <option value="Percentage">Percentage</option>
+                                    <option value="flat" selected>Flat</option>
+                                    <option value="percentage">Percentage</option>
                                 </select>
                                 <div class="invalid-feedback">Discount type is required.</div>
                             </div>
@@ -657,10 +659,10 @@
                                         class="text-danger">*</span></label>
                                 <select class="form-select" id="addPaymentMode" name="payment_mode" required>
                                     <option selected disabled value="">Select Payment Mode</option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Phone Pay">Phone Pay</option>
-                                    <option value="Google Pay">Google Pay</option>
-                                    <option value="Other">Other</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="phone pay">Phone Pay</option>
+                                    <option value="google pay">Google Pay</option>
+                                    <option value="other">Other</option>
                                 </select>
                                 <div class="invalid-feedback">Payment mode is required.</div>
                             </div>
@@ -687,8 +689,127 @@
                     </div>
 
                     <div class="modal-footer px-4">
-                        <button type="submit" id="editPlanBtn" class="btn btn-success">
+                        <button type="submit" id="addPaymentBtn" class="btn btn-success">
                             <i class="bi bi-check-circle me-1"></i> Add Payment
+                        </button>
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addNoteModel" tabindex="-1" aria-labelledby="addNoteModelLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <form id="addNoteForm" method="POST" action="#">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header text-white">
+                        <h5 class="modal-title" id="addNoteModelLabel">
+                            <i class="bi bi-person-plus-fill me-2"></i> Add Note
+                        </h5>
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body px-4">
+                        <div class="row gy-4">
+                            <input type="hidden" value="" name="addNoteMemberId" id="addNoteMemberId">
+                      
+                            <div class="col-md-12 col-lg-12">
+                                <label for="addNote" class="form-label"> Note <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="addNote" name="note" required placeholder="e.g., Note"></textarea>
+                                <div class="invalid-feedback">Note is required.</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer px-4">
+                        <button type="submit" id="addNoteBtn" class="btn btn-success">
+                            <i class="bi bi-check-circle me-1"></i> Add Note
+                        </button>
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <div class="modal fade" id="changePlanModel" tabindex="-1" aria-labelledby="changePlanModelLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <form id="changePlanForm" method="POST" action="#">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header text-white">
+                        <h5 class="modal-title" id="changePlanModelLabel">
+                            <i class="bi bi-person-plus-fill me-2"></i> Change Plan
+                        </h5>
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body px-4">
+                        <div class="row gy-4">
+                            <input type="hidden" value="" name="changePlanMemberId" id="changePlanMemberId">
+                      
+                            <div class="col-md-12 col-lg-12">
+                                <label for="changePlan" class="form-label"> Plan <span class="text-danger">*</span></label>
+                                <select class="form-select" id="changePlan" name="plan" required>
+                                    <option selected disabled value="">Select Plan</option>
+                                    @foreach ($plans as $plan)
+                                        <option value="{{ $plan->id }}" data-price="{{ $plan->price }}">{{ $plan->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">Plan is required.</div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4">
+                                <label for="changeCurrentPlanPrice" class="form-label">Current Plan Price</label>
+                                <input type="text" class="form-control" id="changeCurrentPlanPrice" name="current_plan_price" readonly>
+                                <div class="invalid-feedback">Plan price is required.</div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4">
+                                <label for="changeCurrentPlanDueAmount" class="form-label">Current Due Amount</label>
+                                <input type="text" class="form-control text-danger" id="changeCurrentPlanDueAmount" name="current_due_amount" readonly>
+                                <div class="invalid-feedback">Due amount is required.</div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-4">
+                                <label for="changeCurrentPlanDueAmount" class="form-label">Current Paid Amount</label>
+                                <input type="text" class="form-control text-success" id="changeCurrentPlanPaidAmount" name="current_paid_amount" readonly>
+                                <div class="invalid-feedback">Paid amount is required.</div>
+                            </div>
+
+
+                            <div class="col-md-6 col-lg-6">
+                                <label for="changeNewPlanPrice" class="form-label">New Plan Price</label>
+                                <input type="text" class="form-control" value="0" id="changeNewPlanPrice" name="new_plan_price" readonly>
+                                <div class="invalid-feedback">Plan price is required.</div>
+                            </div>
+
+                            <div class="col-md-6 col-lg-6">
+                                <label for="changeNewPlanDueAmount" class="form-label">New Due Amount</label>
+                                <input type="text" class="form-control text-danger" value="0" id="changeNewPlanDueAmount" name="new_due_amount" readonly>
+                                <div class="invalid-feedback">Due amount is required.</div>
+                            </div>
+                            <input type="hidden" name="newDueAmountForValidation" id="newDueAmountForValidation" value="">
+
+
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer px-4">
+                        <button type="submit" id="changePlanBtn" class="btn btn-success">
+                            <i class="bi bi-check-circle me-1"></i> Change Plan
                         </button>
                         <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel

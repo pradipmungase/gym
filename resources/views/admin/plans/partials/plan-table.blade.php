@@ -14,7 +14,7 @@
                 <td class="table-column-ps-0">{{ $plans->firstItem() + $loop->index }}</td>
                 <td>{{ $plan->name }}</td>
                 <td>{{ $plan->duration }} {{ ucfirst($plan->duration_type) }}</td>
-                <td>{{ $plan->price }}</td>
+                <td>₹ {{ number_format($plan->price, 2) }}</td>
                 <td>
                     <div>
                         <div class="dropdown">
