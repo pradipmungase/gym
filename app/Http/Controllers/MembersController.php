@@ -259,12 +259,11 @@ class MembersController extends Controller{
     public function update(Request $request)
     {
         $id = $request->editMembersId;
-
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => [
                 'nullable',
-                'email:rfc,dns',
+                'email:rfc',
                 Rule::unique('members', 'email')
                     ->ignore($id)
                     ->whereNull('deleted_at'),
@@ -512,6 +511,7 @@ class MembersController extends Controller{
          ], [
             'newDueAmountForValidation.negative' => 'Member allready paid more than due amount.',
             'newDueAmountForValidation.regex' => 'Member allrey paid more than due amount',
+            'newDueAmountForValidation.required' => 'Due amount can not be 0.',
         ]);
 
 

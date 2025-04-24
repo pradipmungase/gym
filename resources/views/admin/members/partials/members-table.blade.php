@@ -92,8 +92,7 @@
                                         data-bs-target="#editmemberModal" data-member='@json($member)'>
                                         <i class="bi bi-pencil me-2"></i> Edit
                                     </a>
-                                    <a class="dropdown-item add-payment-btn" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#addPaymentModal" data-member='@json($member)'>
+                                    <a class="dropdown-item add-payment-btn" href="#"  data-member='@json($member)'>
                                         <i class="bi bi-cash-coin me-2"></i> Add Payment
                                     </a>
                                     <a class="dropdown-item"

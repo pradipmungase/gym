@@ -251,7 +251,7 @@
                                 <label for="gender" class="form-label">Gender <span
                                         class="text-danger">*</span></label>
                                 <select class="form-select" id="gender" name="gender" required>
-                                    <option selected disabled value="">Select gender</option>
+                                    <option selected disabled value="">Select Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
@@ -295,7 +295,7 @@
                             <div class="col-md-6 col-lg-4">
                                 <label for="batch" class="form-label">Batch <span class="text-danger">*</span></label>
                                 <select class="form-select" id="batch" name="batch" required>
-                                    <option selected disabled value="">Select batch</option>
+                                    <option selected disabled value="">Select Batch</option>
                                     <option value="Morning">Morning</option>
                                     <option value="Afternoon">Afternoon</option>
                                     <option value="Evening">Evening</option>
@@ -459,7 +459,7 @@
                                 <label for="editGender" class="form-label">Gender <span
                                         class="text-danger">*</span></label>
                                 <select class="form-select" id="editGender" name="gender" required>
-                                    <option selected disabled value="">Select gender</option>
+                                    <option selected disabled value="">Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
                                 </select>
@@ -503,7 +503,7 @@
                                 <label for="editBatch" class="form-label">Batch <span
                                         class="text-danger">*</span></label>
                                 <select class="form-select" id="editBatch" name="batch" required>
-                                    <option selected disabled value="">Select batch</option>
+                                    <option selected disabled value="">Select Batch</option>
                                     <option value="Morning">Morning</option>
                                     <option value="Afternoon">Afternoon</option>
                                     <option value="Evening">Evening</option>
@@ -778,7 +778,7 @@
                                     <label for="changeNewPlanDueAmount" class="form-label">New Due Amount</label>
                                     <input type="text" class="form-control text-danger" value="0"
                                         id="changeNewPlanDueAmount" name="new_due_amount" readonly>
-                                    <small id="dueAmountStatus" class="text-danger"></small>
+                                    <div class="invalid-feedback">Member already paid more than due amount.</div>
                                 </div>
                             </div>
 
@@ -827,4 +827,45 @@
             </form>
         </div>
     </div>
+
+
+<div class="modal fade" id="paymentStatusModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-close">
+        <button type="button" class="btn btn-ghost-secondary btn-icon btn-sm" data-bs-dismiss="modal" aria-label="Close">
+          <i class="bi-x-lg"></i>
+        </button>
+      </div>
+      <!-- End Header -->
+
+      <!-- Body -->
+      <div class="modal-body p-sm-5">
+        <div class="text-center">
+          <div class="w-50 mx-auto mb-4">
+            <!-- Payment Success Icon -->
+            <img class="img-fluid" src="{{ asset('assets/images/5709755.png') }}" alt="Payment Done" style="max-height: 120px;">
+          </div>
+
+          <h4 class="h1 text-success">All Payments Received</h4>
+          <p class="text-muted mb-0">We have received the full payment from this member. No outstanding dues remain.</p>
+        </div>
+      </div>
+      <!-- End Body -->
+
+      <!-- Footer -->
+      <div class="modal-footer d-block text-center py-sm-4">
+        <small class="text-muted">
+          Thank you for keeping your payments up to date.
+        </small>
+      </div>
+      <!-- End Footer -->
+
+    </div>
+  </div>
+</div>
+
+
 @endsection

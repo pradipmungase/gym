@@ -668,7 +668,11 @@ $(document).on('click', '.add-payment-btn', function () {
     $('#addPaymentDueAmount').val(members.due_amount ? members.due_amount : members.final_price);
     $('#currentDueAmount').val(members.due_amount ? members.due_amount : members.final_price);
     $('#currentPlanId').val(members.plan_id);
-    $('#addPaymentModal').modal('show');
+    if(members.due_amount > 0){
+        $('#addPaymentModal').modal('show');
+    } else {
+        $('#paymentStatusModal').modal('show');
+    }
 });
 
 
@@ -1711,20 +1715,14 @@ if (window.location.pathname === '/members') {
             // newDueAmountField.value = formatINR(Math.abs(newDueAmount));
             newDueAmountField.value = (newDueAmount < 0 ? '' : '') + formatINR(Math.abs(newDueAmount));
 
-
-            dueStatus.textContent = '';
-            // Set visual cue based on due amount
-            const dueStatus = document.getElementById('dueAmountStatus');
-            newDueAmountField.classList.remove('text-success', 'text-danger');
-            if (newDueAmount > 0) {
+            if (parseFloat(newDueAmount) < 0) {
+                $('#changeNewPlanDueAmount').addClass('is-invalid');
+                newDueAmountField.classList.add('text-success'); // Amount to be paid
+            } else {
                 $('#changeNewPlanDueAmount').removeClass('is-invalid');
-                newDueAmountField.classList.add('text-danger'); // Amount to be paid
-                dueStatus.textContent = '';
-            } else if (newDueAmount < 0) {
-                $('#changeNewPlanDueAmount').removeClass('is-invalid');
-                newDueAmountField.classList.add('text-success'); // Extra paid
-                dueStatus.textContent = 'Member already paid more than due amount.';
+                newDueAmountField.classList.add('text-danger'); // Extra paid
             }
+
 
         }
 
