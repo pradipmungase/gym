@@ -244,6 +244,7 @@
                                 <label for="birth_date" class="form-label">Birth Date</label>
                                 <input type="date" class="form-control birthDate" id="birth_date" name="birth_date"
                                     max="{{ date('Y-m-d') }}">
+                                <div class="invalid-feedback">Birth date is required.</div>
                             </div>
 
                             <div class="col-md-6 col-lg-4">
@@ -304,7 +305,7 @@
 
                             <div class="col-md-6 col-lg-4">
                                 <label for="trainer" class="form-label">Trainer</label>
-                                <select class="form-select" id="trainer" name="trainer" required>
+                                <select class="form-select" id="trainer" name="trainer">
                                     <option selected disabled value="">Select Trainer</option>
                                     @foreach ($trainers as $trainer)
                                         <option value="{{ $trainer->id }}">{{ $trainer->name }}</option>
@@ -346,7 +347,7 @@
                                 <label for="admission_fee" class="form-label">Admission Fee <small class="text-muted">
                                         (First payment at time of joining)</small></label>
                                 <input type="number" class="form-control" id="admission_fee" name="admission_fee"
-                                    placeholder="Enter admission fee">
+                                    placeholder="e.g., 1000">
                                 <div class="invalid-feedback">Admission fee is required.</div>
                             </div>
 
@@ -459,8 +460,8 @@
                                         class="text-danger">*</span></label>
                                 <select class="form-select" id="editGender" name="gender" required>
                                     <option selected disabled value="">Select gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
                                 </select>
                                 <div class="invalid-feedback">Gender is required.</div>
                             </div>
@@ -512,7 +513,7 @@
 
                             <div class="col-md-6 col-lg-4">
                                 <label for="editTrainer" class="form-label">Trainer</label>
-                                <select class="form-select" id="editTrainer" name="trainer" required>
+                                <select class="form-select" id="editTrainer" name="trainer">
                                     <option selected disabled value="">Select Trainer</option>
                                     @foreach ($trainers as $trainer)
                                         <option value="{{ $trainer->id }}">{{ $trainer->name }}</option>
@@ -520,89 +521,6 @@
                                 </select>
                                 <div class="invalid-feedback">Trainer selection is required.</div>
                             </div>
-
-
-                            <!-- 💳 Payment Information -->
-                            <div class="col-12">
-                                <h5 class="border-bottom pb-2 mt-4">💳 Payment Information &nbsp;&nsc;
-                                    <small class="text-warning">Note: If you want to change the plan, please select the new
-                                        plan
-                                        and then update the payment information very carefully.</small>
-                                </h5>
-
-                            </div>
-
-                            <div class="col-md-6 col-lg-4">
-                                <label for="editPlan" class="form-label">Plan <span class="text-danger">*</span></label>
-                                <select class="form-select" id="editPlan" name="plan" required>
-                                    <option selected disabled value="">Select Plan</option>
-                                    @foreach ($plans as $plan)
-                                        <option value="{{ $plan->id }}" data-price="{{ $plan->price }}">
-                                            {{ $plan->name }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="invalid-feedback">Plan selection is required.</div>
-                            </div>
-
-                            <div class="col-md-6 col-lg-4">
-                                <label for="editPaymentMode" class="form-label">Payment Mode</label>
-                                <select class="form-select" id="editPaymentMode" name="paymentMode">
-                                    <option selected disabled value="">Select Payment Mode</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="phone pay">Phone Pay</option>
-                                    <option value="google pay">Google Pay</option>
-                                    <option value="other">Other</option>
-                                </select>
-                                <div class="invalid-feedback">Payment selection is required.</div>
-                            </div>
-
-                            <div class="col-md-6 col-lg-4">
-                                <label for="editAdmissionFee" class="form-label">Admission Fee <small class="text-muted">
-                                        (First payment at time of joining)</small></label>
-                                <input type="number" class="form-control" id="editAdmissionFee" name="admission_fee"
-                                    placeholder="Enter admission fee">
-                                <div class="invalid-feedback">Admission fee is required.</div>
-                            </div>
-
-                            <div class="col-md-6 col-lg-4">
-                                <label for="editDiscountType" class="form-label">Discount Type <span
-                                        class="text-danger">*</span></label>
-                                <select class="form-select" id="editDiscountType" name="discount_type" required>
-                                    <option value="flat" selected>Flat</option>
-                                    <option value="percentage">Percentage</option>
-                                </select>
-                                <div class="invalid-feedback">Discount type is required.</div>
-                            </div>
-
-                            <div class="col-md-6 col-lg-4">
-                                <label for="editDiscount" class="form-label">Discount</label>
-                                <input type="number" class="form-control" id="editDiscount" name="discount"
-                                    placeholder="e.g., 10">
-                                <div class="invalid-feedback">Discount is required.</div>
-                            </div>
-
-                            <div class="col-md-4 col-lg-2">
-                                <label class="form-label">Plan Price</label>
-                                <input type="text" class="form-control" value="0" name="plan_price"
-                                    id="editPlanPrice" readonly>
-                                <div class="invalid-feedback">The plan price field must be at least 0.</div>
-                            </div>
-
-                            <div class="col-md-4 col-lg-2">
-                                <label class="form-label">Final Price <span style="font-size: smaller;">(After
-                                        Discount)</span></label>
-                                <input type="text" class="form-control" value="0" name="final_price"
-                                    id="editFinal_price" readonly>
-                                <div class="invalid-feedback">The final price field must be at least 0.</div>
-                            </div>
-
-                            <div class="col-md-5 col-lg-4">
-                                <label class="form-label">Due Amount</label>
-                                <input type="text" class="form-control text-danger fw-bold" value="0"
-                                    name="due_amount" id="editDue_amount" readonly>
-                                <div class="invalid-feedback">The due amount field must be at least 0.</div>
-                            </div>
-
 
                         </div>
                     </div>
@@ -717,7 +635,7 @@
                     <div class="modal-body px-4">
                         <div class="row gy-4">
                             <input type="hidden" value="" name="addNoteMemberId" id="addNoteMemberId">
-                      
+
                             <div class="col-md-12 col-lg-12">
                                 <label for="addNote" class="form-label"> Note <span class="text-danger">*</span></label>
                                 <textarea class="form-control" id="addNote" name="note" required placeholder="e.g., Note"></textarea>
@@ -740,8 +658,9 @@
         </div>
     </div>
 
-        <div class="modal fade" id="changePlanModel" tabindex="-1" aria-labelledby="changePlanModelLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md">
+    <div class="modal fade" id="changePlanModel" tabindex="-1" aria-labelledby="changePlanModelLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
             <form id="changePlanForm" method="POST" action="#">
                 @csrf
                 <div class="modal-content">
@@ -756,53 +675,142 @@
                     <div class="modal-body px-4">
                         <div class="row gy-4">
                             <input type="hidden" value="" name="changePlanMemberId" id="changePlanMemberId">
-                      
-                            <div class="col-md-12 col-lg-12">
-                                <label for="changePlan" class="form-label"> Plan <span class="text-danger">*</span></label>
+
+                            <!-- Plan -->
+                            <div class="col-md-6 col-lg-6">
+                                <label for="changePlan" class="form-label">Plan <span
+                                        class="text-danger">*</span></label>
                                 <select class="form-select" id="changePlan" name="plan" required>
-                                    <option selected disabled value="">Select Plan</option>
                                     @foreach ($plans as $plan)
-                                        <option value="{{ $plan->id }}" data-price="{{ $plan->price }}">{{ $plan->name }}</option>
+                                        <option value="{{ $plan->id }}" data-price="{{ $plan->price }}">
+                                            {{ $plan->name }}</option>
                                     @endforeach
                                 </select>
                                 <div class="invalid-feedback">Plan is required.</div>
                             </div>
 
-                            <div class="col-md-4 col-lg-4">
-                                <label for="changeCurrentPlanPrice" class="form-label">Current Plan Price</label>
-                                <input type="text" class="form-control" id="changeCurrentPlanPrice" name="current_plan_price" readonly>
-                                <div class="invalid-feedback">Plan price is required.</div>
-                            </div>
-
-                            <div class="col-md-4 col-lg-4">
-                                <label for="changeCurrentPlanDueAmount" class="form-label">Current Due Amount</label>
-                                <input type="text" class="form-control text-danger" id="changeCurrentPlanDueAmount" name="current_due_amount" readonly>
-                                <div class="invalid-feedback">Due amount is required.</div>
-                            </div>
-
-                            <div class="col-md-4 col-lg-4">
-                                <label for="changeCurrentPlanDueAmount" class="form-label">Current Paid Amount</label>
-                                <input type="text" class="form-control text-success" id="changeCurrentPlanPaidAmount" name="current_paid_amount" readonly>
-                                <div class="invalid-feedback">Paid amount is required.</div>
-                            </div>
-
-
+                            <!-- Joining Date -->
                             <div class="col-md-6 col-lg-6">
-                                <label for="changeNewPlanPrice" class="form-label">New Plan Price</label>
-                                <input type="text" class="form-control" value="0" id="changeNewPlanPrice" name="new_plan_price" readonly>
-                                <div class="invalid-feedback">Plan price is required.</div>
+                                <label for="changePlanJoiningDate" class="form-label">Joining Date <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="changePlanJoiningDate"
+                                    name="joining_date" required>
+                                <div class="invalid-feedback">Joining date is required.</div>
                             </div>
 
+                            <div class="row gx-3 mt-4" id="paymentInfo" style="pointer-events: none; opacity: 0.6;">
+
+                                <!-- Discount Type -->
+                                <div class="col-6 col-md-3 col-lg-3">
+                                    <label for="changePlanDiscountType" class="form-label">Discount Type</label>
+                                    <select class="form-select" id="changePlanDiscountType" name="discount_type"
+                                        required>
+                                        <option value="flat" selected>Flat</option>
+                                        <option value="percentage">Percentage</option>
+                                    </select>
+                                </div>
+
+                                <!-- Discount -->
+                                <div class="col-6 col-md-3 col-lg-3">
+                                    <label for="changePlanDiscount" class="form-label">Discount</label>
+                                    <input type="number" class="form-control" id="changePlanDiscount" name="discount"
+                                        placeholder="e.g., 10">
+                                    <div class="invalid-feedback">Discount is required.</div>
+                                </div>
+
+                                <!-- Admission Fee -->
+                                <div class="col-6 col-md-3 col-lg-3">
+                                    <label for="changePlanAdmissionFee" class="form-label">Payment Amount</label>
+                                    <input type="number" class="form-control" id="changePlanAdmissionFee"
+                                        name="admission_fee" placeholder="e.g., 1000">
+                                    <div class="invalid-feedback">Admission fee is required.</div>
+                                </div>
+
+                                <!-- Payment Method -->
+                                <div class="col-6 col-md-3 col-lg-3">
+                                    <label for="changePlanPaymentMode" class="form-label">Amount Mode</label>
+                                    <select class="form-select" id="changePlanPaymentMode" name="payment_mode">
+                                        <option selected disabled value="">Select Payment Mode</option>
+                                        <option value="cash">Cash</option>
+                                        <option value="phone pay">Phone Pay</option>
+                                        <option value="google pay">Google Pay</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Payment mode is required.</div>
+                                </div>
+                            </div>
+
+                            <div class="row gx-3 mt-4">
+                                <div class="col-6 col-md-2 col-lg-2">
+                                    <label for="changeCurrentPlanPrice" class="form-label">Current Plan Price</label>
+                                    <input type="text" class="form-control" id="changeCurrentPlanPrice"
+                                        name="current_plan_price" readonly>
+                                </div>
+
+                                <div class="col-6 col-md-2 col-lg-2">
+                                    <label for="changeCurrentPlanDueAmount" class="form-label">Current Due Amount</label>
+                                    <input type="text" class="form-control text-danger"
+                                        id="changeCurrentPlanDueAmount" name="current_due_amount" readonly>
+                                </div>
+
+                                <div class="col-6 col-md-2 col-lg-2">
+                                    <label for="changeCurrentPlanPaidAmount" class="form-label">Current Paid
+                                        Amount</label>
+                                    <input type="text" class="form-control text-success"
+                                        id="changeCurrentPlanPaidAmount" name="current_paid_amount" readonly>
+                                </div>
+
+                                <div class="col-6 col-md-2 col-lg-2">
+                                    <label for="changeNewPlanPrice" class="form-label">New Plan Price</label>
+                                    <input type="text" class="form-control" value="0" id="changeNewPlanPrice"
+                                        name="new_plan_price" readonly>
+                                </div>
+
+                                <div class="col-6 col-md-2 col-lg-2">
+                                    <label for="changeNewPlanPriceAfterDiscount" class="form-label">After Discount
+                                        Price</label>
+                                    <input type="text" class="form-control" value="0"
+                                        id="changeNewPlanPriceAfterDiscount" name="new_plan_price_after_discount"
+                                        readonly>
+                                </div>
+
+                                <div class="col-6 col-md-2 col-lg-2">
+                                    <label for="changeNewPlanDueAmount" class="form-label">New Due Amount</label>
+                                    <input type="text" class="form-control text-danger" value="0"
+                                        id="changeNewPlanDueAmount" name="new_due_amount" readonly>
+                                    <small id="dueAmountStatus" class="text-danger"></small>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="newDueAmountForValidation" id="newDueAmountForValidation"
+                                value="">
+                            <input type="hidden" name="memberMembershipsId" id="memberMembershipsId"
+                                value="">
+
+                            <!-- Batch -->
                             <div class="col-md-6 col-lg-6">
-                                <label for="changeNewPlanDueAmount" class="form-label">New Due Amount</label>
-                                <input type="text" class="form-control text-danger" value="0" id="changeNewPlanDueAmount" name="new_due_amount" readonly>
-                                <div class="invalid-feedback">Due amount is required.</div>
+                                <label for="changePlanBatch" class="form-label">Batch <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="changePlanBatch" name="batch" required>
+                                    <option selected disabled value="">Select batch</option>
+                                    <option value="Morning">Morning</option>
+                                    <option value="Afternoon">Afternoon</option>
+                                    <option value="Evening">Evening</option>
+                                </select>
+                                <div class="invalid-feedback">Batch is required.</div>
                             </div>
-                            <input type="hidden" name="newDueAmountForValidation" id="newDueAmountForValidation" value="">
 
-
-
-
+                            <!-- Trainer -->
+                            <div class="col-md-6 col-lg-6">
+                                <label for="changePlanTrainer" class="form-label">Trainer</label>
+                                <select class="form-select" id="changePlanTrainer" name="trainer">
+                                    <option selected disabled value="">Select Trainer</option>
+                                    @foreach ($trainers as $trainer)
+                                        <option value="{{ $trainer->id }}">{{ $trainer->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">Trainer is required.</div>
+                            </div>
 
                         </div>
                     </div>

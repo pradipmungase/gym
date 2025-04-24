@@ -642,7 +642,7 @@ $(document).on('click', '.edit-member-btn', function () {
         $('#previewMemberImg').attr('src', fallbackImg);
     }
     $('#editGender').val($.trim(members.gender));
-    $('#editJoiningDate').val(members.joining_date);
+    $('#editJoiningDate').val(members.start_date);
 
     $('#editBatch').val($.trim(members.batch));
     $('#editTrainer').val($.trim(members.trainer_id));
@@ -1616,15 +1616,45 @@ $(document).on('click', '.change-plan-btn', function () {
     let member = $(this).data('member');
     $('#changePlanMemberId').val(member.member_id);
     $('#changePlan').val(member.plan_id);
-    // Enable all options first (clear previous disabled states)
     $('#changePlan option').prop('disabled', false);
-    // Then disable only the currently selected option
     $('#changePlan option:selected').prop('disabled', true);
-    $('#changeCurrentPlanPrice').val(member.plan_price);
-    $('#changeCurrentPlanDueAmount').val(member.due_amount);
-    $('#changeCurrentPlanPaidAmount').val(member.plan_price - member.due_amount);
+    $('#changeCurrentPlanPrice').val(formatNumber(member.plan_price));
+
+
+    let dueAmount = member.due_amount ? member.due_amount : member.final_price;
+    let paidAmount = member.plan_price - dueAmount;
+
+    // Set formatted values
+    $('#changeCurrentPlanDueAmount').val(formatNumber(dueAmount));
+    $('#changeCurrentPlanPaidAmount').val(formatNumber(paidAmount));
+
+
+    $('#changePlanPaymentMode').val(member.payment_mode);
+    $('#changePlanBatch').val(member.batch);
+    $('#changePlanTrainer').val(member.trainer_id);
+
+    $('#changeNewPlanPrice').val(0);
+    $('#changeNewPlanPriceAfterDiscount').val(0);
+    $('#changeNewPlanDueAmount').val(0);
+    $('#changePlanJoiningDate').val(member.start_date);
+    $('#changePlanDiscountType').val(member.discount_type);
+    $('#changePlanDiscount').val(parseInt(member.discount_value));
+
+    $('#changePlanAdmissionFee').val(paidAmount);
+    $('#memberMembershipsId').val(member.member_memberships_id);
+    $('#changePlanPaymentMode').val(member.payment_mode);
+
+
+    $('#paymentInfo').css('pointer-events', 'none');
+    $('#paymentInfo').css('opacity', '0.6');
+
     $('#changePlanModel').modal('show');
 });
+
+
+function formatNumber(amount) {
+    return parseFloat(amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
 
 
@@ -1633,51 +1663,76 @@ if (window.location.pathname === '/members') {
     document.addEventListener("DOMContentLoaded", function () {
         const planSelect = document.getElementById('changePlan');
         const newPlanPriceField = document.getElementById('changeNewPlanPrice');
+        const newPlanPriceAfterDiscountField = document.getElementById('changeNewPlanPriceAfterDiscount');
         const newDueAmountField = document.getElementById('changeNewPlanDueAmount');
         const newDueAmountForValidation = document.getElementById('newDueAmountForValidation');
 
+        function formatINR(value) {
+            return value.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
 
         function calculateNewPlan() {
-            const selectedOption = planSelect.options[planSelect.selectedIndex];
-            const planPrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
-            const currentPlanPrice = parseFloat($('#changeCurrentPlanPrice').val()) || 0;
-            const currentPlanDueAmount = parseFloat($('#changeCurrentPlanDueAmount').val()) || 0;
+            const paymentInfo = document.getElementById('paymentInfo');
+            paymentInfo.style.pointerEvents = 'auto';
+            paymentInfo.style.opacity = '1';
 
-            let newDueAmount = (currentPlanPrice - currentPlanDueAmount) - planPrice;
+            const selectedOption = planSelect.options[planSelect.selectedIndex];
+            let planPrice = parseFloat(selectedOption?.getAttribute('data-price')) || 0;
+            const originalPlanPrice = planPrice;
+
+            const currentPlanPrice = parseFloat($('#changeCurrentPlanPrice').val().replace(/,/g, '')) || 0;
+            const currentPlanDueAmount = parseFloat($('#changeCurrentPlanDueAmount').val().replace(/,/g, '')) || 0;
+
+            const admissionFee = parseFloat($('#changePlanAdmissionFee').val()) || 0;
+            const discount = parseFloat($('#changePlanDiscount').val()) || 0;
+            const discountType = $('#changePlanDiscountType').val();
+
+            // Apply discount
+            if (discountType === 'flat') {
+                planPrice = planPrice - discount;
+            } else if (discountType === 'percentage') {
+                planPrice = planPrice - (planPrice * discount / 100);
+            }
+
+
+            // Calculate paid amount and new due amount
+            const currentPaidAmount = currentPlanPrice - currentPlanDueAmount;
+            let newDueAmount = planPrice - currentPaidAmount - admissionFee;
+
+            // Save raw due amount for validations
             newDueAmountForValidation.value = newDueAmount;
 
+            // Display values
+            newPlanPriceField.value = formatINR(originalPlanPrice);
+            newPlanPriceAfterDiscountField.value = formatINR(planPrice);
+            // newDueAmountField.value = formatINR(Math.abs(newDueAmount));
+            newDueAmountField.value = (newDueAmount < 0 ? '' : '') + formatINR(Math.abs(newDueAmount));
 
-            newPlanPriceField.value = planPrice > 0 ? planPrice.toLocaleString('en-IN', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }) : planPrice.toLocaleString('en-IN', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
 
-            // Calculate absolute value for display (removing negative sign)
-            const displayAmount = Math.abs(newDueAmount);
-
-            newDueAmountField.value = displayAmount.toLocaleString('en-IN', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-
-            // Apply appropriate class based on original value
+            // Set visual cue based on due amount
+            const dueStatus = document.getElementById('dueAmountStatus');
+            newDueAmountField.classList.remove('text-success', 'text-danger');
             if (newDueAmount > 0) {
-                newDueAmountField.classList.remove('text-danger');
-                newDueAmountField.classList.add('text-success');
+                $('#changeNewPlanDueAmount').removeClass('is-invalid');
+                newDueAmountField.classList.add('text-danger'); // Amount to be paid
+                dueStatus.textContent = '';
             } else if (newDueAmount < 0) {
-                newDueAmountField.classList.remove('text-success');
-                newDueAmountField.classList.add('text-danger');
-            } else {
-                // For zero amount
-                newDueAmountField.classList.remove('text-success', 'text-danger');
+                $('#changeNewPlanDueAmount').removeClass('is-invalid');
+                newDueAmountField.classList.add('text-success'); // Extra paid
+                dueStatus.textContent = 'Member already paid more than due amount.';
             }
+
         }
-        // Event listeners for dynamic updates
+
+        // Attach event listeners
         planSelect.addEventListener('change', calculateNewPlan);
+        $('#changePlanAdmissionFee, #changePlanDiscount').on('keyup', calculateNewPlan);
+        $('#changePlanDiscountType').on('change', calculateNewPlan);
     });
+
 }
 
 
@@ -1706,10 +1761,10 @@ $(document).on('submit', '#changePlanForm', function (e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {
-            // showToast(response.message, 'bg-success');
-            // form[0].reset();
-            // $('#changePlanModel').modal('hide');
-            // fetchmembers();
+            showToast(response.message, 'bg-success');
+            form[0].reset();
+            $('#changePlanModel').modal('hide');
+            fetchmembers();
         },
         error: function (xhr) {
             let errors = xhr.responseJSON.errors;

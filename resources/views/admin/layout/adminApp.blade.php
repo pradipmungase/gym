@@ -123,10 +123,6 @@
             /* Bootstrap 'success' color */
             border-color: #2F6AD9 !important;
         }
-
-        .dropdown-menu-end[data-bs-popper] {
-            right: -70px !important;
-        }
     </style>
 
     <script>

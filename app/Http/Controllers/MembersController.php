@@ -70,7 +70,8 @@ class MembersController extends Controller{
                 'member_memberships.*',
                 'members.id as member_id',
                 'members.status as member_status',
-                'member_payments.due_amount'
+                'member_payments.due_amount',
+                'member_memberships.id as member_memberships_id'
             )
             ->paginate(10);
 
@@ -87,17 +88,17 @@ class MembersController extends Controller{
         ]);
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email:rfc,dns|unique:members,email',
+            'email' => 'nullable|email:rfc,dns|unique:members,email',
             'mobile' => [
                 'required',
                 'regex:/^[6-9]\d{9}$/',
                 'unique:members,mobile'
             ],
             'joining_date' => 'required|date|before_or_equal:today',
-            'birth_date' => 'required|date|before:today',
+            'birth_date' => 'nullable|date|before:today',
             'gender' => 'required|in:Male,Female,Other',
             'plan' => 'required|exists:menbership_plans,id',
-            'trainer' => 'required|exists:trainers,id',
+            'trainer' => 'nullable|exists:trainers,id',
             'batch' => 'required|string|max:50',
             'discount_type' => 'required|in:flat,percentage',
             'discount' => 'nullable|numeric|min:0',
@@ -274,28 +275,11 @@ class MembersController extends Controller{
                     ->whereNull('deleted_at'),
             ],
             'joining_date' => 'required|date|before_or_equal:today',
-            'birth_date' => 'required|date|before:today',
-            'gender' => 'required|in:Male,Female,Other',
-            'plan' => 'required|exists:menbership_plans,id',
-            'trainer' => 'required|exists:trainers,id',
+            'birth_date' => 'nullable|date|before:today',
+            'gender' => 'required|in:male,female',
+            'trainer' => 'nullable|exists:trainers,id',
             'batch' => 'required|string|max:50',
-            'discount_type' => 'required|in:Flat,Percentage',
-            'discount' => 'nullable|numeric|min:0',
-            'plan_price' => 'required|numeric|min:1',
-            'final_price' => [
-                'required',
-                'numeric',
-                'min:0',
-                function ($attribute, $value, $fail) use ($request) {
-                    $planPrice = $request->input('plan_price');
-                    if ($value > $planPrice) {
-                        $fail('Final price cannot be greater than plan price.');
-                    }
-                }
-            ],
             'menberImg' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'admission_fee' => 'nullable|numeric|min:0',
-            'due_amount' => 'required|numeric|min:0',
         ], [
             'name.required' => 'Name is required.',
             'email.email' => 'Enter a valid email address.',
@@ -309,62 +293,45 @@ class MembersController extends Controller{
             'birth_date.before' => 'Birth date must be in the past.',
             'gender.required' => 'Please select a gender.',
             'gender.in' => 'Invalid gender selection.',
-            'plan.required' => 'Please select a membership plan.',
-            'plan.exists' => 'Selected plan does not exist.',
-            'trainer.required' => 'Please select a trainer.',
             'trainer.exists' => 'Selected trainer does not exist.',
             'batch.required' => 'Batch name is required.',
             'batch.max' => 'Batch name must not exceed 50 characters.',
-            'discount_type.required' => 'Please select a discount type.',
-            'discount_type.in' => 'Invalid discount type.',
-            'discount.numeric' => 'Discount must be a number.',
-            'discount.min' => 'Discount cannot be negative.',
-            'plan_price.required' => 'Plan price is required.',
-            'plan_price.numeric' => 'Plan price must be a number.',
-            'plan_price.min' => 'Plan price must be at least 1.',
-            'final_price.required' => 'Final price is required.',
-            'final_price.numeric' => 'Final price must be a number.',
-            'final_price.min' => 'Final price cannot be negative.',
             'menberImg.image' => 'The uploaded file must be an image.',
             'menberImg.mimes' => 'Allowed image types are jpeg, png, jpg, gif, svg.',
             'menberImg.max' => 'Image size should not exceed 2MB.',
-            'admission_fee.numeric' => 'Admission fee must be a number.',
-            'admission_fee.min' => 'Admission fee cannot be negative.',
-            'due_amount.required' => 'Due amount is required.',
-            'due_amount.numeric' => 'Due amount must be a number.',
-            'due_amount.min' => 'Due amount cannot be negative.',
         ]);
 
 
         DB::beginTransaction();
 
         try {
-            $member = DB::table('members')->where('id', $id)->first();
-
-            if (!$member) {
-                return response()->json(['status' => 'error', 'message' => 'Member not found.']);
-            }
-
-            $filename = $member->image;
 
             if ($request->hasFile('memberImg')) {
                 $image = $request->file('memberImg');
                 $filename = uploadFile($image, 'memberProfilePicture', $id);
+
+                DB::table('members')->where('id', $id)->update([
+                    'image' => $filename,
+                ]);
             }
 
             DB::table('members')->where('id', $id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'mobile' => $request->mobile,
-                'joining_date' => $request->joining_date,
                 'birth_date' => $request->birth_date,
                 'gender' => $request->gender,
-                'image' => $filename,
-                'status' => 'Active',
                 'updated_at' => now(),
             ]);
 
-            $plan = DB::table('menbership_plans')->where('id', $request->plan)->first();
+
+            $member_memberships = DB::table('member_memberships')->where('member_id', $id)->where('gym_id', Auth::user()->id)->where('status', 'active')->first();
+            if(!$member_memberships){
+                return response()->json(['status' => 'error', 'message' => 'member_memberships not found.']);
+            }
+
+            $plan = DB::table('menbership_plans')->where('id',$member_memberships->plan_id)->first();
+
             $duration_string = '+' . $plan->duration . ' ' . $plan->duration_type;
             $expiry_date = date('Y-m-d', strtotime($request->joining_date . ' ' . $duration_string));
 
@@ -373,25 +340,13 @@ class MembersController extends Controller{
                 return response()->json(['status' => 'error','expiry_date' => 'expiry_date', 'message' => 'Invalid joining date as per plan duration.']);
             }
 
-            DB::table('member_details')->updateOrInsert(
-                ['member_id' => $id],
-                [
-                    'gym_id' => Auth::user()->id,
-                    'plan_id' => $request->plan,
-                    'trainer_id' => $request->trainer,
-                    'joining_date' => $request->joining_date,
-                    'expiry_date' => $expiry_date,
-                    'batch' => $request->batch,
-                    'admission_fee' => $request->admission_fee ?? 0,
-                    'discount_type' => $request->discount_type,
-                    'discount_inpute' => $request->discount,
-                    'after_discount_price' => $request->final_price,
-                    'plan_price' => $request->plan_price,
-                    'due_amount' => $request->due_amount,
-                    'payment_mode' => $request->paymentMode,
-                    'updated_at' => now(),
-                ]
-            );
+            DB::table('member_memberships')->where('id', $member_memberships->id)->update([
+                'trainer_id' => $request->trainer ?? null,
+                'start_date' => $request->joining_date,
+                'end_date' => $expiry_date,
+                'batch' => $request->batch,
+                'updated_at' => now(),
+            ]);
 
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Member updated successfully!']);
@@ -430,7 +385,7 @@ class MembersController extends Controller{
 
         $member = DB::table('members')
             ->join('member_memberships', 'members.id', '=', 'member_memberships.member_id')
-            ->join('trainers', 'member_memberships.trainer_id', '=', 'trainers.id')
+            ->leftJoin('trainers', 'member_memberships.trainer_id', '=', 'trainers.id')
             ->join('menbership_plans', 'member_memberships.plan_id', '=', 'menbership_plans.id')
             ->where('members.gym_id', Auth::user()->id)
             ->where('members.id', $id)
@@ -525,6 +480,7 @@ class MembersController extends Controller{
             'current_paid_amount' => str_replace(',', '', $request->current_paid_amount),
             'new_plan_price' => str_replace(',', '', $request->new_plan_price),
             'new_due_amount' => str_replace(',', '', $request->new_due_amount),
+            'new_plan_price_after_discount' => str_replace(',', '', $request->new_plan_price_after_discount),
         ]);
         $request->validate([
             'changePlanMemberId' => 'required|exists:members,id',
@@ -533,13 +489,21 @@ class MembersController extends Controller{
             'current_due_amount' => 'required|numeric|min:0',
             'current_paid_amount' => 'required|numeric|min:0',
             'new_plan_price' => 'required|numeric|min:0',
-            'new_due_amount' => 'required|numeric|min:0',
+            'new_plan_price_after_discount' => 'required|numeric|min:0',
+            'batch' => 'required|string|max:255',
+            'trainer' => 'nullable|exists:trainers,id',
+            'discount_type' => 'required|string|max:255',
+            'discount_value' => 'nullable|numeric|min:0',
+            'admission_fee' => 'nullable|numeric|min:0',
+            'payment_mode' => 'nullable|string|max:255',
+            'joining_date' => 'required|date',
+            'memberMembershipsId' => 'required|exists:member_memberships,id',
             'newDueAmountForValidation' => [
                 'required',
                 'numeric',
                 function ($attribute, $value, $fail) {
-                    if ($value >= 0) {
-                        $fail('Member allready paid more than due amount.');
+                    if ($value < 0) {
+                        $fail('Member already paid more than due amount.');
                     }
                 }
             ],
@@ -552,54 +516,46 @@ class MembersController extends Controller{
         DB::beginTransaction();
         try {
 
-            $oldPlan = DB::table('member_memberships')->where('member_id', $request->changePlanMemberId)->where('status','active')->first();
-            if(!$oldPlan){
-                return response()->json(['status' => 'error', 'message' => 'Plan not found.']);
+            $member_memberships = DB::table('member_memberships')->where('id', $request->memberMembershipsId)->first();
+            if(!$member_memberships){
+                return response()->json(['status' => 'error', 'message' => 'member_memberships not found.']);
             }
-
-            DB::table('member_memberships')->where('member_id', $request->changePlanMemberId)->where('status','active')->update([
-                'status' => 'changed',
-                'updated_at' => now(),
-            ]);
-
 
 
             $plan = DB::table('menbership_plans')->where('id', $request->plan)->first();
             $duration_string = '+' . $plan->duration . ' ' . $plan->duration_type;
             $expiry_date = date('Y-m-d', strtotime($request->start_date . ' ' . $duration_string));
 
-            DB::table('member_memberships')->insert([
+            DB::table('member_memberships')->where('id', $request->memberMembershipsId)->update([
                 'member_id' => $request->changePlanMemberId,
                 'gym_id' => Auth::user()->id,
                 'plan_id' => $request->plan,
-                'trainer_id' => $oldPlan->trainer_id,
-                'start_date' => $oldPlan->start_date,
+                'trainer_id' => $member_memberships->trainer_id ?? null,
+                'start_date' => $request->joining_date,
                 'end_date' => $expiry_date,
-                'batch' => $oldPlan->batch,
-                'discount_type' => $oldPlan->discount_type,
-                'discount_value' => null,
+                'batch' => $request->batch,
+                'discount_type' => $request->discount_type,
+                'discount_value' => $request->discount_value ?? null,
                 'plan_price' => $request->new_plan_price,
-                'discount_price' => $oldPlan->discount_price,
-                'final_price' => $request->new_plan_price,
+                'discount_price' => $request->new_plan_price - $request->new_plan_price_after_discount,
+                'final_price' => $request->new_plan_price_after_discount,
+                'created_at' => now(),
+                'updated_at' => now(), 
+            ]);
+            
+
+            DB::table('member_payments')->insert([
+                'member_id' => $request->changePlanMemberId,
+                'gym_id' => Auth::user()->id,
+                'membership_id' => $request->plan,
+                'payment_mode' => $request->payment_mode ?? "other",
+                'amount_paid' => $request->current_paid_amount+$request->admission_fee,
+                'due_amount' => $request->new_due_amount,
+                'total_amount' => $request->new_plan_price,
+                'payment_date' => now(),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-
-            $oldPayment = DB::table('member_payments')->where('member_id', $request->changePlanMemberId)->where('membership_id', $oldPlan->plan_id)->orderBy('id', 'desc')->first();
-            if($oldPayment){
-                DB::table('member_payments')->insert([
-                    'member_id' => $request->changePlanMemberId,
-                    'gym_id' => Auth::user()->id,
-                    'membership_id' => $request->plan,
-                    'payment_mode' => "other",
-                    'amount_paid' => $request->current_paid_amount,
-                    'due_amount' => $request->new_due_amount,
-                    'total_amount' => $request->new_plan_price,
-                    'payment_date' => now(),
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
 
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Plan changed successfully!']);

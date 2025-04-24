@@ -37,22 +37,37 @@
                                             data-bs-original-title="Top endorsed"></i>
                                     </div>
                                     <span class="d-block fs-5 text-body h5  mb-0 me-1">{{ $member->email }}</span>
+                                    <span style="float: inline-start;">{{ $member->mobile }}</span>
                                 </div>
                             </a>
                         </td>
 
                         <td>{{ $member->mobile }}</td>
-                        <td>{{ \Carbon\Carbon::parse($member->start_date)->format('d M, Y') }}
-                            <br>
-                            @if (\Carbon\Carbon::parse($member->end_date)->isPast())
-                                {{ \Carbon\Carbon::parse($member->end_date)->format('d M, Y') }}
+                        <td>
+                            {{ \Carbon\Carbon::parse($member->start_date)->format('d M, Y') }} To
+                            @php
+                                $endDate = \Carbon\Carbon::parse($member->end_date);
+                                $now = \Carbon\Carbon::now();
+                                $remainingDays = $now->isBefore($endDate) ? $now->diffInDays($endDate) : 0;
+                            @endphp
+
+                            @if ($endDate->isPast())
+                                {{ $endDate->format('d M, Y') }}
                             @else
                                 <span class="text-success">
-                                    {{ \Carbon\Carbon::parse($member->end_date)->format('d M, Y') }}
+                                    {{ $endDate->format('d M, Y') }}
+                                </span>
+                                <br>
+                                <span class="text-white">
+                                    <i class="bi bi-calendar-check"></i>
+                                    {{ $remainingDays }} days left
                                 </span>
                             @endif
                         </td>
-                        <td class="text-danger">₹ {{ $member->due_amount  ? number_format($member->due_amount, 2) : number_format($member->final_price, 2) }}</td>
+
+                        <td class="text-danger">₹
+                            {{ $member->due_amount ? number_format($member->due_amount, 2) : number_format($member->final_price, 2) }}
+                        </td>
                         <td>
                             <div class="form-check form-switch form-switch-sm">
                                 <input class="form-check-input" onclick="updateUserStatus({{ $member->member_id }})"
@@ -82,12 +97,12 @@
                                         href="{{ route('members.view', encrypt($member->member_id)) }}">
                                         <i class="bi bi-arrow-repeat me-2"></i> Renew Membership
                                     </a>
-                                    <a class="dropdown-item change-plan-btn"
-                                        href="#" data-bs-toggle="modal" data-bs-target="#changePlanModel" data-member='@json($member)'>
+                                    <a class="dropdown-item change-plan-btn" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#changePlanModel" data-member='@json($member)'>
                                         <i class="bi bi-sliders2-vertical me-2"></i> Change Plan
                                     </a>
-                                    <a class="dropdown-item add-note-btn"
-                                        href="#" data-bs-toggle="modal" data-bs-target="#addNoteModel" data-member='@json($member)'>
+                                    <a class="dropdown-item add-note-btn" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#addNoteModel" data-member='@json($member)'>
                                         <i class="bi bi-journal-text me-2"></i> Add Note
                                     </a>
                                     <a class="dropdown-item"
