@@ -6,7 +6,7 @@
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Mobile No</th>
+                    <th>Membership Plan</th>
                     <th>Joining Data & Expiry Date</th>
                     <th>Due Amount</th>
                     <th>Status</th>
@@ -42,9 +42,12 @@
                             </a>
                         </td>
 
-                        <td>{{ $member->mobile }}</td>
+                        <td>{{ $member->plan_name }}</td>
                         <td>
-                            {{ \Carbon\Carbon::parse($member->start_date)->format('d M, Y') }} To
+                            <span class="text-primary">
+                                {{ \Carbon\Carbon::parse($member->start_date)->format('d M, Y') }} 
+                            </span>
+                            To
                             @php
                                 $endDate = \Carbon\Carbon::parse($member->end_date);
                                 $now = \Carbon\Carbon::now();

@@ -1712,6 +1712,7 @@ if (window.location.pathname === '/members') {
             newDueAmountField.value = (newDueAmount < 0 ? '' : '') + formatINR(Math.abs(newDueAmount));
 
 
+            dueStatus.textContent = '';
             // Set visual cue based on due amount
             const dueStatus = document.getElementById('dueAmountStatus');
             newDueAmountField.classList.remove('text-success', 'text-danger');

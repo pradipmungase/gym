@@ -43,6 +43,7 @@ class MembersController extends Controller{
             ->leftJoinSub($latestPayments, 'member_payments', function ($join) {
                 $join->on('members.id', '=', 'member_payments.member_id');
             })
+            ->join('menbership_plans', 'member_memberships.plan_id', '=', 'menbership_plans.id')
             ->where('members.gym_id', Auth::user()->id)
             ->where('member_memberships.status', 'active')
             ->whereNull('members.deleted_at');
@@ -71,7 +72,8 @@ class MembersController extends Controller{
                 'members.id as member_id',
                 'members.status as member_status',
                 'member_payments.due_amount',
-                'member_memberships.id as member_memberships_id'
+                'member_memberships.id as member_memberships_id',
+                'menbership_plans.name as plan_name'
             )
             ->paginate(10);
 
