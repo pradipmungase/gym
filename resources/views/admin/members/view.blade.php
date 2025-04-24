@@ -74,7 +74,7 @@
                         <div class="col-6 fw-bold text-start">
                             <i class="fas fa-cogs"></i> Membership Plan
                         </div>
-                        <div class="col-6 ps-5">{{ $member->plan_name ?? 'N/A' }} <span class="badge bg-primary">₹ {{ $member->plan_price ?? 'N/A' }}</span></div>
+                        <div class="col-6 ps-5">{{ $member->plan_name ?? 'N/A' }} <span class="badge bg-primary">₹ {{ number_format($member->plan_price, 2) }}</span></div>
                     </div>
 
                     <div class="row mb-3">
@@ -82,7 +82,25 @@
                             <i class="fas fa-calendar-check"></i> Expiry Date
                         </div>
                         <div class="col-6 ps-5">
-                            {{ \Carbon\Carbon::parse($member->end_date)->format('d M, Y') ?? 'N/A' }}</div>
+                            {{ \Carbon\Carbon::parse($member->end_date)->format('d M, Y') ?? 'N/A' }}
+                            &nbsp;
+                            &nbsp;
+                            @php
+                                $endDate = \Carbon\Carbon::parse($member->end_date);
+                                $now = \Carbon\Carbon::now();
+                                $remainingDays = $now->isBefore($endDate) ? $now->diffInDays($endDate) : 0;
+                            @endphp
+
+                            @if ($endDate->isPast())
+                                {{ $endDate->format('d M, Y') }}
+                            @else
+                                <span class="text-white">
+                                    <i class="bi bi-calendar-check"></i>
+                                    {{ $remainingDays }} days left
+                                </span>
+                            @endif
+                        </div>
+
                     </div>
 
                     <div class="row mb-3">
@@ -146,6 +164,7 @@
                                     <th>Payment Mode</th>
                                     <th>Paid Amount (₹)</th>
                                     <th>Due Amount (₹)</th>
+                                    <th>Payment Type</th>
                                     <th>Payment Date</th>
                                 </tr>
                             </thead>
@@ -156,6 +175,7 @@
                                         <td>{{ ucfirst($payment->payment_mode) }}</td>
                                         <td class="text-success">₹ {{ number_format($payment->amount_paid, 2) }}</td>
                                         <td class="text-danger">₹ {{ number_format($payment->due_amount, 2) }}</td>
+                                        <td>{{ ucfirst($payment->payment_type) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d M, Y') }}</td>
                                     </tr>
                                 @endforeach

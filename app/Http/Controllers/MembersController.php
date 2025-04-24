@@ -17,6 +17,7 @@ use Endroid\QrCode\Builder\Builder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use DateTime;
 
 
 class MembersController extends Controller{
@@ -102,7 +103,7 @@ class MembersController extends Controller{
             'plan' => 'required|exists:menbership_plans,id',
             'trainer' => 'nullable|exists:trainers,id',
             'batch' => 'required|string|max:50',
-            'discount_type' => 'required|in:flat,percentage',
+            'discount_type' => 'nullable|in:flat,percentage',
             'discount' => 'nullable|numeric|min:0',
             'plan_price' => 'required|numeric|min:1',
             'final_price' => [
@@ -200,10 +201,12 @@ class MembersController extends Controller{
             }
 
             $discount_price = null;
-            if($request->discount_type == 'flat'){
-                $discount_price = $request->discount;
-            }else{
-                $discount_price = $request->discount * $request->plan_price / 100;
+            if($request->admission_fee > 0){
+                if($request->discount_type == 'flat'){
+                    $discount_price = $request->discount;
+                }else{
+                    $discount_price = $request->discount * $request->plan_price / 100;
+                }
             }
 
             DB::table('member_memberships')->insert([
@@ -214,10 +217,10 @@ class MembersController extends Controller{
                 'start_date' => $request->joining_date,
                 'end_date' => $expiry_date,
                 'batch' => $request->batch,
-                'discount_type' => $request->discount_type,
-                'discount_value' => $request->discount,
+                'discount_type' => $request->discount_type ?? null,
+                'discount_value' => $request->discount ?? null,
                 'plan_price' => $request->plan_price,
-                'discount_price' => $discount_price,
+                'discount_price' => $discount_price ?? null,
                 'final_price' => $request->final_price,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -232,6 +235,7 @@ class MembersController extends Controller{
                     'amount_paid' => $request->admission_fee ?? 0,
                     'due_amount' => $request->due_amount,
                     'total_amount' => $request->final_price,
+                    'payment_type' => 'admission',
                     'payment_date' => now(),
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -493,7 +497,7 @@ class MembersController extends Controller{
             'new_plan_price_after_discount' => 'required|numeric|min:0',
             'batch' => 'required|string|max:255',
             'trainer' => 'nullable|exists:trainers,id',
-            'discount_type' => 'required|string|max:255',
+            'discount_type' => 'nullable|string|max:255',
             'discount_value' => 'nullable|numeric|min:0',
             'admission_fee' => 'nullable|numeric|min:0',
             'payment_mode' => 'nullable|string|max:255',
@@ -518,7 +522,7 @@ class MembersController extends Controller{
         DB::beginTransaction();
         try {
 
-            $member_memberships = DB::table('member_memberships')->where('id', $request->memberMembershipsId)->first();
+            $member_memberships = DB::table('member_memberships')->where('id', $request->memberMembershipsId)->where('gym_id', Auth::user()->id)->where('status', 'active')->first();
             if(!$member_memberships){
                 return response()->json(['status' => 'error', 'message' => 'member_memberships not found.']);
             }
@@ -555,6 +559,7 @@ class MembersController extends Controller{
                 'due_amount' => $request->new_due_amount,
                 'total_amount' => $request->new_plan_price,
                 'payment_date' => now(),
+                'payment_type' => 'plan_change',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -564,6 +569,83 @@ class MembersController extends Controller{
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json(['status' => 'error', 'message' => 'Failed to change plan. Please try again.', 'error' => $th->getMessage()]);
+        }
+    }
+
+    public function renewMembership(Request $request)
+    {
+        $request->validate([
+            'renewMembershipMemberId' => 'required|exists:members,id',
+            'plan' => 'required|exists:menbership_plans,id',
+            'renewMembershipNewDueAmountForValidation' => [
+                'required',
+                'numeric',
+                function ($attribute, $value, $fail) {
+                    if ($value < 0) {
+                        $fail('Due Amount can not be negative.');
+                    }
+                }
+            ],
+         ], [
+            'renewMembershipNewDueAmountForValidation.negative' => 'Due Amount can not be negative.',
+            'renewMembershipNewDueAmountForValidation.required' => 'Due amount can not be 0.',
+        ]);
+
+        DB::beginTransaction();
+        try {
+
+            $member_memberships = DB::table('member_memberships')->where('member_id', $request->renewMembershipMemberId)->where('gym_id', Auth::user()->id)->where('status', 'active')->first();
+            if(!$member_memberships){
+                return response()->json(['status' => 'error', 'message' => 'member_memberships not found.']);
+            }
+
+
+            $startDate = DateTime::createFromFormat('d M Y', $request->current_plan_expiry_date)->format('Y-m-d');
+            $endDate = DateTime::createFromFormat('d M Y', $request->new_plan_expiry_date)->format('Y-m-d');
+
+            DB::table('member_memberships')->where('member_id', $request->renewMembershipMemberId)->update([
+                'status' => 'expired',
+                'updated_at' => now(),
+            ]);
+
+            DB::table('member_memberships')->insert([
+                'member_id' => intval($request->renewMembershipMemberId),
+                'gym_id' => Auth::user()->id,
+                'plan_id' => intval($request->plan),
+                'trainer_id' => $member_memberships->trainer_id ?? null,
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'batch' => $member_memberships->batch,
+                'discount_type' => $request->discount_type ?? null,
+                'discount_value' => $request->discount_value ?? null,
+                'plan_price' => str_replace(',', '', $request->new_plan_price),
+                'discount_price' => (float) str_replace(',', '', $request->new_plan_price) - 
+                    (float) str_replace(',', '', $request->new_plan_price_after_discount),
+                'final_price' => str_replace(',', '', $request->new_plan_price_after_discount),
+                'created_at' => now(),
+                'updated_at' => now(), 
+            ]);
+
+            DB::table('member_payments')->insert([
+                'member_id' => intval($request->renewMembershipMemberId),
+                'gym_id' => Auth::user()->id,
+                'membership_id' => intval($request->plan),
+                'payment_mode' => $request->payment_mode ?? "other",
+                'amount_paid' => (float) str_replace(',', '', $request->current_paid_amount) + 
+                 (float) str_replace(',', '', $request->admission_fee),
+                'due_amount' => str_replace(',', '', $request->new_due_amount),
+                'total_amount' => str_replace(',', '', $request->new_plan_price),
+                'payment_date' => now(),
+                'payment_type' => 'renewal',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::commit();
+            return response()->json(['status' => 'success', 'message' => 'Renew membership  successfully!']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => 'Failed to renew membership. Please try again.', 'error' => $th->getMessage()]);
         }
     }
 }

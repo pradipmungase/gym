@@ -17,11 +17,12 @@ return new class extends Migration
             $table->integer('membership_id');
             $table->integer('gym_id');
 
-            $table->enum('payment_mode', ['cash','phone Ppay','google pay','other'])->default('cash');
-            $table->decimal('amount_paid', 10, 2);
-            $table->decimal('due_amount', 10, 2);
-            $table->decimal('total_amount', 10, 2);
-            $table->dateTime('payment_date');
+            $table->enum('payment_mode', ['cash','phone Ppay','google pay','other'])->nullable();
+            $table->decimal('amount_paid', 10, 2)->nullable();
+            $table->decimal('due_amount', 10, 2)->nullable();
+            $table->decimal('total_amount', 10, 2)->nullable();
+            $table->dateTime('payment_date')->nullable();
+            $table->enum('payment_type', ['admission','due_payment','renewal','plan_change'])->nullable();
 
             $table->timestamps();
         });

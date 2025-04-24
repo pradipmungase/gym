@@ -319,75 +319,78 @@
                                 <h5 class="border-bottom pb-2 mt-4">💳 Payment Information</h5>
                             </div>
 
-                            <div class="col-md-6 col-lg-4">
-                                <label for="plan" class="form-label">Plan <span class="text-danger">*</span></label>
-                                <select class="form-select" id="plan" name="plan" required>
-                                    <option selected disabled value="">Select Plan</option>
-                                    @foreach ($plans as $plan)
-                                        <option value="{{ $plan->id }}" data-price="{{ $plan->price }}">
-                                            {{ $plan->name }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="invalid-feedback">Plan selection is required.</div>
-                            </div>
+ <!-- First Row -->
+<div class="row">
+    <div class="col-md-6 col-lg-3">
+        <label for="plan" class="form-label">Plan <span class="text-danger">*</span></label>
+        <select class="form-select" id="plan" name="plan" required>
+            <option selected disabled value="">Select Plan</option>
+            @foreach ($plans as $plan)
+                <option value="{{ $plan->id }}" data-price="{{ $plan->price }}">
+                    {{ $plan->name }}
+                </option>
+            @endforeach
+        </select>
+        <div class="invalid-feedback">Plan selection is required.</div>
+    </div>
 
-                            <div class="col-md-6 col-lg-4">
-                                <label for="paymentMode" class="form-label">Payment Mode</label>
-                                <select class="form-select" id="paymentMode" name="paymentMode">
-                                    <option selected disabled value="">Select Payment Mode</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="phone pay">Phone Pay</option>
-                                    <option value="google pay">Google Pay</option>
-                                    <option value="other">Other</option>
-                                </select>
-                                <div class="invalid-feedback">Payment selection is required.</div>
-                            </div>
+    <div class="col-md-6 col-lg-3">
+        <label class="form-label">Plan Price</label>
+        <input type="text" class="form-control" value="0" name="plan_price" id="plan_price" readonly>
+        <div class="invalid-feedback">The plan price field must be at least 0.</div>
+    </div>
 
-                            <div class="col-md-6 col-lg-4">
-                                <label for="admission_fee" class="form-label">Admission Fee <small class="text-muted">
-                                        (First payment at time of joining)</small></label>
-                                <input type="number" class="form-control" id="admission_fee" name="admission_fee"
-                                    placeholder="e.g., 1000">
-                                <div class="invalid-feedback">Admission fee is required.</div>
-                            </div>
+    <div class="col-md-6 col-lg-3">
+        <label class="form-label">Final Price <span style="font-size: smaller;">(After Discount)</span></label>
+        <input type="text" class="form-control text-success" value="0" name="final_price" id="final_price" readonly>
+        <div class="invalid-feedback">The final price field must be at least 0.</div>
+    </div>
 
-                            <div class="col-md-6 col-lg-4">
-                                <label for="discount_type" class="form-label">Discount Type</label>
-                                <select class="form-select" id="discount_type" name="discount_type">
-                                    <option value="" selected>Select Discount Type</option>
-                                    <option value="flat" selected>Flat</option>
-                                    <option value="percentage">Percentage</option>
-                                </select>
-                                <div class="invalid-feedback">Discount type is required.</div>
-                            </div>
+    <div class="col-md-6 col-lg-3">
+        <label class="form-label">Due Amount</label>
+        <input type="text" class="form-control text-danger fw-bold" value="0" name="due_amount" id="due_amount" readonly>
+        <div class="invalid-feedback">The due amount field must be at least 0.</div>
+    </div>
+</div>
 
-                            <div class="col-md-6 col-lg-4">
-                                <label for="discount" class="form-label">Discount</label>
-                                <input type="number" class="form-control" id="discount" name="discount"
-                                    placeholder="e.g., 10">
-                                <div class="invalid-feedback">Discount is required.</div>
-                            </div>
+<!-- Second Row -->
+<div class="row mt-3">
+    <div class="col-md-6 col-lg-3">
+        <label for="discount_type" class="form-label">Discount Type</label>
+        <select class="form-select" id="discount_type" name="discount_type">
+            <option value="" selected>Select Discount Type</option>
+            <option value="flat">Flat</option>
+            <option value="percentage">Percentage</option>
+        </select>
+        <div class="invalid-feedback">Discount type is required.</div>
+    </div>
 
-                            <div class="col-md-4 col-lg-2">
-                                <label class="form-label">Plan Price</label>
-                                <input type="text" class="form-control" value="0" name="plan_price"
-                                    id="plan_price" readonly>
-                                <div class="invalid-feedback">The plan price field must be at least 0.</div>
-                            </div>
+    <div class="col-md-6 col-lg-3">
+        <label for="discount" class="form-label">Discount</label>
+        <input type="number" class="form-control" id="discount" name="discount" placeholder="e.g., 10">
+        <div class="invalid-feedback">Discount is required.</div>
+    </div>
 
-                            <div class="col-md-4 col-lg-2">
-                                <label class="form-label">Final Price <span style="font-size: smaller;">(After
-                                        Discount)</span></label>
-                                <input type="text" class="form-control text-success" value="0"
-                                    name="final_price" id="final_price" readonly>
-                                <div class="invalid-feedback">The final price field must be at least 0.</div>
-                            </div>
-                            <div class="col-md-5 col-lg-4">
-                                <label class="form-label">Due Amount</label>
-                                <input type="text" class="form-control text-danger fw-bold" value="0"
-                                    name="due_amount" id="due_amount" readonly>
-                                <div class="invalid-feedback">The due amount field must be at least 0.</div>
-                            </div>
+    <div class="col-md-6 col-lg-3">
+        <label for="admission_fee" class="form-label">Joining Amount 
+        </label>
+        <input type="number" class="form-control" id="admission_fee" name="admission_fee" placeholder="e.g., 1000">
+        <div class="invalid-feedback">Admission fee is required.</div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <label for="paymentMode" class="form-label">Payment Mode</label>
+        <select class="form-select" id="paymentMode" name="paymentMode">
+            <option selected disabled value="">Select Payment Mode</option>
+            <option value="cash">Cash</option>
+            <option value="phone pay">Phone Pay</option>
+            <option value="google pay">Google Pay</option>
+            <option value="other">Other</option>
+        </select>
+        <div class="invalid-feedback">Payment selection is required.</div>
+    </div>
+</div>
+
                         </div>
                     </div>
                     <div class="modal-footer px-4">
@@ -567,7 +570,7 @@
                             <div class="col-md-12 col-lg-12">
                                 <label for="addPaymentDate" class="form-label"> Payment Date <span
                                         class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="addPaymentDate" name="payment_date"
+                                <input type="date" value="{{ date('Y-m-d') }}" class="form-control" id="addPaymentDate" name="payment_date"
                                     required>
                                 <div class="invalid-feedback">Payment date is required.</div>
                             </div>
@@ -703,8 +706,8 @@
                                 <!-- Discount Type -->
                                 <div class="col-6 col-md-3 col-lg-3">
                                     <label for="changePlanDiscountType" class="form-label">Discount Type</label>
-                                    <select class="form-select" id="changePlanDiscountType" name="discount_type"
-                                        required>
+                                    <select class="form-select" id="changePlanDiscountType" name="discount_type">
+                                        <option value="" selected>Select Discount Type</option>
                                         <option value="flat" selected>Flat</option>
                                         <option value="percentage">Percentage</option>
                                     </select>
@@ -784,8 +787,7 @@
 
                             <input type="hidden" name="newDueAmountForValidation" id="newDueAmountForValidation"
                                 value="">
-                            <input type="hidden" name="memberMembershipsId" id="memberMembershipsId"
-                                value="">
+                            <input type="hidden" name="memberMembershipsId" id="memberMembershipsId" value="">
 
                             <!-- Batch -->
                             <div class="col-md-6 col-lg-6">
@@ -829,43 +831,232 @@
     </div>
 
 
-<div class="modal fade" id="paymentStatusModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+    <div class="modal fade" id="paymentStatusModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
 
-      <!-- Header -->
-      <div class="modal-close">
-        <button type="button" class="btn btn-ghost-secondary btn-icon btn-sm" data-bs-dismiss="modal" aria-label="Close">
-          <i class="bi-x-lg"></i>
-        </button>
-      </div>
-      <!-- End Header -->
+                <!-- Header -->
+                <div class="modal-close">
+                    <button type="button" class="btn btn-ghost-secondary btn-icon btn-sm" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i class="bi-x-lg"></i>
+                    </button>
+                </div>
+                <!-- End Header -->
 
-      <!-- Body -->
-      <div class="modal-body p-sm-5">
-        <div class="text-center">
-          <div class="w-50 mx-auto mb-4">
-            <!-- Payment Success Icon -->
-            <img class="img-fluid" src="{{ asset('assets/images/5709755.png') }}" alt="Payment Done" style="max-height: 120px;">
-          </div>
+                <!-- Body -->
+                <div class="modal-body p-sm-5">
+                    <div class="text-center">
+                        <div class="w-50 mx-auto mb-4">
+                            <!-- Payment Success Icon -->
+                            <img class="img-fluid" src="{{ asset('assets/images/5709755.png') }}" alt="Payment Done"
+                                style="max-height: 120px;">
+                        </div>
 
-          <h4 class="h1 text-success">All Payments Received</h4>
-          <p class="text-muted mb-0">We have received the full payment from this member. No outstanding dues remain.</p>
+                        <h4 class="h1 text-success">All Payments Received</h4>
+                        <p class="text-muted mb-0">We have received the full payment from this member. No outstanding dues
+                            remain.</p>
+                    </div>
+                </div>
+                <!-- End Body -->
+
+                <!-- Footer -->
+                <div class="modal-footer d-block text-center py-sm-4">
+                    <small class="text-muted">
+                        Thank you for keeping your payments up to date.
+                    </small>
+                </div>
+                <!-- End Footer -->
+
+            </div>
         </div>
-      </div>
-      <!-- End Body -->
-
-      <!-- Footer -->
-      <div class="modal-footer d-block text-center py-sm-4">
-        <small class="text-muted">
-          Thank you for keeping your payments up to date.
-        </small>
-      </div>
-      <!-- End Footer -->
-
     </div>
-  </div>
-</div>
 
 
+
+    <div class="modal fade" id="renewMembershipModal" tabindex="-1" aria-labelledby="renewMembershipModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <form id="renewMembershipForm" method="POST" action="#">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header text-white">
+                        <h5 class="modal-title" id="renewMembershipModalLabel">
+                            <i class="bi bi-person-plus-fill me-2"></i> Renew Membership
+                            <span class="text-info">Member will be removed from then expiry of current plan and added to new plan.</span>
+                        </h5>
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body px-4">
+                        <div class="row gy-4">
+                            <input type="hidden" value="" name="renewMembershipMemberId"
+                                id="renewMembershipMemberId">
+
+                            <!-- Plan -->
+                            <div class="col-md-6 col-lg-6">
+                                <label for="renewMembershipPlan" class="form-label">Plan <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="renewMembershipPlan" name="plan" required>
+                                    <option selected disabled value="">Select Plan</option>
+                                    @foreach ($plans as $plan)
+                                        <option value="{{ $plan->id }}" data-price="{{ $plan->price }}"
+                                            data-duration="{{ $plan->duration }}"
+                                            data-duration_type="{{ $plan->duration_type }}">
+                                            {{ $plan->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">Plan is required.</div>
+                            </div>
+
+                            <div class="col-6 col-md-3 col-lg-3">
+                                <label for="currentPlanExpiryDate" class="form-label">Current Plan Expiry Date</label>
+                                <input type="text" readonly class="form-control" id="currentPlanExpiryDate"
+                                    name="current_plan_expiry_date" placeholder="! Month 2025">
+                                <div class="invalid-feedback">Current plan expiry date is required.</div>
+                            </div>
+
+
+                            <div class="col-6 col-md-3 col-lg-3">
+                                <label for="newPlanExpiryDate" class="form-label">New Plan Expiry Date</label>
+                                <input type="text" readonly class="form-control" id="newPlanExpiryDate"
+                                    name="new_plan_expiry_date" placeholder="N/A">
+                                <div class="invalid-feedback">New plan expiry date is required.</div>
+                            </div>
+
+                            <div class="row gx-3 mt-4" id="paymentInfoForRenewMembership"
+                                style="pointer-events: none; opacity: 0.6;">
+
+                                <!-- Discount Type -->
+                                <div class="col-6 col-md-3 col-lg-3">
+                                    <label for="renewMembershipDiscountType" class="form-label">Discount Type</label>
+                                    <select class="form-select" id="renewMembershipDiscountType" name="discount_type">
+                                        <option value="" selected>Select Discount Type</option>
+                                        <option value="flat">Flat</option>
+                                        <option value="percentage">Percentage</option>
+                                    </select>
+                                </div>
+
+                                <!-- Discount -->
+                                <div class="col-6 col-md-3 col-lg-3">
+                                    <label for="renewMembershipDiscount" class="form-label">Discount</label>
+                                    <input type="number" class="form-control" id="renewMembershipDiscount"
+                                        name="discount" placeholder="e.g., 10">
+                                    <div class="invalid-feedback">Discount is required.</div>
+                                </div>
+
+                                <!-- Admission Fee -->
+                                <div class="col-6 col-md-3 col-lg-3">
+                                    <label for="renewMembershipAdmissionFee" class="form-label">Payment Amount</label>
+                                    <input type="number" class="form-control" id="renewMembershipAdmissionFee"
+                                        name="admission_fee" placeholder="e.g., 1000">
+                                    <div class="invalid-feedback">Admission fee is required.</div>
+                                </div>
+
+                                <!-- Payment Method -->
+                                <div class="col-6 col-md-3 col-lg-3">
+                                    <label for="renewMembershipPaymentMode" class="form-label">Amount Mode</label>
+                                    <select class="form-select" id="renewMembershipPaymentMode" name="payment_mode">
+                                        <option selected disabled value="">Select Payment Mode</option>
+                                        <option value="cash">Cash</option>
+                                        <option value="phone pay">Phone Pay</option>
+                                        <option value="google pay">Google Pay</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Payment mode is required.</div>
+                                </div>
+                            </div>
+
+                            <div class="row gx-3 mt-4">
+
+
+                                <div class="col-6 col-md-2 col-lg-2">
+                                    <label for="renewMembershipNewPlanPrice" class="form-label">New Plan Price</label>
+                                    <input type="text" class="form-control" value="0"
+                                        id="renewMembershipNewPlanPrice" name="new_plan_price" readonly>
+                                </div>
+
+                                <div class="col-6 col-md-2 col-lg-2">
+                                    <label for="renewMembershipNewPlanPriceAfterDiscount" class="form-label">After
+                                        Discount
+                                        Price</label>
+                                    <input type="text" class="form-control" value="0"
+                                        id="renewMembershipNewPlanPriceAfterDiscount" name="new_plan_price_after_discount"
+                                        readonly>
+                                </div>
+
+                                <div class="col-6 col-md-2 col-lg-2">
+                                    <label for="changeNewPlanDueAmount" class="form-label">New Due Amount</label>
+                                    <input type="text" class="form-control text-danger" value="0"
+                                        id="renewMembershipNewPlanDueAmount" name="new_due_amount" readonly>
+                                    <div class="invalid-feedback">Member already paid more than due amount.</div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="renewMembershipNewDueAmountForValidation"
+                                id="renewMembershipNewDueAmountForValidation" value="">
+                            <input type="hidden" name="renewMembershipMemberMembershipsId"
+                                id="renewMembershipMemberMembershipsId" value="">
+
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer px-4">
+                        <button type="submit" id="renewMembershipBtn" class="btn btn-success">
+                            <i class="bi bi-check-circle me-1"></i> Renew Membership
+                        </button>
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="renewMembershipPaymentNotReceivedModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Header -->
+                <div class="modal-close">
+                    <button type="button" class="btn btn-ghost-secondary btn-icon btn-sm" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i class="bi-x-lg"></i>
+                    </button>
+                </div>
+                <!-- End Header -->
+
+                <!-- Body -->
+                <div class="modal-body p-sm-5">
+                    <div class="text-center">
+                        <div class="w-50 mx-auto mb-4">
+                            <!-- Payment Success Icon -->
+                            <img class="img-fluid" src="{{ asset('assets/images/pending-icon-512x504-9zrlrc78.png') }}"
+                                alt="Payment Done" style="max-height: 120px;">
+                        </div>
+
+                        <h4 class="h1 text-danger">All Payments Not Received</h4>
+                        <p class="text-muted mb-0">We have not received the full payment from this member. Outstanding dues
+                            remain.</p>
+                    </div>
+                </div>
+                <!-- End Body -->
+
+                <!-- Footer -->
+                <div class="modal-footer d-block text-center py-sm-4">
+                    <small class="text-muted">
+                        Please collect the outstanding dues from this member.
+                    </small>
+                </div>
+                <!-- End Footer -->
+
+            </div>
+        </div>
+    </div>
 @endsection

@@ -95,8 +95,7 @@
                                     <a class="dropdown-item add-payment-btn" href="#"  data-member='@json($member)'>
                                         <i class="bi bi-cash-coin me-2"></i> Add Payment
                                     </a>
-                                    <a class="dropdown-item"
-                                        href="{{ route('members.view', encrypt($member->member_id)) }}">
+                                    <a class="dropdown-item renew-membership-btn" href="#" data-member='@json($member)'>
                                         <i class="bi bi-arrow-repeat me-2"></i> Renew Membership
                                     </a>
                                     <a class="dropdown-item change-plan-btn" href="#" data-bs-toggle="modal"

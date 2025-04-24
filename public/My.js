@@ -668,7 +668,7 @@ $(document).on('click', '.add-payment-btn', function () {
     $('#addPaymentDueAmount').val(members.due_amount ? members.due_amount : members.final_price);
     $('#currentDueAmount').val(members.due_amount ? members.due_amount : members.final_price);
     $('#currentPlanId').val(members.plan_id);
-    if(members.due_amount > 0){
+    if(members.due_amount != 0){
         $('#addPaymentModal').modal('show');
     } else {
         $('#paymentStatusModal').modal('show');
@@ -1642,9 +1642,9 @@ $(document).on('click', '.change-plan-btn', function () {
     $('#changeNewPlanDueAmount').val(0);
     $('#changePlanJoiningDate').val(member.start_date);
     $('#changePlanDiscountType').val(member.discount_type);
-    $('#changePlanDiscount').val(parseInt(member.discount_value));
+    // $('#changePlanDiscount').val(parseInt(member.discount_value));
 
-    $('#changePlanAdmissionFee').val(paidAmount);
+    // $('#changePlanAdmissionFee').val(paidAmount);
     $('#memberMembershipsId').val(member.member_memberships_id);
     $('#changePlanPaymentMode').val(member.payment_mode);
 
@@ -1654,6 +1654,8 @@ $(document).on('click', '.change-plan-btn', function () {
 
     $('#changePlanModel').modal('show');
 });
+
+
 
 
 function formatNumber(amount) {
@@ -1713,14 +1715,14 @@ if (window.location.pathname === '/members') {
             newPlanPriceField.value = formatINR(originalPlanPrice);
             newPlanPriceAfterDiscountField.value = formatINR(planPrice);
             // newDueAmountField.value = formatINR(Math.abs(newDueAmount));
-            newDueAmountField.value = (newDueAmount < 0 ? '' : '') + formatINR(Math.abs(newDueAmount));
+            newDueAmountField.value = (newDueAmount < 0 ? '+' : '') + formatINR(Math.abs(newDueAmount));
 
             if (parseFloat(newDueAmount) < 0) {
                 $('#changeNewPlanDueAmount').addClass('is-invalid');
-                newDueAmountField.classList.add('text-success'); // Amount to be paid
+                $('#changeNewPlanDueAmount').addClass('text-success');
             } else {
                 $('#changeNewPlanDueAmount').removeClass('is-invalid');
-                newDueAmountField.classList.add('text-danger'); // Extra paid
+                $('#changeNewPlanDueAmount').removeClass('text-danger');
             }
 
 
@@ -1772,6 +1774,176 @@ $(document).on('submit', '#changePlanForm', function (e) {
                     // Target the new_due_amount field's invalid-feedback div
                     $('#changeNewPlanDueAmount').addClass('is-invalid');
                     $('#changeNewPlanDueAmount').next('.invalid-feedback').text(messages[0]);
+                } else {
+                    // Default behavior for other fields
+                    let input = $('[name="' + field + '"]');
+                    input.addClass('is-invalid');
+                    input.next('.invalid-feedback').text(messages[0]);
+                }
+            });
+        },
+        complete: function () {
+            submitBtn.prop('disabled', false).html(originalBtnHtml);
+        }
+    });
+});
+
+
+
+$(document).on('click', '.renew-membership-btn', function () {
+    let member = $(this).data('member');
+    $('#renewMembershipMemberId').val(member.member_id);
+    // $('#renewMembershipPlan').val(member.plan_id);
+    const originalDate = member.end_date; // e.g., "2025-04-16"
+    const dateObj = new Date(originalDate);
+
+    // Format: 16 Apr, 2025
+    const options = { day: '2-digit', month: 'short', year: 'numeric' };
+    const formattedDate = dateObj.toLocaleDateString('en-GB', options).replace(/ /g, ' ');
+
+    $('#currentPlanExpiryDate').val(formattedDate);
+
+    $('#paymentInfoForRenewMembership').css('pointer-events', 'none');
+    $('#paymentInfoForRenewMembership').css('opacity', '0.6');
+
+    if (member.due_amount != 0) {
+        $('#renewMembershipPaymentNotReceivedModal').modal('show');
+    } else {
+        $('#renewMembershipModal').modal('show');
+    }
+});
+
+
+
+if (window.location.pathname === '/members') {
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const planSelect = document.getElementById('renewMembershipPlan');
+        const newPlanPriceInput = document.getElementById('renewMembershipNewPlanPrice');
+        const afterDiscountInput = document.getElementById('renewMembershipNewPlanPriceAfterDiscount');
+        const dueAmountInput = document.getElementById('renewMembershipNewPlanDueAmount');
+
+        const discountTypeSelect = document.getElementById('renewMembershipDiscountType');
+        const discountInput = document.getElementById('renewMembershipDiscount');
+        const paymentAmountInput = document.getElementById('renewMembershipAdmissionFee');
+
+        const newPlanExpiryInput = document.getElementById('newPlanExpiryDate');
+        const currentExpiryInput = document.getElementById('currentPlanExpiryDate');
+        const paymentInfoDiv = document.getElementById('paymentInfoForRenewMembership');
+
+        function formatINR(value) {
+            return Number(value).toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function calculateNewPlan() {
+            const selectedOption = planSelect.options[planSelect.selectedIndex];
+            const duration = parseInt(selectedOption.getAttribute('data-duration'));
+            const durationType = selectedOption.getAttribute('data-duration_type');
+            const price = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+
+            // Show Plan Price
+            newPlanPriceInput.value = formatINR(price);
+            afterDiscountInput.value = formatINR(price);
+            dueAmountInput.value = formatINR(price);
+
+            // Show payment section
+            paymentInfoDiv.style.pointerEvents = 'auto';
+            paymentInfoDiv.style.opacity = '1';
+
+            // Expiry Date Calculation
+            let startDateStr = currentExpiryInput.value;
+            let startDate = startDateStr ? new Date(startDateStr) : new Date();
+            if (isNaN(startDate.getTime())) startDate = new Date();
+
+            let newExpiry = new Date(startDate);
+            if (durationType === 'days') {
+                newExpiry.setDate(newExpiry.getDate() + duration);
+            } else if (durationType === 'months') {
+                newExpiry.setMonth(newExpiry.getMonth() + duration);
+            } else if (durationType === 'years') {
+                newExpiry.setFullYear(newExpiry.getFullYear() + duration);
+            }
+
+            const options = { day: '2-digit', month: 'short', year: 'numeric' };
+            newPlanExpiryInput.value = newExpiry.toLocaleDateString('en-GB', options).replace(/,/g, '');
+
+            calculateDiscountAndDue();
+        }
+
+        function calculateDiscountAndDue() {
+            const planPrice = parseFloat(planSelect.options[planSelect.selectedIndex].getAttribute('data-price')) || 0;
+            const discountType = discountTypeSelect.value;
+            const discount = parseFloat(discountInput.value) || 0;
+            const paymentAmount = parseFloat(paymentAmountInput.value) || 0;
+
+            let afterDiscount = planPrice;
+
+            if (discountType === 'flat') {
+                afterDiscount = planPrice - discount;
+            } else if (discountType === 'percentage') {
+                afterDiscount = planPrice - (planPrice * (discount / 100));
+            }
+
+            // if (afterDiscount < 0) afterDiscount = 0;
+
+            let dueAmount = afterDiscount - paymentAmount;
+            // if (dueAmount < 0) dueAmount = 0;
+
+            afterDiscountInput.value = formatINR(afterDiscount);
+            dueAmountInput.value = formatINR(dueAmount);
+
+            // Hidden input for validation
+            document.getElementById('renewMembershipNewDueAmountForValidation').value = dueAmount;
+        }
+
+        // Attach listeners
+        planSelect.addEventListener('change', calculateNewPlan);
+        discountTypeSelect.addEventListener('change', calculateDiscountAndDue);
+        discountInput.addEventListener('input', calculateDiscountAndDue);
+        paymentAmountInput.addEventListener('input', calculateDiscountAndDue);
+    });
+}
+
+
+
+$(document).on('submit', '#renewMembershipForm', function (e) {
+    e.preventDefault();
+
+    let form = $(this);
+    let formData = form.serialize();
+    let submitBtn = form.find('button[type="submit"]');
+    let originalBtnHtml = submitBtn.html();
+
+    // Clear old errors
+    form.find('.is-invalid').removeClass('is-invalid');
+    form.find('.invalid-feedback').text('');
+
+    // Change button to loader
+    submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+
+    $.ajax({
+        url: "/members/renewMembership",
+        type: "POST",
+        data: formData,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            showToast(response.message, 'bg-success');
+            form[0].reset();
+            $('#renewMembershipModal').modal('hide');
+            fetchmembers();
+        },
+        error: function (xhr) {
+            let errors = xhr.responseJSON.errors;
+            $.each(errors, function (field, messages) {
+                if (field == 'renewMembershipNewDueAmountForValidation') {
+                    // Target the new_due_amount field's invalid-feedback div
+                    $('#renewMembershipNewPlanDueAmount').addClass('is-invalid');
+                    $('#renewMembershipNewPlanDueAmount').next('.invalid-feedback').text(messages[0]);
                 } else {
                     // Default behavior for other fields
                     let input = $('[name="' + field + '"]');
