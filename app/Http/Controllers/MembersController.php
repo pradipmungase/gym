@@ -326,7 +326,6 @@ class MembersController extends Controller{
             if ($request->hasFile('menberImg')) {
                 $image = $request->file('menberImg');
                 $filename = uploadFile($image, 'memberProfilePicture', $id);
-
                 DB::table('members')->where('id', $id)->update([
                     'image' => $filename,
                 ]);

@@ -452,6 +452,10 @@
                                                 <!-- List Group -->
                                                 <ul class="list-group list-group-flush navbar-card-list-group">
                                                     <!-- Item -->
+                                                    @php
+                                                        $notifications = getNotification();
+                                                    @endphp
+                                                    @foreach ($notifications as $notification)
                                                     <li class="list-group-item form-check-select">
                                                         <div class="row">
                                                             <div class="col-auto">
@@ -459,9 +463,7 @@
                                                                     <div class="form-check">
                                                                         <input class="form-check-input"
                                                                             type="checkbox" value=""
-                                                                            id="notificationCheck1" checked>
-                                                                        <label class="form-check-label"
-                                                                            for="notificationCheck1"></label>
+                                                                            id="notificationCheck1" @if ($notification->status == 'unread') checked @endif>
                                                                         <span class="form-check-stretched-bg"></span>
                                                                     </div>
                                                                     <img class="avatar avatar-sm avatar-circle"
@@ -472,20 +474,18 @@
                                                             <!-- End Col -->
 
                                                             <div class="col ms-n2">
-                                                                <h5 class="mb-1">Brian Warner</h5>
-                                                                <p class="text-body fs-5">changed an issue from "In
-                                                                    Progress" to <span
-                                                                        class="badge bg-success">Review</span></p>
+                                                                <h5 class="mb-1">{{ $notification->title }}</h5>
+                                                                <p class="text-body fs-5">{{ $notification->description }}</p>
                                                             </div>
                                                             <!-- End Col -->
 
-                                                            <small class="col-auto text-muted text-cap">2hr</small>
                                                             <!-- End Col -->
                                                         </div>
                                                         <!-- End Row -->
 
                                                         <a class="stretched-link" href="#"></a>
                                                     </li>
+                                                    @endforeach
                                                     <!-- End Item -->
                                                 </ul>
                                                 <!-- End List Group -->

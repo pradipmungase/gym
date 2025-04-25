@@ -249,3 +249,13 @@ function uploadFile($file, $folderName, $id)
     return $file_path;
 }
 
+
+
+function getNotification(){
+    $notifications = DB::table('notifications')->where('gym_id', Auth::user()->id)->get();
+    return $notifications;
+}
+
+
+
+
