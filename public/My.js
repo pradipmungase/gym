@@ -1957,3 +1957,11 @@ $(document).on('submit', '#renewMembershipForm', function (e) {
         }
     });
 });
+
+
+$(document).ready(function () {
+    $('#changePlan').on('change', function () {
+        $(this).removeClass('is-invalid');
+        $(this).next('.invalid-feedback').hide();
+    });
+});

@@ -195,7 +195,7 @@ class MembersController extends Controller{
             // Subtract duration from joining date
             $expiry_date = date('Y-m-d', strtotime($request->joining_date . ' ' . $duration_string));
 
-            if($expiry_date < date('Y-m-d')){
+            if($expiry_date <= date('Y-m-d')){
                 DB::rollBack();
                 return response()->json(['status' => 'error','expiry_date' => 'expiry_date', 'message' => 'Invalid joining date as per plan duration.']);
             }
@@ -231,7 +231,7 @@ class MembersController extends Controller{
                     'member_id' => $insertId,
                     'gym_id' => Auth::user()->id,
                     'membership_id' => $request->plan,
-                    'payment_mode' => $request->paymentMode,
+                    'payment_mode' => $request->paymentMode ?? 'cash',
                     'amount_paid' => $request->admission_fee ?? 0,
                     'due_amount' => $request->due_amount,
                     'total_amount' => $request->final_price,
@@ -340,7 +340,7 @@ class MembersController extends Controller{
             $duration_string = '+' . $plan->duration . ' ' . $plan->duration_type;
             $expiry_date = date('Y-m-d', strtotime($request->joining_date . ' ' . $duration_string));
 
-            if($expiry_date < date('Y-m-d')){
+            if($expiry_date <= date('Y-m-d')){
                 DB::rollBack();
                 return response()->json(['status' => 'error','expiry_date' => 'expiry_date', 'message' => 'Invalid joining date as per plan duration.']);
             }
@@ -426,18 +426,19 @@ class MembersController extends Controller{
         try {
             $total_amount = $request->amount + $request->due_amount;
 
-        DB::table('member_payments')->insert([
-            'member_id' => $request->addPaymentMemberId, 
-            'gym_id' => Auth::user()->id,
-            'membership_id' => $request->currentPlanId,
-            'payment_mode' => $request->payment_mode,
-            'amount_paid' => $request->amount,
-            'due_amount' => $request->due_amount,
-            'total_amount' => $total_amount,
-            'payment_date' => $request->payment_date,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+            DB::table('member_payments')->insert([
+                'member_id' => $request->addPaymentMemberId, 
+                'gym_id' => Auth::user()->id,
+                'membership_id' => $request->currentPlanId,
+                'payment_mode' => $request->payment_mode ?? 'cash',
+                'amount_paid' => $request->amount,
+                'due_amount' => $request->due_amount,
+                'total_amount' => $total_amount,
+                'payment_type' => 'due_payment',
+                'payment_date' => $request->payment_date,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
             sendWhatsAppMessageForMemberPayment($request->mobile, $request->member_name, $total_amount, $request->payment_mode, $request->due_amount, $request->payment_date);
             DB::commit();

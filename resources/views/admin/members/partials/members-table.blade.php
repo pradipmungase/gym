@@ -54,18 +54,14 @@
                                 $remainingDays = $now->isBefore($endDate) ? $now->diffInDays($endDate) : 0;
                             @endphp
 
-                            @if ($endDate->isPast())
+                            <span class="text-success">
                                 {{ $endDate->format('d M, Y') }}
-                            @else
-                                <span class="text-success">
-                                    {{ $endDate->format('d M, Y') }}
-                                </span>
-                                <br>
-                                <span class="text-white">
-                                    <i class="bi bi-calendar-check"></i>
-                                    {{ $remainingDays }} days left
-                                </span>
-                            @endif
+                            </span>
+                            <br>
+                            <span class="text-white">
+                                <i class="bi bi-calendar-check"></i>
+                                {{ $remainingDays+1 }} days left
+                            </span>
                         </td>
 
                         <td class="text-danger">₹
