@@ -1946,10 +1946,10 @@ $(document).on('submit', '#renewMembershipForm', function (e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {
-            // showToast(response.message, 'bg-success');
-            // form[0].reset();
-            // $('#renewMembershipModal').modal('hide');
-            // fetchmembers();
+            showToast(response.message, 'bg-success');
+            form[0].reset();
+            $('#renewMembershipModal').modal('hide');
+            fetchmembers();
         },
         error: function (xhr) {
             let errors = xhr.responseJSON.errors;

@@ -89,6 +89,7 @@ class MembersController extends Controller{
                 'members.id as member_id',
                 'members.status as member_status',
                 'member_payments.due_amount',
+                'member_payments.original_plan_amount',
                 'member_memberships.id as member_memberships_id',
                 'menbership_plans.name as plan_name'
             )
@@ -167,7 +168,6 @@ class MembersController extends Controller{
         DB::beginTransaction();
 
         try {
-            exit;
             // Insert member details
             $insertId = DB::table('members')->insertGetId([
                 'name' => $request->name,
@@ -229,7 +229,8 @@ class MembersController extends Controller{
                     'payment_mode' => $request->paymentMode ?? 'system',
                     'amount_paid' => $request->admission_fee ?? 0,
                     'due_amount' => $request->due_amount,
-                    'total_amount' => $request->final_price,
+                    'after_discount_amount' => $request->final_price,
+                    'original_plan_amount' => $request->plan_price,
                     'payment_type' => 'admission',
                     'payment_date' => now(),
                     'created_at' => now(),
@@ -421,9 +422,20 @@ class MembersController extends Controller{
             ->select('members.*', 'member_memberships.*','members.id as member_id', 'trainers.name as trainer_name', 'menbership_plans.name as plan_name')
             ->first();
 
-        $memberPayments = DB::table('member_payments')->where('member_id', $id)->orderBy('payment_date', 'desc')->get();
+        $oldMembershipPlans = DB::table('member_memberships')
+                    ->where('member_id', $id)
+                    ->where('status', 'renew')
+                    ->join('menbership_plans', 'member_memberships.plan_id', '=', 'menbership_plans.id')
+                    ->select('menbership_plans.*', 'member_memberships.*')
+                    ->get();
 
-        return view('admin.members.view', compact('member', 'memberPayments'));
+        $memberPayments = DB::table('member_payments')
+            ->join('menbership_plans', 'member_payments.membership_id', '=', 'menbership_plans.id')
+            ->where('member_id', $id)
+            ->orderBy('payment_date', 'desc')
+            ->get();
+
+        return view('admin.members.view', compact('member', 'memberPayments', 'oldMembershipPlans'));
     }
 
     public function delete($id)
@@ -456,8 +468,9 @@ class MembersController extends Controller{
                 'payment_mode' => $request->payment_mode ?? 'cash',
                 'amount_paid' => $request->amount,
                 'due_amount' => $request->due_amount,
-                'total_amount' => $total_amount,
-                'payment_type' => 'due_payment',
+                'after_discount_amount' => $total_amount,
+                'original_plan_amount' => $request->plan_price,
+                'payment_type' => 'Due Payment',
                 'payment_date' => $request->payment_date,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -625,9 +638,10 @@ class MembersController extends Controller{
                 'payment_mode' => $request->payment_mode ?? 'system',
                 'amount_paid' => $request->current_paid_amount + $request->admission_fee,
                 'due_amount' => $request->new_due_amount,
-                'total_amount' => $request->new_plan_price_after_discount,
+                'after_discount_amount' => $request->new_plan_price_after_discount,
+                'original_plan_amount' => $request->new_plan_price,
                 'payment_date' => now(),
-                'payment_type' => 'plan change',
+                'payment_type' => 'Plan Change',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -742,7 +756,8 @@ class MembersController extends Controller{
                 'payment_mode' => $request->payment_mode ?? 'system',
                 'amount_paid' => $this->sanitizeAmount($request->current_paid_amount) + $this->sanitizeAmount($request->admission_fee),
                 'due_amount' => $this->sanitizeAmount($request->new_due_amount),
-                'total_amount' => $this->sanitizeAmount($request->new_plan_price_after_discount),
+                'after_discount_amount' => $this->sanitizeAmount($request->new_plan_price_after_discount),
+                'original_plan_amount' => $this->sanitizeAmount($request->new_plan_price),
                 'payment_date' => now(),
                 'payment_type' => 'renewal',
                 'created_at' => now(),

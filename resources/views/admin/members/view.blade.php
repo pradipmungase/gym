@@ -74,7 +74,8 @@
                         <div class="col-6 fw-bold text-start">
                             <i class="fas fa-cogs"></i> Membership Plan
                         </div>
-                        <div class="col-6 ps-5">{{ $member->plan_name ?? 'N/A' }} <span class="badge bg-primary">₹ {{ number_format($member->plan_price, 2) }}</span></div>
+                        <div class="col-6 ps-5">{{ $member->plan_name ?? 'N/A' }} <span class="badge bg-primary">₹
+                                {{ number_format($member->plan_price, 2) }}</span></div>
                     </div>
 
                     <div class="row mb-3">
@@ -161,10 +162,11 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
+                                    <th>Plan Name</th>
                                     <th>Payment Mode</th>
                                     <th>Paid Amount (₹)</th>
                                     <th>Due Amount (₹)</th>
-                                    <th>Plan Price (₹) <small>After Discount</small></th>
+                                    <th>Plan Price (₹)</th>
                                     <th>Payment Type</th>
                                     <th>Payment Date</th>
                                 </tr>
@@ -173,10 +175,16 @@
                                 @foreach ($memberPayments as $index => $payment)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
+                                        <td>{{ ucfirst($payment->name) }}</td>
                                         <td>{{ ucfirst($payment->payment_mode) }}</td>
                                         <td class="text-success">₹ {{ number_format($payment->amount_paid, 2) }}</td>
                                         <td class="text-danger">₹ {{ number_format($payment->due_amount, 2) }}</td>
-                                        <td>₹ {{ number_format($payment->total_amount, 2) }}</td>
+                                        <td>
+                                            @if ($payment->payment_type != 'Due Payment')
+                                                <del>₹ {{ number_format($payment->original_plan_amount, 2) }}</del>
+                                            @endif
+                                            ₹ {{ number_format($payment->after_discount_amount, 2) }}
+                                        </td>
                                         <td>{{ ucfirst($payment->payment_type) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d M, Y') }}</td>
                                     </tr>
@@ -187,6 +195,52 @@
                         <p class="text-center text-muted">No payment records found.</p>
                     @endif
                 </div>
+            </div>
+
+            <!-- Old Membership Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Old Membership</h3>
+                </div>
+<div class="card-body table-responsive">
+    @if ($oldMembershipPlans->count())
+        <table id="datatable"
+            class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Plan Name</th>
+                    <th>Plan Price (₹)</th>
+                    <th>Duration</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Batch</th>
+                    <th>Renewed At</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($oldMembershipPlans as $index => $plan)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ ucfirst($plan->name) }}</td>
+                        <td class="text-success">
+                            <del>₹ {{ number_format($plan->plan_price ?? 0, 2) }}</del>
+                            ₹ {{ number_format($plan->final_price ?? 0, 2) }}
+                        </td>
+                        <td>{{ $plan->duration }} {{ ucfirst($plan->duration_type) }}</td>
+                        <td>{{ \Carbon\Carbon::parse($plan->start_date)->format('d M, Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($plan->end_date)->format('d M, Y') }}</td>
+                        <td>{{ $plan->batch ?? 'N/A' }}</td>
+                        <td>{{ \Carbon\Carbon::parse($plan->updated_at)->format('d M, Y') }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <p class="text-center text-muted">No renewal plans found.</p>
+    @endif
+</div>
+
             </div>
         </div>
 

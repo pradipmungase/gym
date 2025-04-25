@@ -20,9 +20,10 @@ return new class extends Migration
             $table->enum('payment_mode', ['cash','phone pay','google pay','other','system'])->nullable();
             $table->decimal('amount_paid', 10, 2)->nullable();
             $table->decimal('due_amount', 10, 2)->nullable();
-            $table->decimal('total_amount', 10, 2)->nullable();
+            $table->decimal('after_discount_amount', 10, 2)->nullable();
             $table->dateTime('payment_date')->nullable();
-            $table->enum('payment_type', ['admission','due_payment','renewal','plan change','system'])->nullable();
+            $table->decimal('original_plan_amount', 10, 2)->nullable();
+            $table->enum('payment_type', ['admission','Due Payment','renewal','Plan Change','system'])->nullable();
 
             $table->timestamps();
         });
