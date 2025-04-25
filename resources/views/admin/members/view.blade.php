@@ -121,7 +121,7 @@
                         <div class="col-6 fw-bold text-start">
                             <i class="fas fa-venus-mars"></i> Gender
                         </div>
-                        <div class="col-6 ps-5">{{ $member->gender ?? 'N/A' }}</div>
+                        <div class="col-6 ps-5">{{ ucfirst($member->gender) ?? 'N/A' }}</div>
                     </div>
 
                     <div class="row mb-3">
@@ -131,7 +131,7 @@
                         <div class="col-6 ps-5">
                             <span
                                 class="text-capitalize {{ $member->status == 'Active' ? 'text-success' : 'text-danger' }}">
-                                {{ $member->status == 'Active' ? 'Active' : 'Inactive' }}
+                                {{ ucfirst($member->status) }}
                             </span>
                         </div>
                     </div>
@@ -164,6 +164,7 @@
                                     <th>Payment Mode</th>
                                     <th>Paid Amount (₹)</th>
                                     <th>Due Amount (₹)</th>
+                                    <th>Plan Price (₹) <small>After Discount</small></th>
                                     <th>Payment Type</th>
                                     <th>Payment Date</th>
                                 </tr>
@@ -175,6 +176,7 @@
                                         <td>{{ ucfirst($payment->payment_mode) }}</td>
                                         <td class="text-success">₹ {{ number_format($payment->amount_paid, 2) }}</td>
                                         <td class="text-danger">₹ {{ number_format($payment->due_amount, 2) }}</td>
+                                        <td>₹ {{ number_format($payment->total_amount, 2) }}</td>
                                         <td>{{ ucfirst($payment->payment_type) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d M, Y') }}</td>
                                     </tr>

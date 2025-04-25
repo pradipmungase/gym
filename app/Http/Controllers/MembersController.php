@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DateTime;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 
 class MembersController extends Controller{
     
@@ -106,14 +107,8 @@ class MembersController extends Controller{
             'due_amount' => str_replace(',', '', $request->due_amount),
         ]);
 
-        if(isset($request->admission_fee) && $request->admission_fee > 0){
-            $request->validate([
-                'paymentMode' => 'required|in:cash,phone pay,google pay,other',
-            ]);
-        }
-
-        // Validation logic
-        $request->validate([
+        // Initial validation rules for common fields
+        $validationRules = [
             'name' => 'required|string|max:255',
             'email' => 'nullable|email:rfc,dns|unique:members,email',
             'mobile' => [
@@ -143,7 +138,31 @@ class MembersController extends Controller{
             'menberImg' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'admission_fee' => 'nullable|numeric|min:0',
             'due_amount' => 'required|numeric|min:0',
-        ]);
+        ];
+
+        // Conditional validation for admission_fee
+        if ($request->admission_fee > 0) {
+            $validationRules['paymentMode'] = 'required|in:cash,phone pay,google pay,other';
+        }
+
+        if(isset($request->paymentMode) && $request->paymentMode != ''){
+            $validationRules['admission_fee'] = 'required';
+        }
+
+        // Conditional validation for discount
+        if ($request->discount > 0) {
+            $validationRules['discount_type'] = 'required|in:flat,percentage';
+        }
+
+        if(isset($request->discount_type) && $request->discount_type != ''){
+            $validationRules['discount'] = 'required|numeric|min:0|max:100';
+        }
+
+        if(isset($request->discount) && $request->discount != ''){
+            $validationRules['discount_type'] = 'required';
+        }
+        // Apply the validation
+        $request->validate($validationRules);
 
         DB::beginTransaction();
 
@@ -180,7 +199,6 @@ class MembersController extends Controller{
                 DB::rollBack();
                 return response()->json(['status' => 'error', 'expiry_date' => 'expiry_date', 'message' => 'Invalid joining date as per plan duration.']);
             }
-
             // Calculate discount price
             $discount_price = $this->calculateDiscountPrice($request);
 
@@ -203,13 +221,13 @@ class MembersController extends Controller{
             ]);
 
             // Handle admission fee payment if provided
-            if ($request->admission_fee > 0) {
+            // if ($request->admission_fee > 0) {
                 DB::table('member_payments')->insert([
                     'member_id' => $insertId,
                     'gym_id' => Auth::user()->id,
                     'membership_id' => $request->plan,
-                    'payment_mode' => $request->paymentMode ?? 'cash',
-                    'amount_paid' => $request->admission_fee,
+                    'payment_mode' => $request->paymentMode ?? 'system',
+                    'amount_paid' => $request->admission_fee ?? 0,
                     'due_amount' => $request->due_amount,
                     'total_amount' => $request->final_price,
                     'payment_type' => 'admission',
@@ -217,14 +235,14 @@ class MembersController extends Controller{
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
-            }
+            // }
 
             // Generate QR code and update the path
             $qrCodePath = $this->generateQRCode($insertId);
             DB::table('members')->where('id', $insertId)->update(['qr_code_path' => $qrCodePath, 'updated_at' => now()]);
 
             // Send WhatsApp message
-            sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath);
+            // sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath);
 
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Member added successfully!']);
@@ -344,7 +362,7 @@ class MembersController extends Controller{
             // Ensure the expiry date is valid
             if ($expiry_date <= date('Y-m-d')) {
                 DB::rollBack();
-                return response()->json(['status' => 'error', 'expiry_date' => $expiry_date, 'message' => 'Invalid joining date as per plan duration.']);
+                return response()->json(['status' => 'error', 'expiry_date' => 'expiry_date', 'message' => 'Invalid joining date as per plan duration.']);
             }
 
             // Update membership details
@@ -365,7 +383,6 @@ class MembersController extends Controller{
             return response()->json(['status' => 'error', 'message' => 'Failed to update member. Please try again.', 'error' => $e->getMessage()]);
         }
     }
-
 
     private function generateQRCode($memberId)
     {
@@ -495,14 +512,31 @@ class MembersController extends Controller{
             'new_plan_price_after_discount' => str_replace(',', '', $request->new_plan_price_after_discount),
         ]);
 
-        if(isset($request->admission_fee) && $request->admission_fee > 0){
-            $request->validate([
-                'payment_mode' => 'required|in:cash,phone pay,google pay,other',
-            ]);
+        // Conditional rules
+        $conditionalRules = [];
+
+        // Admission fee requires payment mode
+        if ($request->filled('admission_fee') && $request->admission_fee > 0) {
+            $conditionalRules['payment_mode'] = 'required|in:cash,phone pay,google pay,other';
         }
 
-        // Validate the request
-        $request->validate([
+        // Payment mode requires admission fee
+        if ($request->filled('payment_mode')) {
+            $conditionalRules['admission_fee'] = 'required|numeric|min:0';
+        }
+
+        // Discount type requires discount value
+        if ($request->filled('discount_type')) {
+            $conditionalRules['discount'] = 'required|numeric|min:0|max:100';
+        }
+
+        // Discount value requires discount type
+        if ($request->filled('discount')) {
+            $conditionalRules['discount_type'] = 'required|string|max:255';
+        }
+
+        // Main validation rules
+        $baseRules = [
             'changePlanMemberId' => 'required|exists:members,id',
             'plan' => 'required|exists:menbership_plans,id',
             'current_plan_price' => 'required|numeric|min:0',
@@ -527,10 +561,20 @@ class MembersController extends Controller{
                     }
                 }
             ],
-        ], [
-            'newDueAmountForValidation.negative' => 'Member has already paid more than the due amount.',
+        ];
+
+        // Custom error messages
+        $messages = [
             'newDueAmountForValidation.required' => 'Due amount cannot be 0.',
-        ]);
+            'newDueAmountForValidation.negative' => 'Member has already paid more than the due amount.',
+        ];
+
+        // Merge base rules with conditional rules
+        $rules = array_merge($baseRules, $conditionalRules);
+
+        // Perform validation
+        Validator::make($request->all(), $rules, $messages)->validate();
+
 
         // Begin transaction
         DB::beginTransaction();
@@ -552,6 +596,9 @@ class MembersController extends Controller{
             $duration_string = '+' . $plan->duration . ' ' . $plan->duration_type;
             $expiry_date = date('Y-m-d', strtotime($request->joining_date . ' ' . $duration_string));
 
+            if($expiry_date <= date('Y-m-d')){
+                return response()->json(['status' => 'error', 'expiry_date' => 'expiry_date', 'message' => 'Invalid joining date as per plan duration.']);
+            }
             // Update the member membership
             DB::table('member_memberships')->where('id', $request->memberMembershipsId)->update([
                 'member_id' => $request->changePlanMemberId,
@@ -569,17 +616,18 @@ class MembersController extends Controller{
                 'updated_at' => now(),
             ]);
 
+            
             // Record the payment for the plan change
             DB::table('member_payments')->insert([
                 'member_id' => $request->changePlanMemberId,
                 'gym_id' => Auth::user()->id,
                 'membership_id' => $request->plan,
-                'payment_mode' => $request->payment_mode ?? "other",
+                'payment_mode' => $request->payment_mode ?? 'system',
                 'amount_paid' => $request->current_paid_amount + $request->admission_fee,
                 'due_amount' => $request->new_due_amount,
-                'total_amount' => $request->new_plan_price,
+                'total_amount' => $request->new_plan_price_after_discount,
                 'payment_date' => now(),
-                'payment_type' => 'plan_change',
+                'payment_type' => 'plan change',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

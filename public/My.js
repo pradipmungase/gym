@@ -1622,11 +1622,11 @@ $(document).on('click', '.change-plan-btn', function () {
     $('#changePlan').val(member.plan_id);
     $('#changePlan option').prop('disabled', false);
     $('#changePlan option:selected').prop('disabled', true);
-    $('#changeCurrentPlanPrice').val(formatNumber(member.plan_price));
+    $('#changeCurrentPlanPrice').val(formatNumber(member.final_price));
 
 
     let dueAmount = member.due_amount ? member.due_amount : member.final_price;
-    let paidAmount = member.plan_price - dueAmount;
+    let paidAmount = member.final_price - dueAmount;
 
     // Set formatted values
     $('#changeCurrentPlanDueAmount').val(formatNumber(dueAmount));
@@ -1641,7 +1641,7 @@ $(document).on('click', '.change-plan-btn', function () {
     $('#changeNewPlanPriceAfterDiscount').val(0);
     $('#changeNewPlanDueAmount').val(0);
     $('#changePlanJoiningDate').val(member.start_date);
-    $('#changePlanDiscountType').val(member.discount_type);
+    // $('#changePlanDiscountType').val(member.discount_type);
     // $('#changePlanDiscount').val(parseInt(member.discount_value));
 
     // $('#changePlanAdmissionFee').val(paidAmount);
@@ -1719,10 +1719,15 @@ if (window.location.pathname === '/members') {
 
             if (parseFloat(newDueAmount) < 0) {
                 $('#changeNewPlanDueAmount').addClass('is-invalid');
+                $('#changeNewPlanDueAmount').removeClass('text-danger');
                 $('#changeNewPlanDueAmount').addClass('text-success');
+                $('#changeNewPlanDueAmount').next('.invalid-feedback').text('Member already paid more than due amount.');
+                $('#changeNewPlanDueAmount').next('.invalid-feedback').show();
             } else {
                 $('#changeNewPlanDueAmount').removeClass('is-invalid');
-                $('#changeNewPlanDueAmount').removeClass('text-danger');
+                $('#changeNewPlanDueAmount').addClass('text-danger');
+                $('#changeNewPlanDueAmount').next('.invalid-feedback').text('');
+                $('#changeNewPlanDueAmount').next('.invalid-feedback').hide();
             }
 
 
@@ -1762,10 +1767,19 @@ $(document).on('submit', '#changePlanForm', function (e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {
-            // showToast(response.message, 'bg-success');
-            // form[0].reset();
-            // $('#changePlanModel').modal('hide');
-            // fetchmembers();
+            if (response.status === 'success') {
+                $('#changePlanModel').modal('hide');
+                $('#changePlanForm')[0].reset();
+                fetchmembers();
+                showToast(response.message, 'bg-success');
+            } else {
+                if (response.expiry_date == 'expiry_date') {
+                    $('#changePlanJoiningDate').addClass('is-invalid');
+                    $('#changePlanJoiningDate').siblings('.invalid-feedback').text(response.message).show();
+                } else {
+                    showToast(response.message, 'bg-danger');
+                }
+            }
         },
         error: function (xhr) {
             let errors = xhr.responseJSON.errors;

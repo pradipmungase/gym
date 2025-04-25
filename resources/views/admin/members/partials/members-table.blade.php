@@ -44,7 +44,7 @@
 
                         <td>{{ $member->plan_name }}</td>
                         <td>
-                            <span class="text-primary">
+                            <span class="text-success">
                                 {{ \Carbon\Carbon::parse($member->start_date)->format('d M, Y') }} 
                             </span>
                             To
@@ -54,7 +54,7 @@
                                 $remainingDays = $now->isBefore($endDate) ? $now->diffInDays($endDate) : 0;
                             @endphp
 
-                            <span class="text-success">
+                            <span class="text-danger">
                                 {{ $endDate->format('d M, Y') }}
                             </span>
                             <br>

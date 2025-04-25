@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('membership_id');
             $table->integer('gym_id');
 
-            $table->enum('payment_mode', ['cash','phone pay','google pay','other'])->nullable();
+            $table->enum('payment_mode', ['cash','phone pay','google pay','other','system'])->nullable();
             $table->decimal('amount_paid', 10, 2)->nullable();
             $table->decimal('due_amount', 10, 2)->nullable();
             $table->decimal('total_amount', 10, 2)->nullable();
