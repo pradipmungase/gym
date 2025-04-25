@@ -23,7 +23,7 @@
         </div>
     </main>
 
-    <div class="modal fade" id="addAnnouncementModal" tabindex="-1" aria-labelledby="addAnnouncementModalLabel"
+    <div class="modal fade" id="addAnnouncementModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="addAnnouncementModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="addAnnouncementForm" method="POST" action="#">

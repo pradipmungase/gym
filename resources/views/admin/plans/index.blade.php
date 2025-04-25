@@ -22,7 +22,7 @@
         </div>
     </main>
 
-    <div class="modal fade" id="addPlanModal" tabindex="-1" aria-labelledby="addPlanModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addPlanModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="addPlanModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="addPlanForm" method="POST" action="#">
                 <div class="modal-content">
@@ -95,7 +95,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editPlanModal" tabindex="-1" aria-labelledby="editPlanModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editPlanModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="editPlanModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="editPlanForm" method="POST" action="#">
                 <div class="modal-content">

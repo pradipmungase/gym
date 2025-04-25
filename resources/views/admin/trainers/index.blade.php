@@ -53,7 +53,7 @@
         </div>
     </main>
 
-    <div class="modal fade" id="addTrainerModal" tabindex="-1" aria-labelledby="addTrainerModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addTrainerModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="addTrainerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="addTrainerForm" method="POST" action="#" enctype="multipart/form-data">
                 @csrf
@@ -173,7 +173,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editTrainerModal" tabindex="-1" aria-labelledby="editTrainerModalLabel"
+    <div class="modal fade" id="editTrainerModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="editTrainerModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="editTrainerForm" method="POST" action="#" enctype="multipart/form-data">

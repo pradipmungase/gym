@@ -22,7 +22,7 @@
         </div>
     </main>
 
-    <div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addExpenseModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="addExpenseForm" method="POST" action="#">
                 <div class="modal-content">
@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editExpenseModal" tabindex="-1" aria-labelledby="editExpenseModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editExpenseModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="editExpenseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="editExpenseForm" method="POST" action="#">
                 <div class="modal-content">
@@ -160,7 +160,7 @@
         </div>
     </div>
 
-        <div class="modal fade" id="viewExpenseModal" tabindex="-1" aria-labelledby="viewExpenseModalLabel" aria-hidden="true">
+        <div class="modal fade" id="viewExpenseModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="viewExpenseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="viewExpenseForm" method="POST" action="#">
                 <div class="modal-content">

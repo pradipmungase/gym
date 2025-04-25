@@ -1762,10 +1762,10 @@ $(document).on('submit', '#changePlanForm', function (e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {
-            showToast(response.message, 'bg-success');
-            form[0].reset();
-            $('#changePlanModel').modal('hide');
-            fetchmembers();
+            // showToast(response.message, 'bg-success');
+            // form[0].reset();
+            // $('#changePlanModel').modal('hide');
+            // fetchmembers();
         },
         error: function (xhr) {
             let errors = xhr.responseJSON.errors;

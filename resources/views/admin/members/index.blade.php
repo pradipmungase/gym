@@ -197,7 +197,7 @@
         </div>
     </main>
 
-    <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel"
+    <div class="modal fade" id="addMemberModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="addMemberModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <form id="addMemberForm" method="POST" action="#" enctype="multipart/form-data">
@@ -407,7 +407,7 @@
     </div>
 
 
-    <div class="modal fade" id="editmemberModal" tabindex="-1" aria-labelledby="editmemberModalLabel"
+    <div class="modal fade" id="editmemberModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="editmemberModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <form id="editmemberForm" method="POST" action="#">
@@ -542,7 +542,7 @@
     </div>
 
 
-    <div class="modal fade" id="addPaymentModal" tabindex="-1" aria-labelledby="addPaymentModalLabel"
+    <div class="modal fade" id="addPaymentModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="addPaymentModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-md">
             <form id="addPaymentForm" method="POST" action="#">
@@ -622,7 +622,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="addNoteModel" tabindex="-1" aria-labelledby="addNoteModelLabel" aria-hidden="true">
+    <div class="modal fade" id="addNoteModel" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="addNoteModelLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
             <form id="addNoteForm" method="POST" action="#">
                 @csrf
@@ -661,7 +661,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="changePlanModel" tabindex="-1" aria-labelledby="changePlanModelLabel"
+    <div class="modal fade" id="changePlanModel" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="changePlanModelLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <form id="changePlanForm" method="POST" action="#">
@@ -731,7 +731,7 @@
 
                                 <!-- Payment Method -->
                                 <div class="col-6 col-md-3 col-lg-3">
-                                    <label for="changePlanPaymentMode" class="form-label">Amount Mode</label>
+                                    <label for="changePlanPaymentMode" class="form-label">Payment Mode</label>
                                     <select class="form-select" id="changePlanPaymentMode" name="payment_mode">
                                         <option selected disabled value="">Select Payment Mode</option>
                                         <option value="cash">Cash</option>
@@ -831,7 +831,7 @@
     </div>
 
 
-    <div class="modal fade" id="paymentStatusModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="paymentStatusModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
@@ -874,7 +874,7 @@
 
 
 
-    <div class="modal fade" id="renewMembershipModal" tabindex="-1" aria-labelledby="renewMembershipModalLabel"
+    <div class="modal fade" id="renewMembershipModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="renewMembershipModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <form id="renewMembershipForm" method="POST" action="#">
@@ -1019,7 +1019,7 @@
 
 
 
-    <div class="modal fade" id="renewMembershipPaymentNotReceivedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="renewMembershipPaymentNotReceivedModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 

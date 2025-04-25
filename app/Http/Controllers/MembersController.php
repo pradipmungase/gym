@@ -99,11 +99,20 @@ class MembersController extends Controller{
 
     public function store(Request $request)
     {
+        // Clean up price fields
         $request->merge([
             'plan_price' => str_replace(',', '', $request->plan_price),
             'final_price' => str_replace(',', '', $request->final_price),
             'due_amount' => str_replace(',', '', $request->due_amount),
         ]);
+
+        if(isset($request->admission_fee) && $request->admission_fee > 0){
+            $request->validate([
+                'paymentMode' => 'required|in:cash,phone pay,google pay,other',
+            ]);
+        }
+
+        // Validation logic
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'nullable|email:rfc,dns|unique:members,email',
@@ -126,63 +135,21 @@ class MembersController extends Controller{
                 'numeric',
                 'min:0',
                 function ($attribute, $value, $fail) use ($request) {
-                    $planPrice = $request->input('plan_price');
-                    if ($value > $planPrice) {
+                    if ($value > $request->plan_price) {
                         $fail('Final price cannot be greater than plan price.');
                     }
                 }
             ],
-            'menberImg'     => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'menberImg' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'admission_fee' => 'nullable|numeric|min:0',
-            'due_amount' => [
-                'required',
-                'numeric',
-                'min:0',
-            ]
-        ], [
-            'name.required' => 'Please enter the member name.',
-            'email.required' => 'Please provide an email address.',
-            'email.email' => 'Enter a valid email address.',
-            'email.unique' => 'This email is already registered.',
-            'mobile.required' => 'Mobile number is required.',
-            'mobile.regex' => 'Enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.',
-            'mobile.unique' => 'This mobile number is already registered.',
-            'joining_date.required' => 'Please select a joining date.',
-            'joining_date.before_or_equal' => 'Joining date cannot be in the future.',
-            'birth_date.required' => 'Please select the birth date.',
-            'birth_date.before' => 'Birth date must be before today.',
-            'gender.required' => 'Please select a gender.',
-            'gender.in' => 'Gender must be Male, Female, or Other.',
-            'plan.required' => 'Please select a membership plan.',
-            'plan.exists' => 'Selected plan does not exist.',
-            'trainer.required' => 'Please assign a trainer.',
-            'trainer.exists' => 'Selected trainer does not exist.',
-            'batch.required' => 'Batch is required.',
-            'batch.max' => 'Batch name cannot be more than 50 characters.',
-            'discount_type.required' => 'Select a discount type.',
-            'discount_type.in' => 'Discount type must be either Flat or Percentage.',
-            'discount.numeric' => 'Discount must be a valid number.',
-            'discount.min' => 'Discount cannot be negative.',
-            'plan_price.required' => 'Enter the plan price.',
-            'plan_price.numeric' => 'Plan price must be numeric.',
-            'plan_price.min' => 'Plan price must be at least 1.',
-            'final_price.required' => 'Final price is required.',
-            'final_price.numeric' => 'Final price must be numeric.',
-            'final_price.min' => 'Final price cannot be negative.',
-            'menberImg.image' => 'The uploaded file must be an image.',
-            'menberImg.mimes' => 'Image must be jpeg, png, jpg, gif, or svg format.',
-            'menberImg.max' => 'Image must not exceed 2MB.',
-            'admission_fee.numeric' => 'Admission fee must be numeric.',
-            'admission_fee.min' => 'Admission fee cannot be negative.',
-            'due_amount.required' => 'Due amount is required.',
-            'due_amount.numeric' => 'Due amount must be numeric.',
-            'due_amount.min' => 'Due amount cannot be negative.',
+            'due_amount' => 'required|numeric|min:0',
         ]);
 
         DB::beginTransaction();
 
         try {
-
+            exit;
+            // Insert member details
             $insertId = DB::table('members')->insertGetId([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -196,34 +163,28 @@ class MembersController extends Controller{
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            // Handle image upload
             if ($request->hasFile('memberImg')) {
                 $image = $request->file('memberImg');
                 $path = uploadFile($image, 'memberProfilePicture', $insertId);
                 DB::table('members')->where('id', $insertId)->update(['image' => $path]);
             }
 
+            // Get plan details and calculate expiry date
             $plan = DB::table('menbership_plans')->where('id', $request->plan)->first();
+            $expiry_date = $this->calculateExpiryDate($request->joining_date, $plan->duration, $plan->duration_type);
 
-            // Prepare duration string for strtotime (e.g., "+1 month", "+3 month", "+1 week")
-            $duration_string = '+' . $plan->duration . ' ' . $plan->duration_type;
-
-            // Subtract duration from joining date
-            $expiry_date = date('Y-m-d', strtotime($request->joining_date . ' ' . $duration_string));
-
-            if($expiry_date <= date('Y-m-d')){
+            // Validate expiry date
+            if ($expiry_date <= date('Y-m-d')) {
                 DB::rollBack();
-                return response()->json(['status' => 'error','expiry_date' => 'expiry_date', 'message' => 'Invalid joining date as per plan duration.']);
+                return response()->json(['status' => 'error', 'expiry_date' => 'expiry_date', 'message' => 'Invalid joining date as per plan duration.']);
             }
 
-            $discount_price = null;
-            if($request->admission_fee > 0){
-                if($request->discount_type == 'flat'){
-                    $discount_price = $request->discount;
-                }else{
-                    $discount_price = $request->discount * $request->plan_price / 100;
-                }
-            }
+            // Calculate discount price
+            $discount_price = $this->calculateDiscountPrice($request);
 
+            // Insert membership details
             DB::table('member_memberships')->insert([
                 'member_id' => $insertId,
                 'gym_id' => Auth::user()->id,
@@ -232,22 +193,23 @@ class MembersController extends Controller{
                 'start_date' => $request->joining_date,
                 'end_date' => $expiry_date,
                 'batch' => $request->batch,
-                'discount_type' => $request->discount_type ?? null,
+                'discount_type' => $request->discount_type,
                 'discount_value' => $request->discount ?? null,
                 'plan_price' => $request->plan_price,
-                'discount_price' => $discount_price ?? null,
+                'discount_price' => $discount_price,
                 'final_price' => $request->final_price,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
-            if($request->admission_fee > 0){
+            // Handle admission fee payment if provided
+            if ($request->admission_fee > 0) {
                 DB::table('member_payments')->insert([
                     'member_id' => $insertId,
                     'gym_id' => Auth::user()->id,
                     'membership_id' => $request->plan,
                     'payment_mode' => $request->paymentMode ?? 'cash',
-                    'amount_paid' => $request->admission_fee ?? 0,
+                    'amount_paid' => $request->admission_fee,
                     'due_amount' => $request->due_amount,
                     'total_amount' => $request->final_price,
                     'payment_type' => 'admission',
@@ -259,10 +221,7 @@ class MembersController extends Controller{
 
             // Generate QR code and update the path
             $qrCodePath = $this->generateQRCode($insertId);
-            DB::table('members')->where('id', $insertId)->update([
-                'qr_code_path' => $qrCodePath,
-                'updated_at' => now(),
-            ]);
+            DB::table('members')->where('id', $insertId)->update(['qr_code_path' => $qrCodePath, 'updated_at' => now()]);
 
             // Send WhatsApp message
             sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath);
@@ -275,9 +234,29 @@ class MembersController extends Controller{
         }
     }
 
+    private function calculateExpiryDate($joining_date, $duration, $duration_type)
+    {
+        return date('Y-m-d', strtotime($joining_date . " +$duration $duration_type"));
+    }
+
+
+    private function calculateDiscountPrice($request)
+    {
+        if ($request->admission_fee > 0) {
+            if ($request->discount_type == 'flat') {
+                return $request->discount;
+            } else {
+                return $request->discount * $request->plan_price / 100;
+            }
+        }
+        return null;
+    }
+
     public function update(Request $request)
     {
         $id = $request->editMembersId;
+
+        // Validation Rules
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => [
@@ -321,13 +300,12 @@ class MembersController extends Controller{
             'menberImg.max' => 'Image size should not exceed 2MB.',
         ]);
 
-
         DB::beginTransaction();
 
         try {
-
-            if ($request->hasFile('memberImg')) {
-                $image = $request->file('memberImg');
+            // Handle image upload if exists
+            if ($request->hasFile('menberImg')) {
+                $image = $request->file('menberImg');
                 $filename = uploadFile($image, 'memberProfilePicture', $id);
 
                 DB::table('members')->where('id', $id)->update([
@@ -335,6 +313,7 @@ class MembersController extends Controller{
                 ]);
             }
 
+            // Update member details
             DB::table('members')->where('id', $id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -344,22 +323,31 @@ class MembersController extends Controller{
                 'updated_at' => now(),
             ]);
 
+            // Fetch the active membership plan for the member
+            $member_memberships = DB::table('member_memberships')
+                ->where('member_id', $id)
+                ->where('gym_id', Auth::user()->id)
+                ->where('status', 'active')
+                ->first();
 
-            $member_memberships = DB::table('member_memberships')->where('member_id', $id)->where('gym_id', Auth::user()->id)->where('status', 'active')->first();
-            if(!$member_memberships){
-                return response()->json(['status' => 'error', 'message' => 'member_memberships not found.']);
+            if (!$member_memberships) {
+                DB::rollBack();
+                return response()->json(['status' => 'error', 'message' => 'Active membership not found for the member.']);
             }
 
-            $plan = DB::table('menbership_plans')->where('id',$member_memberships->plan_id)->first();
+            $plan = DB::table('menbership_plans')->where('id', $member_memberships->plan_id)->first();
 
+            // Calculate expiry date based on plan duration
             $duration_string = '+' . $plan->duration . ' ' . $plan->duration_type;
             $expiry_date = date('Y-m-d', strtotime($request->joining_date . ' ' . $duration_string));
 
-            if($expiry_date <= date('Y-m-d')){
+            // Ensure the expiry date is valid
+            if ($expiry_date <= date('Y-m-d')) {
                 DB::rollBack();
-                return response()->json(['status' => 'error','expiry_date' => 'expiry_date', 'message' => 'Invalid joining date as per plan duration.']);
+                return response()->json(['status' => 'error', 'expiry_date' => $expiry_date, 'message' => 'Invalid joining date as per plan duration.']);
             }
 
+            // Update membership details
             DB::table('member_memberships')->where('id', $member_memberships->id)->update([
                 'trainer_id' => $request->trainer ?? null,
                 'start_date' => $request->joining_date,
@@ -369,12 +357,15 @@ class MembersController extends Controller{
             ]);
 
             DB::commit();
+
             return response()->json(['status' => 'success', 'message' => 'Member updated successfully!']);
+
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['status' => 'error', 'message' => 'Failed to update member.', 'error' => $e->getMessage()]);
+            return response()->json(['status' => 'error', 'message' => 'Failed to update member. Please try again.', 'error' => $e->getMessage()]);
         }
     }
+
 
     private function generateQRCode($memberId)
     {
@@ -494,7 +485,7 @@ class MembersController extends Controller{
 
     public function changePlan(Request $request)
     {
-        
+        // Remove commas from numbers
         $request->merge([
             'current_plan_price' => str_replace(',', '', $request->current_plan_price),
             'current_due_amount' => str_replace(',', '', $request->current_due_amount),
@@ -503,6 +494,14 @@ class MembersController extends Controller{
             'new_due_amount' => str_replace(',', '', $request->new_due_amount),
             'new_plan_price_after_discount' => str_replace(',', '', $request->new_plan_price_after_discount),
         ]);
+
+        if(isset($request->admission_fee) && $request->admission_fee > 0){
+            $request->validate([
+                'payment_mode' => 'required|in:cash,phone pay,google pay,other',
+            ]);
+        }
+
+        // Validate the request
         $request->validate([
             'changePlanMemberId' => 'required|exists:members,id',
             'plan' => 'required|exists:menbership_plans,id',
@@ -524,30 +523,36 @@ class MembersController extends Controller{
                 'numeric',
                 function ($attribute, $value, $fail) {
                     if ($value < 0) {
-                        $fail('Member already paid more than due amount.');
+                        $fail('Member has already paid more than the due amount.');
                     }
                 }
             ],
-         ], [
-            'newDueAmountForValidation.negative' => 'Member allready paid more than due amount.',
-            'newDueAmountForValidation.regex' => 'Member allrey paid more than due amount',
-            'newDueAmountForValidation.required' => 'Due amount can not be 0.',
+        ], [
+            'newDueAmountForValidation.negative' => 'Member has already paid more than the due amount.',
+            'newDueAmountForValidation.required' => 'Due amount cannot be 0.',
         ]);
 
-
+        // Begin transaction
         DB::beginTransaction();
-        try {
 
-            $member_memberships = DB::table('member_memberships')->where('id', $request->memberMembershipsId)->where('gym_id', Auth::user()->id)->where('status', 'active')->first();
-            if(!$member_memberships){
-                return response()->json(['status' => 'error', 'message' => 'member_memberships not found.']);
+        try {
+            // Retrieve member membership details
+            $member_memberships = DB::table('member_memberships')
+                ->where('id', $request->memberMembershipsId)
+                ->where('gym_id', Auth::user()->id)
+                ->where('status', 'active')
+                ->first();
+
+            if (!$member_memberships) {
+                return response()->json(['status' => 'error', 'message' => 'Member membership not found.']);
             }
 
-
+            // Retrieve the selected plan details
             $plan = DB::table('menbership_plans')->where('id', $request->plan)->first();
             $duration_string = '+' . $plan->duration . ' ' . $plan->duration_type;
-            $expiry_date = date('Y-m-d', strtotime($request->start_date . ' ' . $duration_string));
+            $expiry_date = date('Y-m-d', strtotime($request->joining_date . ' ' . $duration_string));
 
+            // Update the member membership
             DB::table('member_memberships')->where('id', $request->memberMembershipsId)->update([
                 'member_id' => $request->changePlanMemberId,
                 'gym_id' => Auth::user()->id,
@@ -561,17 +566,16 @@ class MembersController extends Controller{
                 'plan_price' => $request->new_plan_price,
                 'discount_price' => $request->new_plan_price - $request->new_plan_price_after_discount,
                 'final_price' => $request->new_plan_price_after_discount,
-                'created_at' => now(),
-                'updated_at' => now(), 
+                'updated_at' => now(),
             ]);
-            
 
+            // Record the payment for the plan change
             DB::table('member_payments')->insert([
                 'member_id' => $request->changePlanMemberId,
                 'gym_id' => Auth::user()->id,
                 'membership_id' => $request->plan,
                 'payment_mode' => $request->payment_mode ?? "other",
-                'amount_paid' => $request->current_paid_amount+$request->admission_fee,
+                'amount_paid' => $request->current_paid_amount + $request->admission_fee,
                 'due_amount' => $request->new_due_amount,
                 'total_amount' => $request->new_plan_price,
                 'payment_date' => now(),
@@ -580,9 +584,14 @@ class MembersController extends Controller{
                 'updated_at' => now(),
             ]);
 
+            // Commit the transaction
             DB::commit();
+
+            // Return success response
             return response()->json(['status' => 'success', 'message' => 'Plan changed successfully!']);
+
         } catch (\Throwable $th) {
+            // Rollback the transaction on error
             DB::rollBack();
             return response()->json(['status' => 'error', 'message' => 'Failed to change plan. Please try again.', 'error' => $th->getMessage()]);
         }
@@ -590,6 +599,13 @@ class MembersController extends Controller{
 
     public function renewMembership(Request $request)
     {
+
+        if(isset($request->admission_fee) && $request->admission_fee > 0){
+            $request->validate([
+                'payment_mode' => 'required|in:cash,phone pay,google pay,other',
+            ]);
+        }
+        // Input Validation
         $request->validate([
             'renewMembershipMemberId' => 'required|exists:members,id',
             'plan' => 'required|exists:menbership_plans,id',
@@ -598,33 +614,42 @@ class MembersController extends Controller{
                 'numeric',
                 function ($attribute, $value, $fail) {
                     if ($value < 0) {
-                        $fail('Due Amount can not be negative.');
+                        $fail('Due Amount cannot be negative.');
                     }
                 }
             ],
-         ], [
-            'renewMembershipNewDueAmountForValidation.negative' => 'Due Amount can not be negative.',
-            'renewMembershipNewDueAmountForValidation.required' => 'Due amount can not be 0.',
+        ], [
+            'renewMembershipNewDueAmountForValidation.required' => 'Due amount cannot be 0.',
+            'renewMembershipNewDueAmountForValidation.negative' => 'Due Amount cannot be negative.',
         ]);
 
+        // Begin Database Transaction
         DB::beginTransaction();
-        try {
 
-            $member_memberships = DB::table('member_memberships')->where('member_id', $request->renewMembershipMemberId)->where('gym_id', Auth::user()->id)->where('status', 'active')->first();
-            if(!$member_memberships){
-                return response()->json(['status' => 'error', 'message' => 'member_memberships not found.']);
+        try {
+            // Fetch the current active membership of the member
+            $member_memberships = DB::table('member_memberships')
+                ->where('member_id', $request->renewMembershipMemberId)
+                ->where('gym_id', Auth::user()->id)
+                ->where('status', 'active')
+                ->first();
+
+            if (!$member_memberships) {
+                return response()->json(['status' => 'error', 'message' => 'Member membership not found.']);
             }
 
+            // Parse the dates and validate the format before proceeding
+            $startDate = $this->parseDate($request->current_plan_expiry_date);
+            $endDate = $this->parseDate($request->new_plan_expiry_date);
 
-            $startDate = DateTime::createFromFormat('d M Y', $request->current_plan_expiry_date)->format('Y-m-d');
-            $endDate = DateTime::createFromFormat('d M Y', $request->new_plan_expiry_date)->format('Y-m-d');
-
+            // Expire the current membership
             DB::table('member_memberships')->where('member_id', $request->renewMembershipMemberId)->update([
                 'status' => 'expired',
                 'updated_at' => now(),
             ]);
 
-            DB::table('member_memberships')->insert([
+            // Insert the new membership details
+            $newMembershipData = [
                 'member_id' => intval($request->renewMembershipMemberId),
                 'gym_id' => Auth::user()->id,
                 'plan_id' => intval($request->plan),
@@ -634,34 +659,62 @@ class MembersController extends Controller{
                 'batch' => $member_memberships->batch,
                 'discount_type' => $request->discount_type ?? null,
                 'discount_value' => $request->discount_value ?? null,
-                'plan_price' => str_replace(',', '', $request->new_plan_price),
-                'discount_price' => (float) str_replace(',', '', $request->new_plan_price) - 
-                    (float) str_replace(',', '', $request->new_plan_price_after_discount),
-                'final_price' => str_replace(',', '', $request->new_plan_price_after_discount),
+                'plan_price' => $this->sanitizeAmount($request->new_plan_price),
+                'discount_price' => $this->calculateDiscountedPrice($request->new_plan_price, $request->new_plan_price_after_discount),
+                'final_price' => $this->sanitizeAmount($request->new_plan_price_after_discount),
                 'created_at' => now(),
-                'updated_at' => now(), 
-            ]);
+                'updated_at' => now(),
+            ];
 
-            DB::table('member_payments')->insert([
+            DB::table('member_memberships')->insert($newMembershipData);
+
+            // Insert payment details
+            $paymentData = [
                 'member_id' => intval($request->renewMembershipMemberId),
                 'gym_id' => Auth::user()->id,
                 'membership_id' => intval($request->plan),
                 'payment_mode' => $request->payment_mode ?? "other",
-                'amount_paid' => (float) str_replace(',', '', $request->current_paid_amount) + 
-                 (float) str_replace(',', '', $request->admission_fee),
-                'due_amount' => str_replace(',', '', $request->new_due_amount),
-                'total_amount' => str_replace(',', '', $request->new_plan_price),
+                'amount_paid' => $this->sanitizeAmount($request->current_paid_amount) + $this->sanitizeAmount($request->admission_fee),
+                'due_amount' => $this->sanitizeAmount($request->new_due_amount),
+                'total_amount' => $this->sanitizeAmount($request->new_plan_price),
                 'payment_date' => now(),
                 'payment_type' => 'renewal',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]);
+            ];
 
+            DB::table('member_payments')->insert($paymentData);
+
+            // Commit the transaction
             DB::commit();
-            return response()->json(['status' => 'success', 'message' => 'Renew membership  successfully!']);
+            return response()->json(['status' => 'success', 'message' => 'Membership renewed successfully!']);
+
         } catch (\Throwable $th) {
+            // Rollback the transaction in case of an error
             DB::rollBack();
             return response()->json(['status' => 'error', 'message' => 'Failed to renew membership. Please try again.', 'error' => $th->getMessage()]);
         }
     }
+
+
+    protected function parseDate($dateString)
+    {
+        try {
+            return DateTime::createFromFormat('d M Y', $dateString)->format('Y-m-d');
+        } catch (\Exception $e) {
+            return null; // return null if parsing fails
+        }
+    }
+
+    protected function sanitizeAmount($amount)
+    {
+        return (float) str_replace(',', '', $amount);
+    }
+
+
+    protected function calculateDiscountedPrice($planPrice, $discountedPrice)
+    {
+        return (float) str_replace(',', '', $planPrice) - (float) str_replace(',', '', $discountedPrice);
+    }
+
 }
