@@ -18,16 +18,31 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DateTime;
-
+use Illuminate\Support\Facades\Cache;
 
 class MembersController extends Controller{
     
     public function index()
     {
-        $plans = DB::table('menbership_plans')->where('gym_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
-        $trainers = DB::table('trainers')->where('gym_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
-        return view('admin.members.index', compact('plans', 'trainers')); // just loads view with empty or initial content
+        $gymId = Auth::id(); // More concise than Auth::user()->id
+
+        $plans = Cache::remember("plans_gym_{$gymId}", 60 * 60, function () use ($gymId) {
+            return DB::table('menbership_plans')
+                    ->where('gym_id', $gymId)
+                    ->orderByDesc('created_at')
+                    ->get();
+        });
+
+        $trainers = Cache::remember("trainers_gym_{$gymId}", 60 * 60, function () use ($gymId) {
+            return DB::table('trainers')
+                    ->where('gym_id', $gymId)
+                    ->orderByDesc('created_at')
+                    ->get();
+        });
+
+        return view('admin.members.index', compact('plans', 'trainers'));
     }
+
 
     public function fetchmembers(Request $request)
     {

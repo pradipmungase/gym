@@ -16,6 +16,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Endroid\QrCode\Builder\Builder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class PlanController extends Controller{
     
@@ -29,49 +30,95 @@ class PlanController extends Controller{
         $plans = DB::table('menbership_plans')->where('gym_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.plans.partials.plan-table', compact('plans'))->render(); // returns only table partial
     }
+
     public function store(Request $request)
     {
+        // Validate request data
         $request->validate([
-            'plan_name' => 'required|string|max:255',
-            'duration'  => 'required|numeric',
+            'plan_name'     => 'required|string|max:255',
+            'duration'      => 'required|numeric',
             'duration_type' => 'required|string',
-            'price'     => 'required|numeric|min:1',
+            'price'         => 'required|numeric|min:1',
         ]);
 
+        try {
+            DB::beginTransaction(); // Start transaction
 
-        DB::table('menbership_plans')->insert([
-            'name' => $request->input('plan_name'),
-            'duration'  => $request->input('duration'),
-            'duration_type' => $request->input('duration_type'),
-            'price'     => $request->input('price'),
-            'gym_id'    => Auth::user()->id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+            $gymId = Auth::id();
 
-        return response()->json(['message' => 'Plan added successfully']);
+            DB::table('menbership_plans')->insert([
+                'name'          => $request->input('plan_name'),
+                'duration'      => $request->input('duration'),
+                'duration_type' => $request->input('duration_type'),
+                'price'         => $request->input('price'),
+                'gym_id'        => $gymId,
+                'created_at'    => now(),
+                'updated_at'    => now(),
+            ]);
+
+            // Clear cached plans for the gym
+            Cache::forget("plans_gym_{$gymId}");
+
+            DB::commit(); // Commit transaction
+
+            return response()->json(['message' => 'Plan added successfully'], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback transaction on error
+
+            // Optional: Log the error
+            \Log::error('Error adding plan: '.$e->getMessage());
+
+            return response()->json([
+                'message' => 'Something went wrong while adding the plan.',
+                'error'   => $e->getMessage() // Remove this line in production
+            ], 500);
+        }
     }
 
     public function update(Request $request)
     {
         $request->validate([
-            'plan_name' => 'required|string|max:255',
-            'duration'  => 'required|numeric',
+            'plan_name'     => 'required|string|max:255',
+            'duration'      => 'required|numeric',
             'duration_type' => 'required|string',
-            'price'     => 'required|numeric|min:1',
-            'plan_id'   => 'required|exists:menbership_plans,id',
+            'price'         => 'required|numeric|min:1',
+            'plan_id'       => 'required|exists:menbership_plans,id',
         ]);
 
-        DB::table('menbership_plans')->where('id', $request->input('plan_id'))->update([
-            'name' => $request->input('plan_name'),
-            'duration'  => $request->input('duration'),
-            'duration_type' => $request->input('duration_type'),
-            'price'     => $request->input('price'),    
-            'updated_at' => now(),
-        ]);
+        try {
+            DB::beginTransaction();
 
-        return response()->json(['message' => 'Plan updated successfully']);
+            $planId = $request->input('plan_id');
+            $gymId = Auth::id();
+
+            DB::table('menbership_plans')->where('id', $planId)->update([
+                'name'          => $request->input('plan_name'),
+                'duration'      => $request->input('duration'),
+                'duration_type' => $request->input('duration_type'),
+                'price'         => $request->input('price'),
+                'updated_at'    => now(),
+            ]);
+
+            Cache::forget("plans_gym_{$gymId}");
+
+            DB::commit();
+
+            return response()->json(['message' => 'Plan updated successfully'], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Optional: log the error
+            \Log::error('Error updating plan: '.$e->getMessage());
+
+            return response()->json([
+                'message' => 'Something went wrong while updating the plan.',
+                'error'   => $e->getMessage() // You can hide this in production
+            ], 500);
+        }
     }
+
 
     public function view($id)
     {
