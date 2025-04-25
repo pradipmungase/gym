@@ -895,6 +895,7 @@
                     <div class="modal-header text-white">
                         <h5 class="modal-title" id="renewMembershipModalLabel">
                             <i class="bi bi-person-plus-fill me-2"></i> Renew Membership
+                            <br>
                             <span class="text-info">Member will be removed from then expiry of current plan and added to
                                 new plan.</span>
                         </h5>
@@ -909,7 +910,7 @@
 
                             <!-- Plan -->
                             <div class="col-md-6 col-lg-6">
-                                <label for="renewMembershipPlan" class="form-label">Plan <span
+                                <label for="renewMembershipPlan" class="form-label">Membership Plan <span
                                         class="text-danger">*</span></label>
                                 <select class="form-select" id="renewMembershipPlan" name="plan" required>
                                     <option selected disabled value="">Select Plan</option>
@@ -949,6 +950,7 @@
                                         <option value="flat">Flat</option>
                                         <option value="percentage">Percentage</option>
                                     </select>
+                                    <div class="invalid-feedback">Discount type is required.</div>
                                 </div>
 
                                 <!-- Discount -->
@@ -971,7 +973,7 @@
                                 <div class="col-6 col-md-3 col-lg-3">
                                     <label for="renewMembershipPaymentMode" class="form-label">Amount Mode</label>
                                     <select class="form-select" id="renewMembershipPaymentMode" name="payment_mode">
-                                        <option selected disabled value="">Select Payment Mode</option>
+                                        <option selected value="">Select Payment Mode</option>
                                         <option value="cash">Cash</option>
                                         <option value="phone pay">Phone Pay</option>
                                         <option value="google pay">Google Pay</option>

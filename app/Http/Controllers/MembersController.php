@@ -647,14 +647,8 @@ class MembersController extends Controller{
 
     public function renewMembership(Request $request)
     {
-
-        if(isset($request->admission_fee) && $request->admission_fee > 0){
-            $request->validate([
-                'payment_mode' => 'required|in:cash,phone pay,google pay,other',
-            ]);
-        }
         // Input Validation
-        $request->validate([
+        $validationRules = [
             'renewMembershipMemberId' => 'required|exists:members,id',
             'plan' => 'required|exists:menbership_plans,id',
             'renewMembershipNewDueAmountForValidation' => [
@@ -666,10 +660,34 @@ class MembersController extends Controller{
                     }
                 }
             ],
-        ], [
-            'renewMembershipNewDueAmountForValidation.required' => 'Due amount cannot be 0.',
-            'renewMembershipNewDueAmountForValidation.negative' => 'Due Amount cannot be negative.',
-        ]);
+        ];
+
+
+        // Conditional validation for admission_fee
+        if ($request->admission_fee > 0) {
+            $validationRules['payment_mode'] = 'required|in:cash,phone pay,google pay,other';
+        }
+
+        if(isset($request->payment_mode) && $request->payment_mode != ''){
+            $validationRules['admission_fee'] = 'required';
+        }
+
+        // Conditional validation for discount
+        if ($request->discount > 0) {
+            $validationRules['discount_type'] = 'required|in:flat,percentage';
+        }
+
+        if(isset($request->discount_type) && $request->discount_type != ''){
+            $validationRules['discount'] = 'required|numeric|min:0|max:100';
+        }
+
+        if(isset($request->discount) && $request->discount != ''){
+            $validationRules['discount_type'] = 'required';
+        }
+        // Apply the validation
+        $request->validate($validationRules);
+
+
 
         // Begin Database Transaction
         DB::beginTransaction();
@@ -692,7 +710,7 @@ class MembersController extends Controller{
 
             // Expire the current membership
             DB::table('member_memberships')->where('member_id', $request->renewMembershipMemberId)->update([
-                'status' => 'expired',
+                'status' => 'renew',
                 'updated_at' => now(),
             ]);
 
@@ -721,10 +739,10 @@ class MembersController extends Controller{
                 'member_id' => intval($request->renewMembershipMemberId),
                 'gym_id' => Auth::user()->id,
                 'membership_id' => intval($request->plan),
-                'payment_mode' => $request->payment_mode ?? "other",
+                'payment_mode' => $request->payment_mode ?? 'system',
                 'amount_paid' => $this->sanitizeAmount($request->current_paid_amount) + $this->sanitizeAmount($request->admission_fee),
                 'due_amount' => $this->sanitizeAmount($request->new_due_amount),
-                'total_amount' => $this->sanitizeAmount($request->new_plan_price),
+                'total_amount' => $this->sanitizeAmount($request->new_plan_price_after_discount),
                 'payment_date' => now(),
                 'payment_type' => 'renewal',
                 'created_at' => now(),

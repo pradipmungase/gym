@@ -30,7 +30,7 @@ return new class extends Migration
             $table->decimal('discount_price', 10, 2)->nullable();
             $table->decimal('final_price', 10, 2);
 
-            $table->enum('status', ['active', 'expired', 'cancelled','changed'])->default('active');
+            $table->enum('status', ['active', 'expired', 'cancelled','changed','renew'])->default('active');
 
             $table->timestamps();
         });
