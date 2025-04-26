@@ -15,6 +15,7 @@ use App\Http\Controllers\AnnouncementController;
 use App\Models\User;
 use App\Notifications\WebPushNotification;
 use App\Http\Controllers\MarketingController;
+use App\Http\Controllers\NotificationController;
 
 Route::post('/webpush', function (Request $request) {
     $user = Auth::user(); // Or get authenticated user
@@ -52,6 +53,7 @@ Route::post('/verifyOtp', [AuthController::class, 'verifyOtp'])->name('verifyOtp
 Route::match(['get', 'post'], '/markAttendanceByLatLong/{gym_id}/{member_id}', [AttendanceController::class, 'markAttendanceByLatLong'])->name('members.markAttendanceByLatLong');
 
 Route::match(['get', 'post'], '/marketing', [MarketingController::class, 'index'])->name('marketing.index');
+Route::match(['get'], '/genrateNotifications', [NotificationController::class, 'index'])->name('genrateNotifications');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

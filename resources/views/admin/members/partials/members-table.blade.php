@@ -60,7 +60,7 @@
                             <br>
                             <span class="text-white">
                                 <i class="bi bi-calendar-check"></i>
-                                {{ $remainingDays+1 }} days left
+                                {{ $remainingDays }} days left
                             </span>
                         </td>
 

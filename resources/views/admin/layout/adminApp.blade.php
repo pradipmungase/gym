@@ -2,53 +2,28 @@
 <html lang="en">
 
 <head>
-    <!-- Required Meta Tags Always Come First -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Title -->
+    <meta name= "apple-mobile-web-app-status-bar" content="#aa7700">
+    <meta name="theme-color" content="black">
     <title>GYM Manager</title>
-
-    <!-- Favicon -->
     {{-- <link rel="shortcut icon" href="{{ asset('logo/5.jpg') }}"> --}}
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
-    <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="{{ asset('') }}assets/vendor/bootstrap-icons/font/bootstrap-icons.css">
+    {{-- <link rel="stylesheet" href="{{ asset('') }}assets/vendor/jsvectormap/dist/css/jsvectormap.min.css"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('') }}assets/vendor/tom-select/dist/css/tom-select.bootstrap5.css"> --}}
 
-    <link rel="stylesheet" href="{{ asset('') }}assets/vendor/daterangepicker/daterangepicker.css">
-    <link rel="stylesheet" href="{{ asset('') }}assets/vendor/jsvectormap/dist/css/jsvectormap.min.css">
-    <link rel="stylesheet" href="{{ asset('') }}assets/vendor/tom-select/dist/css/tom-select.bootstrap5.css">
-
-    <!-- CSS Front Template -->
 
     <link rel="preload" href="{{ asset('') }}assets/css/theme.min.css" data-hs-appearance="default" as="style">
     <link rel="preload" href="{{ asset('') }}assets/css/theme-dark.min.css" data-hs-appearance="dark"
         as="style">
-    <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="{{ asset('') }}assets/vendor/jquery/dist/jquery.min.js"></script>
-    <!-- Toastr CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
-
-    <!-- Optional: jQuery (Toastr uses it) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <meta name= "apple-mobile-web-app-status-bar" content="#aa7700">
-    <meta name="theme-color" content="black">
-
-    <!-- Manifest File link -->
     <link rel="manifest" href="{{ asset('/PWA/manifest.json') }}">
-
-
-    <link rel="stylesheet" href="{{ asset('') }}assets/vendor/flatpickr/dist/flatpickr.min.css">
-
     <style data-hs-appearance-onload-styles>
         * {
             transition: unset !important;
@@ -63,17 +38,6 @@
         input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1) !important;
         }
-
-        /* input[type="date"] {
-            color: #fff !important;
-        }
-
-        input:focus-visible {
-            border: solid white 1px !important;
-        }
-        select:focus-visible {
-            border: solid white 1px !important;
-        } */
 
         /* Loader Wrapper */
         #loader-wrapper {
@@ -303,8 +267,7 @@
 
     <script src="{{ asset('') }}assets/js/hs.theme-appearance.js"></script>
 
-    <script src="{{ asset('') }}assets/vendor/hs-navbar-vertical-aside/dist/hs-navbar-vertical-aside-mini-cache.js">
-    </script>
+    <script src="{{ asset('') }}assets/vendor/hs-navbar-vertical-aside/dist/hs-navbar-vertical-aside-mini-cache.js"></script>
 
     <!-- ========== HEADER ========== -->
 
@@ -341,8 +304,8 @@
                                 <i class="bi-search"></i>
                             </div>
 
-                            <input type="search" class="js-form-search form-control" placeholder="Search member & trainer"
-                                aria-label="Search member & trainer"
+                            <input type="search" class="js-form-search form-control"
+                                placeholder="Search member & trainer" aria-label="Search member & trainer"
                                 data-hs-form-search-options='{
                        "clearIcon": "#clearSearchResultsIcon",
                        "dropMenuElement": "#searchDropdownMenu",
@@ -426,8 +389,7 @@
                     <li class="nav-item  d-sm-inline-block">
                         <!-- Notification -->
                         <div class="dropdown">
-                            <button type="button"
-                                class="btn btn-ghost-secondary btn-icon rounded-circle"
+                            <button type="button" class="btn btn-ghost-secondary btn-icon rounded-circle"
                                 id="navbarNotificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false"
                                 data-bs-auto-close="outside" data-bs-dropdown-animation>
                                 <i class="bi-bell"></i>
@@ -435,7 +397,7 @@
                             </button>
 
                             <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless"
-                                aria-labelledby="navbarNotificationsDropdown" style="width: 23rem;">
+                                aria-labelledby="navbarNotificationsDropdown" style="width: 24rem;">
                                 <div class="card">
                                     <!-- Header -->
                                     <div class="card-header card-header-content-between">
@@ -455,37 +417,50 @@
                                                     @php
                                                         $notifications = getNotification();
                                                     @endphp
-                                                    @foreach ($notifications as $notification)
-                                                    <li class="list-group-item form-check-select">
-                                                        <div class="row">
-                                                            <div class="col-auto">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input"
-                                                                            type="checkbox" value=""
-                                                                            id="notificationCheck1" @if ($notification->status == 'unread') checked @endif>
-                                                                        <span class="form-check-stretched-bg"></span>
+                                                    @if (count($notifications) > 0)
+                                                        @foreach ($notifications as $notification)
+                                                            <li class="list-group-item form-check-select">
+                                                                <div class="row">
+                                                                    <div class="col-auto">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input"
+                                                                                    type="checkbox" value=""
+                                                                                    id="notificationCheck{{ $notification->id }}"
+                                                                                    @if ($notification->status == 'unread') checked @endif>
+                                                                                <span
+                                                                                    class="form-check-stretched-bg"></span>
+                                                                            </div>
+                                                                            <img class="avatar avatar-sm avatar-circle"
+                                                                                src="@if ($notification->image) {{ asset($notification->image) }} @else {{ asset('assets/img/1920x400/img2.jpg') }} @endif"
+                                                                                alt="Image Description">
+                                                                        </div>
                                                                     </div>
-                                                                    <img class="avatar avatar-sm avatar-circle"
-                                                                        src="@if (Auth::user()->profile_picture) {{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }} @endif"
-                                                                        alt="Image Description">
+
+                                                                    <div class="col ms-n2">
+                                                                        <h5 class="mb-1">{{ $notification->title }}
+                                                                        </h5>
+                                                                        <p class="text-body fs-5">
+                                                                            {{ $notification->description }}</p>
+                                                                    </div>
                                                                 </div>
+                                                                @if ($notification->type == 'member')
+                                                                    <a class="stretched-link" href="{{ url('members/view/'.encrypt($notification->member_id)) }}"></a>
+                                                                @elseif ($notification->type == 'trainer')
+                                                                    <a class="stretched-link" href="{{ url('trainers/view/'.encrypt($notification->trainer_id)) }}"></a>
+                                                                @elseif ($notification->type == 'membership_expiry')
+                                                                    <a class="stretched-link" href="{{ url('members/view/'.encrypt($notification->member_id)) }}"></a>
+                                                                @endif
+                                                            </li>
+                                                        @endforeach
+                                                    @else
+                                                        <li class="list-group-item text-center">
+                                                            <div class="py-5">
+                                                                <h5 class="mb-1 text-muted">No Notifications</h5>
                                                             </div>
-                                                            <!-- End Col -->
+                                                        </li>
+                                                    @endif
 
-                                                            <div class="col ms-n2">
-                                                                <h5 class="mb-1">{{ $notification->title }}</h5>
-                                                                <p class="text-body fs-5">{{ $notification->description }}</p>
-                                                            </div>
-                                                            <!-- End Col -->
-
-                                                            <!-- End Col -->
-                                                        </div>
-                                                        <!-- End Row -->
-
-                                                        <a class="stretched-link" href="#"></a>
-                                                    </li>
-                                                    @endforeach
                                                     <!-- End Item -->
                                                 </ul>
                                                 <!-- End List Group -->
@@ -786,11 +761,8 @@
     <!-- JS Global Compulsory  -->
     <script src="{{ asset('') }}assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
     <script src="{{ asset('') }}assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- JS Implementing Plugins -->
     <script src="{{ asset('') }}assets/vendor/hs-navbar-vertical-aside/dist/hs-navbar-vertical-aside.min.js"></script>
     <script src="{{ asset('') }}assets/vendor/hs-form-search/dist/hs-form-search.min.js"></script>
-
     <script src="{{ asset('') }}assets/vendor/daterangepicker/moment.min.js"></script>
     <script src="{{ asset('') }}assets/vendor/daterangepicker/daterangepicker.js"></script>
     <script src="{{ asset('') }}assets/vendor/chart.js/dist/Chart.min.js"></script>
@@ -798,21 +770,12 @@
     <script src="{{ asset('') }}assets/vendor/jsvectormap/dist/js/jsvectormap.min.js"></script>
     <script src="{{ asset('') }}assets/vendor/jsvectormap/dist/maps/world.js"></script>
     <script src="{{ asset('') }}assets/vendor/tom-select/dist/js/tom-select.complete.min.js"></script>
-
-    <!-- JS Front -->
     <script src="{{ asset('') }}assets/js/theme.min.js"></script>
     <script src="{{ asset('') }}assets/js/hs.theme-appearance-charts.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('My.js') }}"></script>
     <script src="{{ asset('') }}assets/vendor/hs-file-attach/dist/hs-file-attach.min.js"></script>
-
     <script src="{{ asset('') }}assets/vendor/appear/dist/appear.min.js"></script>
     <script src="{{ asset('') }}assets/vendor/hs-counter/dist/hs-counter.min.js"></script>
-
-    <script src="{{ asset('') }}assets/vendor/flatpickr/dist/flatpickr.min.js"></script>
-    <script src="{{ asset('') }}assets/js/hs.flatpickr.js"></script>
-    <!-- JS Plugins Init. -->
     <script>
         (function() {
             window.onload = function() {
@@ -967,20 +930,13 @@
     </script>
 
     <script>
-    (function() {
-        // INITIALIZATION OF COUNTER
-        // =======================================================
-        new HSCounter('.js-counter')
-    })();
+        (function() {
+            // INITIALIZATION OF COUNTER
+            // =======================================================
+            new HSCounter('.js-counter')
+        })();
     </script>
 
-    <script>
-    (function() {
-        // INITIALIZATION OF FLATPICKR
-        // =======================================================
-        HSCore.components.HSFlatpickr.init('.js-flatpickr')
-    })();
-    </script>
 </body>
 
 </html>

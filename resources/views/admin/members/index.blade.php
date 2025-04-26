@@ -463,6 +463,7 @@
                                 <label for="editBirthDate" class="form-label">Birth Date</label>
                                 <input type="date" class="form-control birthDate" id="editBirthDate"
                                     name="birth_date" max="{{ date('Y-m-d') }}">
+                                <div class="invalid-feedback">Birth date must be in the past.</div>
                             </div>
 
                             <div class="col-md-6 col-lg-4">

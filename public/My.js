@@ -369,21 +369,18 @@ $(document).ready(function () {
                     let firstErrorField = null;
 
                     $.each(errors, function (key, messages) {
-                        // Capitalize first letter of the key
-                        const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
-                        const field = $(`#edit${capitalizedKey}`);
+                        // Convert snake_case to camelCase and capitalize first letter
+                        const capitalizedKey = key.replace(/_([a-z])/g, g => g[1].toUpperCase());
+                        const field = $(`#edit${capitalizedKey.charAt(0).toUpperCase() + capitalizedKey.slice(1)}`);
 
-                        // If field is readonly, allow error display
                         field.addClass('is-invalid');
                         field.siblings('.invalid-feedback').text(messages[0]).show();
 
-                        // Focus first error field
                         if (!firstErrorField) {
                             firstErrorField = field;
                         }
                     });
 
-                    // Set focus after all error messages are applied
                     if (firstErrorField) {
                         firstErrorField.focus();
                     }
