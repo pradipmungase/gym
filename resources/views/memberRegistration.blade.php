@@ -275,14 +275,14 @@
                     <div class="modal-content">
                         <div class="modal-header text-white">
                             <h5 class="modal-title" id="memberRegstrationLabel">
-                                <i class="bi bi-person-plus-fill me-2"></i> Add New Member
+                                <i class="bi bi-person-plus-fill me-2"></i> Register Member
                             </h5>
                             <button type="button" class="clearFromDataWithError btn-close btn-close-white"
                                 data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body px-4">
                             <div class="row gy-4">
-
+                                <input type="hidden" id="gymId" value="{{ request()->segment(2) }}">
                                 <!-- 🧍 Personal Information -->
                                 <div class="col-12">
                                     <h5 class="border-bottom pb-2">🧍 Personal Information</h5>
@@ -297,8 +297,9 @@
                                 </div>
 
                                 <div class="col-md-6 col-lg-4">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="registration_email" name="registration_email"
+                                    <label for="email" class="form-label">Email <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" id="registration_email" name="registration_email" required
                                         placeholder="e.g., johndoe@gmail.com">
                                     <div class="invalid-feedback">Valid email is required.</div>
                                 </div>
@@ -312,9 +313,10 @@
                                 </div>
 
                                 <div class="col-md-6 col-lg-4">
-                                    <label for="birth_date" class="form-label">Birth Date</label>
+                                    <label for="birth_date" class="form-label">Birth Date <span
+                                            class="text-danger">*</span></label>
                                     <input type="date" class="form-control birthDate" id="registration_birth_date"
-                                        name="registration_birth_date" max="{{ date('Y-m-d') }}">
+                                        name="registration_birth_date" required max="{{ date('Y-m-d') }}">
                                     <div class="invalid-feedback">Birth date is required.</div>
                                 </div>
 

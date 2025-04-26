@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('member_registration', function (Blueprint $table) {
             $table->id();
+            $table->integer('gym_id');
             $table->string('name');
-            $table->string('email')->nullable();
+            $table->string('email');
             $table->string('mobile_number');
-            $table->string('birth_date')->nullable();
-            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->string('birth_date');
+            $table->enum('gender', ['male', 'female']);
             $table->string('image')->nullable();
             $table->date('joining_date');
+            $table->date('end_date');
             $table->string('batch');
             $table->string('trainer_id')->nullable();
             $table->string('plan_id');

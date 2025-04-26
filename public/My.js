@@ -123,20 +123,6 @@ function fetchPlans(page = 1) {
 }
 
 
-// function fetchmembers(page = 1) {
-//     $.ajax({
-//         url: "members/fetch?page=" + page,
-//         type: 'GET',
-//         success: function (data) {
-//             $('#members-table-container').html(data);
-//         },
-//         error: function () {
-//             $('#members-table-container').html('<div class="text-danger text-center">Failed to load members.</div>');
-//         }
-//     });
-// }
-
-
 function fetchmembers(page = 1, query = '', genders = [], status = '') {
     $.ajax({
         url: "members/fetch",
@@ -1986,14 +1972,24 @@ $(document).ready(function () {
         $('#registration_plan_price').val(formatNumber(selectedPrice));
         $('#registration_final_price').val(formatNumber(selectedPrice));
         $('#registration_due_amount').val(formatNumber(selectedPrice));
-
-        calculateDueAmount();
     });
 
     // When Joining Amount changes
     $('#registration_admission_fee').on('input', function () {
-        calculateDueAmount();
+        sanitizeAndCalculate();
     });
+
+    function sanitizeAndCalculate() {
+        var admissionFeeInput = $('#registration_admission_fee').val();
+
+        // Remove non-numeric except dot
+        var sanitizedInput = admissionFeeInput.replace(/[^0-9.]/g, '');
+
+        // Update sanitized value back to input
+        $('#registration_admission_fee').val(sanitizedInput);
+
+        calculateDueAmount();
+    }
 
     function calculateDueAmount() {
         var finalPrice = parseFloat($('#registration_final_price').val().replace(/,/g, '')) || 0;
@@ -2004,6 +2000,8 @@ $(document).ready(function () {
         dueAmount = dueAmount < 0 ? 0 : dueAmount;
 
         $('#registration_due_amount').val(formatNumber(dueAmount));
+        $('#memberRequestFinalPrice').val(formatNumber(admissionFee));
+
     }
 
     function formatNumber(number) {
@@ -2013,6 +2011,7 @@ $(document).ready(function () {
         });
     }
 });
+
 
 
 
@@ -2035,7 +2034,7 @@ $(document).ready(function () {
         submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...');
 
         $.ajax({
-            url: "/memberRegistration/store",
+            url: "/memberRegistration/store/" + $('#gymId').val(),
             method: 'POST',
             data: formData,
             contentType: false,
@@ -2084,3 +2083,247 @@ $(document).ready(function () {
     });
 });
 
+
+
+
+function fetchmembersRequest(page = 1, query = '', genders = [], status = '') {
+    $.ajax({
+        url: "memberRequest/fetch",
+        type: 'GET',
+        data: {
+            page: page,
+            query: query,
+            genders: genders,
+            status: status
+        },
+        success: function (data) {
+            $('#membersRequest-table-container').html(data);
+        },
+        error: function () {
+            $('#membersRequest-table-container').html('<div class="text-danger text-center">Failed to load members.</div>');
+        }
+    });
+}
+
+
+$('#searchMemberRequest').on('keyup', function () {
+    let query = $(this).val();
+    fetchmembersRequest(1, query);
+});
+
+
+if (window.location.pathname === '/memberRequest') {
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault();
+        let page = $(this).attr('href').split('page=')[1];
+        fetchmembersRequest(page);
+    });
+    fetchmembersRequest();
+}
+
+
+
+$(document).on('click', '.view-member-btn', function () {
+    const members = $(this).data('member'); // Make sure this is a valid JS object
+
+    // Populate form fields
+    $('#MembersRequestId').val(members.member_id);
+    $('#memberRequestName').val(members.name);
+    $('#memberRequestEmail').val(members.email);
+    $('#memberRequestMobile').val(members.mobile_number);
+    $('#memberRequestBirthDate').val(members.birth_date);
+    const fallbackImg = "/assets/img/160x160/images (1).jpg";
+    if (members.image) {
+        $('#previewMemberImg').attr('src', members.image);
+    } else {
+        $('#previewMemberImg').attr('src', fallbackImg);
+    }
+    $('#memberRequestGender').val($.trim(members.gender));
+    $('#memberRequestJoiningDate').val(members.joining_date);
+
+    $('#memberRequestBatch').val($.trim(members.batch));
+    $('#memberRequestTrainer').val($.trim(members.trainer_id));
+    $('#memberRequestPlan').val(members.plan_id).trigger('change'); // In case you have JS bound on change
+    $('#memberRequestPaymentMode').val(members.payment_mode);
+    $('#memberRequestAdmissionFee').val(members.admission_fee);
+    $('#memberRequestDiscountType').val(members.discount_type);
+    $('#memberRequestDiscount').val(members.discount_inpute);
+    $('#memberRequestPlanPrice').val(members.plan_price);
+    $('#memberRequestFinalPrice').val(members.final_price_after_discount);
+    $('#memberRequestDueAmount').val(members.due_amount);
+
+
+    $('#viewmemberModal').modal('show');
+});
+
+
+
+$(document).ready(function () {
+    // When Plan changes
+    $('#memberRequestPlan').on('change', function () {
+        var selectedPrice = $('option:selected', this).data('price') || 0;
+
+        $('#memberRequestPlanPrice').val(formatNumber(selectedPrice));
+        $('#memberRequestFinalPrice').val(formatNumber(selectedPrice));
+        $('#memberRequestDueAmount').val(formatNumber(selectedPrice));
+
+        calculateDueAmount();
+    });
+
+    // When Discount Type or Discount Amount changes
+    $('#memberRequestDiscountType, #memberRequestDiscount').on('input change', function () {
+        calculateDueAmount();
+    });
+
+    // When Joining Amount changes
+    $('#memberRequestAdmissionFee').on('input', function () {
+        sanitizeJoiningAmount();
+        calculateDueAmount();
+    });
+
+    function sanitizeJoiningAmount() {
+        var inputVal = $('#memberRequestAdmissionFee').val();
+        var sanitized = inputVal.replace(/[^0-9.]/g, '');
+        $('#memberRequestAdmissionFee').val(sanitized);
+    }
+
+    function calculateDueAmount() {
+        var planPrice = parseFloat($('#memberRequestPlanPrice').val().replace(/,/g, '')) || 0;
+        var discountType = $('#memberRequestDiscountType').val();
+        var discountValue = parseFloat($('#memberRequestDiscount').val()) || 0;
+        var admissionFee = parseFloat($('#memberRequestAdmissionFee').val().replace(/,/g, '')) || 0;
+
+        var finalPrice = planPrice;
+
+        // Apply Discount
+        if (discountType && discountValue) {
+            if (discountType === 'flat') {
+                finalPrice = planPrice - discountValue;
+            } else if (discountType === 'percentage') {
+                finalPrice = planPrice - (planPrice * (discountValue / 100));
+            }
+        }
+
+        // Make sure finalPrice is never negative
+        finalPrice = finalPrice < 0 ? 0 : finalPrice;
+
+        $('#memberRequestFinalPrice').val(formatNumber(finalPrice));
+
+        // Now calculate Due Amount
+        if (admissionFee > finalPrice) {
+            admissionFee = finalPrice;
+            $('#memberRequestAdmissionFee').val(formatNumber(admissionFee));
+        }
+
+        var dueAmount = finalPrice - admissionFee;
+
+        // Never negative
+        dueAmount = dueAmount < 0 ? 0 : dueAmount;
+
+        $('#memberRequestDueAmount').val(formatNumber(dueAmount));
+    }
+
+    function formatNumber(number) {
+        return Number(number).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+});
+
+
+
+
+
+$('#rejectMemberRequestBtn').on('click', function (e) {
+    e.preventDefault();  // Prevent the default form submit
+
+    const memberId = $('#MembersRequestId').val();
+    const originalBtnHtml = $(this).html();  // Get the HTML of the clicked button
+    $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...');  // Disable and change text
+
+    $.ajax({
+        url: "memberRequest/reject/" + memberId,
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            $('#viewmemberModal').modal('hide');
+            showToast(response.message, 'bg-success');
+            fetchmembersRequest();
+        },
+        error: function () {
+            showToast('Something went wrong. Please try again.', 'bg-danger');
+        },
+        complete: function () {
+            // Re-enable the button and restore the original button text
+            $('#rejectMemberRequestBtn').prop('disabled', false).html(originalBtnHtml);
+        }
+    });
+});
+
+
+
+
+
+$('#acceptMemberRequestBtn').on('click', function (e) {
+    e.preventDefault();  // Prevent the default form submit
+
+    const originalBtnHtml = $(this).html();  // Get the HTML of the clicked button
+    $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...');  // Disable and change text
+
+    const formData = new FormData($('#viewmemberForm')[0]);  // Create FormData from the form
+    // Ensure you get the form data correctly
+
+    $.ajax({
+        url: "/members/store", // Ensure this matches your route
+        method: 'POST',
+        data: formData,
+        contentType: false, // Required for FormData
+        processData: false, // Required for FormData
+        success: function (response) {
+            if (response.status === 'success') {
+                $('#viewmemberModal').modal('hide');
+                $('#viewmemberForm')[0].reset();  // Reset the form
+                $('.js-file-attach-reset-img').click(); // Reset image
+                fetchmembers();  // This will fetch members if necessary
+                showToast(response.message, 'bg-success');  // Show success toast
+            } else {
+                if (response.expiry_date == 'expiry_date') {
+                    $('#memberRequestJoiningDate').addClass('is-invalid');
+                    $('#memberRequestJoiningDate').siblings('.invalid-feedback').text(response.message).show();
+                } else {
+                    showToast(response.message, 'bg-danger');
+                }
+            }
+        },
+        error: function (xhr) {
+            if (xhr.status === 422) {
+                const errors = xhr.responseJSON.errors;
+                let firstErrorField = null;
+
+                $.each(errors, function (key, messages) {
+                    const field = $(`#${key}`);
+                    field.addClass('is-invalid');
+                    field.siblings('.invalid-feedback').text(messages[0]).show();
+
+                    // Store the first invalid field to focus
+                    if (!firstErrorField) {
+                        firstErrorField = field;
+                    }
+                });
+
+                // Focus the first error field
+                if (firstErrorField) {
+                    firstErrorField.focus();
+                }
+            } else {
+                showToast('Something went wrong. Please try again.', 'bg-danger');
+            }
+        },
+        complete: function () {
+            $('#acceptMemberRequestBtn').prop('disabled', false).html(originalBtnHtml);  // Reset button state
+        }
+    });
+});

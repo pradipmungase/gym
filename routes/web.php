@@ -57,7 +57,7 @@ Route::match(['get', 'post'], '/marketing', [MarketingController::class, 'index'
 Route::match(['get'], '/genrateNotifications', [NotificationController::class, 'index'])->name('genrateNotifications');
 
 Route::get('/memberRegistration/{id}', [MemberRegistrationController::class, 'index'])->name('memberRegistration');
-Route::post('/memberRegistration/store', [MemberRegistrationController::class, 'store'])->name('memberRegistration.store');
+Route::post('/memberRegistration/store/{id}', [MemberRegistrationController::class, 'store'])->name('memberRegistration.store');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/saveLatitudeAndLongitude', [DashboardController::class, 'saveLatitudeAndLongitude'])->name('saveLatitudeAndLongitude');
@@ -113,6 +113,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/members/addNote', [MembersController::class, 'addNote'])->name('members.addNote');
     Route::post('/members/changePlan', [MembersController::class, 'changePlan'])->name('members.changePlan');
     Route::post('/members/renewMembership', [MembersController::class, 'renewMembership'])->name('members.renewMembership');
+
+
+    Route::get('/memberRequest', [MemberRegistrationController::class, 'memberRequest'])->name('memberRequest');
+    Route::get('/memberRequest/fetch', [MemberRegistrationController::class, 'fetch'])->name('memberRequest.fetch');
+    Route::post('/memberRequest/reject/{id}', [MemberRegistrationController::class, 'reject'])->name('memberRequest.reject');
 });
 
 

@@ -601,13 +601,27 @@
                         </div>
 
 
-                        <!-- Members -->
+
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('members') }}" role="button">
-                                <i class="bi-people nav-icon"></i>
-                                <span class="nav-link-title">Members</span>
+                            <a class="nav-link dropdown-toggle " href="#navbarVerticalMenuDashboards1" role="button"
+                                data-bs-toggle="collapse" data-bs-target="#navbarVerticalMenuDashboards1"
+                                aria-expanded="false" aria-controls="navbarVerticalMenuDashboards1">
+                                <i class="bi-house-door nav-icon"></i>
+                                <span class="nav-link-title">Member Management</span>
                             </a>
+
+                            <div id="navbarVerticalMenuDashboards1" class="nav-collapse collapse "
+                                data-bs-parent="#navbarVerticalMenu">
+                                <a class="nav-link" href="{{ url('members') }}" role="button">
+                                    <i class="bi-people nav-icon"></i>
+                                    <span class="nav-link-title">Members</span>
+                                </a>
+                                <a class="nav-link " href="{{ url('memberRequest') }}"> <i
+                                        class="bi-person-badge nav-icon"></i> Member Request</a>
+                            </div>
                         </div>
+
+
 
                         <!-- Attendance -->
                         <div class="nav-item">
