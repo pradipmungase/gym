@@ -326,7 +326,7 @@
     </div>
 
 
-    <div class="modal fade" id="verifyOtpModal" tabindex="-1" aria-labelledby="verifyOtpModalLabel" aria-hidden="true">
+    <div class="modal fade" id="verifyOtpModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="verifyOtpModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <form id="verifyOtpForm" method="POST" action="#">
                 @csrf

@@ -17,3 +17,24 @@ self.addEventListener("fetch", function (event) {
         })
     );
 });
+
+self.addEventListener('push', function (event) {
+    const data = event.data.json();
+
+    const options = {
+        body: data.body,
+        icon: '/icon.png', // optional
+        badge: '/badge.png', // optional
+    };
+
+    event.waitUntil(
+        self.registration.showNotification(data.title, options)
+    );
+});
+
+self.addEventListener('notificationclick', function (event) {
+    event.notification.close();
+    event.waitUntil(
+        clients.openWindow('/') // Or wherever you want to send user
+    );
+});

@@ -340,9 +340,9 @@
         </div>
         <!-- End Content -->
 
-        <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal fade" id="signupModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="signupModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-md">
-                <form id="register-form" class="register-form" method="POST" action="#">
+                <form id="register-form" class="register-form" autocomplete="off" method="POST" action="#">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header text-white bg-dark">
@@ -374,7 +374,7 @@
                                 <div class="col-12">
                                     <label for="mobile" class="form-label">Mobile Number <span
                                             class="text-danger">*</span></label>
-                                    <input type="tel" class="form-control" id="mobile" name="mobile"
+                                    <input type="number" class="form-control" id="mobile" name="mobile"
                                         required placeholder="e.g., 9876543210">
                                     <div class="invalid-feedback">Mobile number is required.</div>
                                 </div>

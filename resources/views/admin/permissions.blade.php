@@ -147,67 +147,70 @@
             }
         }
 
-async function subscribeToPush() {
-    const btn = document.querySelector('[onclick="subscribeToPush()"]');
-    const originalText = btn.innerHTML;
+        async function subscribeToPush() {
+            const btn = document.querySelector('[onclick="subscribeToPush()"]');
+            const originalText = btn.innerHTML;
 
-    // Show loader
-    btn.disabled = true;
-    btn.innerHTML = `
+            // Show loader
+            btn.disabled = true;
+            btn.innerHTML = `
         <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...`;
 
-    // Basic support check
-    if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
-        $('#output2').html(`<div class="text-danger">Push notifications are not supported in your browser.</div>`);
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-        return;
-    }
+            // Basic support check
+            if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
+                $('#output2').html(
+                    `<div class="text-danger">Push notifications are not supported in your browser.</div>`);
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                return;
+            }
 
-    try {
-        // Ask for notification permission
-        const permission = await Notification.requestPermission();
-        if (permission !== 'granted') {
-            $('#output2').html(`<div class="text-danger">Permission access denied.<br>Please enable it in your browser settings.</div>`);
-            return;
+            try {
+                // Ask for notification permission
+                const permission = await Notification.requestPermission();
+                if (permission !== 'granted') {
+                    $('#output2').html(
+                        `<div class="text-danger">Permission access denied.<br>Please enable it in your browser settings.</div>`
+                        );
+                    return;
+                }
+
+                // Wait for the service worker to be ready
+                const registration = await navigator.serviceWorker.ready;
+
+                // Subscribe to push
+                const subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array("{{ env('VAPID_PUBLIC_KEY') }}")
+                });
+
+                // Send subscription to server
+                const response = await fetch('/webpush', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
+                    },
+                    body: JSON.stringify(subscription)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Server response was not OK');
+                }
+
+                $('#output2').html(`<div class="text-success">Notifications access granted ✅</div>`);
+                showToast('Successfully subscribed to push notifications!', 'bg-success');
+
+            } catch (error) {
+                console.error('Push error:', error);
+                $('#output2').html(`<div class="text-danger">Something went wrong: ${error.message}</div>`);
+                showToast('Failed to subscribe to push notifications', 'bg-danger');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
         }
-
-        // Wait for the service worker to be ready
-        const registration = await navigator.serviceWorker.ready;
-
-        // Subscribe to push
-        const subscription = await registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array("{{ env('VAPID_PUBLIC_KEY') }}")
-        });
-
-        // Send subscription to server
-        const response = await fetch('/webpush', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
-            },
-            body: JSON.stringify(subscription)
-        });
-
-        if (!response.ok) {
-            throw new Error('Server response was not OK');
-        }
-
-        $('#output2').html(`<div class="text-success">Notifications access granted ✅</div>`);
-        showToast('Successfully subscribed to push notifications!', 'bg-success');
-
-    } catch (error) {
-        console.error('Push error:', error);
-        $('#output2').html(`<div class="text-danger">Something went wrong: ${error.message}</div>`);
-        showToast('Failed to subscribe to push notifications', 'bg-danger');
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-    }
-}
 
 
         function requestCamera() {

@@ -1504,7 +1504,7 @@ $(document).on('submit', '.register-form', function (e) {
                     firstErrorField.focus();
                 }
             } else {
-                showToast('Something went wrong. Please try again.', 'bg-danger');
+                // showToast('Something went wrong. Please try again.', 'bg-danger');
             }
         },
     });

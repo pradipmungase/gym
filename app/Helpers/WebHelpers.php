@@ -161,7 +161,7 @@ function sendAnnouncement($for, $title, $description, $date)
 
 function sendPushNotification(){
         
-    $user = User::find(1); // The specific user you want to notify
+    $user = User::find(4); // The specific user you want to notify
 
     if ($user->pushSubscriptions()->exists()) {
         $user->notify(new WebPushNotification([

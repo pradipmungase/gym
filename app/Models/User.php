@@ -9,6 +9,4 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
 class User extends Authenticatable
 {
     use Notifiable, HasPushSubscriptions;
-    
-    // ... rest of your model code
 }
