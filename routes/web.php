@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Notifications\WebPushNotification;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\MemberRegistrationController;
 
 Route::post('/webpush', function (Request $request) {
     $user = Auth::user(); // Or get authenticated user
@@ -55,6 +56,8 @@ Route::match(['get', 'post'], '/markAttendanceByLatLong/{gym_id}/{member_id}', [
 Route::match(['get', 'post'], '/marketing', [MarketingController::class, 'index'])->name('marketing.index');
 Route::match(['get'], '/genrateNotifications', [NotificationController::class, 'index'])->name('genrateNotifications');
 
+Route::get('/memberRegistration/{id}', [MemberRegistrationController::class, 'index'])->name('memberRegistration');
+Route::post('/memberRegistration/store', [MemberRegistrationController::class, 'store'])->name('memberRegistration.store');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/saveLatitudeAndLongitude', [DashboardController::class, 'saveLatitudeAndLongitude'])->name('saveLatitudeAndLongitude');

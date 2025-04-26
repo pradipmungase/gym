@@ -23,8 +23,8 @@ self.addEventListener('push', function (event) {
 
     const options = {
         body: data.body,
-        icon: './logo/Screenshot 2025-04-22 014521.png', // optional
-        badge: './logo/Screenshot 2025-04-22 014521.png', // optional
+        icon: '/logo/1.png', // optional
+        badge: '/logo/1.png', // optional
     };
 
     event.waitUntil(

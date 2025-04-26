@@ -284,7 +284,7 @@ $(document).ready(function () {
                     if (response.expiry_date == 'expiry_date') {
                         $('#joining_date').addClass('is-invalid');
                         $('#joining_date').siblings('.invalid-feedback').text(response.message).show();
-                    }else{
+                    } else {
                         showToast(response.message, 'bg-danger');
                     }
                 }
@@ -581,7 +581,7 @@ $(document).on('click', '.btn-edit-trainer', function () {
     } else {
         $('#previewEditTrainerImg').attr('src', fallbackImg);
     }
-    
+
     $('#editTrainerModal').modal('show');
 });
 
@@ -617,7 +617,6 @@ $(document).on('click', '.js-file-attach-reset-img', function () {
     // Reset image to default
     $('#previewMemberImg').attr('src', 'assets/img/160x160/images (1).jpg');
     $('#previewEditTrainerImg').attr('src', 'assets/img/160x160/images (1).jpg');
-
     // Clear the file input
     $('#avatarUploader').val('');
 });
@@ -665,7 +664,7 @@ $(document).on('click', '.add-payment-btn', function () {
     $('#addPaymentDueAmount').val(members.due_amount ? members.due_amount : members.final_price);
     $('#currentDueAmount').val(members.due_amount ? members.due_amount : members.final_price);
     $('#currentPlanId').val(members.plan_id);
-    if(members.due_amount != 0){
+    if (members.due_amount != 0) {
         $('#addPaymentModal').modal('show');
     } else {
         $('#paymentStatusModal').modal('show');
@@ -1976,3 +1975,112 @@ $(document).ready(function () {
         $(this).next('.invalid-feedback').hide();
     });
 });
+
+
+
+$(document).ready(function () {
+    // When Plan changes
+    $('#registration_plan').on('change', function () {
+        var selectedPrice = $('option:selected', this).data('price') || 0;
+
+        $('#registration_plan_price').val(formatNumber(selectedPrice));
+        $('#registration_final_price').val(formatNumber(selectedPrice));
+        $('#registration_due_amount').val(formatNumber(selectedPrice));
+
+        calculateDueAmount();
+    });
+
+    // When Joining Amount changes
+    $('#registration_admission_fee').on('input', function () {
+        calculateDueAmount();
+    });
+
+    function calculateDueAmount() {
+        var finalPrice = parseFloat($('#registration_final_price').val().replace(/,/g, '')) || 0;
+        var admissionFee = parseFloat($('#registration_admission_fee').val().replace(/,/g, '')) || 0;
+        var dueAmount = finalPrice - admissionFee;
+
+        // Make sure dueAmount is never negative
+        dueAmount = dueAmount < 0 ? 0 : dueAmount;
+
+        $('#registration_due_amount').val(formatNumber(dueAmount));
+    }
+
+    function formatNumber(number) {
+        return Number(number).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+});
+
+
+
+
+$(document).ready(function () {
+    // Remove previous submit handler if any, then attach a new one
+    $(document).off('submit', '#memberRegstrationForm').on('submit', '#memberRegstrationForm', function (e) {
+        e.preventDefault();
+
+        // Clear previous errors
+        $('#memberRegstrationForm .is-invalid').removeClass('is-invalid');
+        $('#memberRegstrationForm .invalid-feedback').hide().text('');
+
+        const form = this; // No need for $(this)[0]
+        const formData = new FormData(form);
+        const submitBtn = $(form).find('button[type="submit"]');
+
+        // Save original button text and show loading
+        const originalBtnHtml = submitBtn.html();
+        submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...');
+
+        $.ajax({
+            url: "/memberRegistration/store",
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.status === 'success') {
+                    $('#memberRegstration').modal('hide');
+                    form.reset();
+                    $('.js-file-attach-reset-img').click();
+                    showToast(response.message, 'bg-success');
+                } else {
+                    if (response.expiry_date === 'expiry_date') {
+                        $('#registration_joining_date').addClass('is-invalid');
+                        $('#registration_joining_date').siblings('.invalid-feedback').text(response.message).show();
+                    } else {
+                        showToast(response.message, 'bg-danger');
+                    }
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
+                    let firstErrorField = null;
+
+                    $.each(errors, function (key, messages) {
+                        const field = $(`#${key}`);
+                        field.addClass('is-invalid');
+                        field.siblings('.invalid-feedback').text(messages[0]).show();
+
+                        if (!firstErrorField) {
+                            firstErrorField = field;
+                        }
+                    });
+
+                    if (firstErrorField) {
+                        firstErrorField.focus();
+                    }
+                } else {
+                    showToast('Something went wrong. Please try again.', 'bg-danger');
+                }
+            },
+            complete: function () {
+                submitBtn.prop('disabled', false).html(originalBtnHtml);
+            }
+        });
+    });
+});
+
