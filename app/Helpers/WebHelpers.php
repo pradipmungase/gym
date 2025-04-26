@@ -174,8 +174,9 @@ function sendPushNotification(){
                 'order_id' => 123456
             ]
         ]));
-        
         return response()->json(['message' => 'Dynamic notification sent to user']);
+    }else{
+        return response()->json(['message' => 'User not found']);
     }
 }
 

@@ -341,8 +341,8 @@
                                 <i class="bi-search"></i>
                             </div>
 
-                            <input type="search" class="js-form-search form-control" placeholder="Search in front"
-                                aria-label="Search in front"
+                            <input type="search" class="js-form-search form-control" placeholder="Search member & trainer"
+                                aria-label="Search member & trainer"
                                 data-hs-form-search-options='{
                        "clearIcon": "#clearSearchResultsIcon",
                        "dropMenuElement": "#searchDropdownMenu",

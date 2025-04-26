@@ -105,10 +105,6 @@ class AttendanceController extends Controller{
         ]);
     }
 
-
-
-
-
     public function markAttendanceByLatLong(Request $request, $gym_id, $member_id)
     {
         $gym = DB::table('users')->where('id', $gym_id)->first();

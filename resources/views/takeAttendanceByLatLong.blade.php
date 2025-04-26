@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Attendance by Location</title>
+    <title>Attendance By Location</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,7 +14,36 @@
 </head>
 
 <body class="bg-light">
-    @if ($gym && $member)
+    @php
+        $error_message = null;
+        if (!$gym) {
+            $error_message = 'Gym not found. Please contact admin.';
+        } elseif (!$member) {
+            $error_message = 'Member not found. Please contact admin.';
+        } elseif ($member->status !== 'active') {
+            $error_message = 'Your membership is inactive. Please contact gym staff.';
+        } elseif ($member->deleted_at !== null) {
+            $error_message = 'Your membership is deleted. Please contact gym staff.';
+        } elseif (is_null($gym->latitude) || is_null($gym->longitude)) {
+            $error_message = 'Gym location is not set. Please contact gym staff.';
+        }
+    @endphp
+
+    @if ($error_message)
+        <div class="container-fluid px-0 py-5">
+            <div class="row justify-content-center m-0">
+                <div class="col-12 col-md-8 col-lg-6 px-3 px-md-0">
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <div class="card-body text-center p-5">
+                            <h1 class="fw-bold text-danger mb-3">Error</h1>
+                            <p class="text-muted">{{ $error_message }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @else
+        <!-- If no error, show location fetching -->
         <div class="container-fluid px-0 py-5">
             <div class="row justify-content-center m-0">
                 <div class="col-12 col-md-8 col-lg-6 px-3 px-md-0">
@@ -40,7 +69,8 @@
                 </div>
             </div>
         </div>
-          <script>
+
+        <script>
         $(document).ready(function () {
             function requestLocation() {
                 if ("geolocation" in navigator) {
@@ -79,7 +109,7 @@
                                             heading: 'Error'
                                         },
                                         location_error: {
-                                            icon: 'bi bi-geo-alt',
+                                            icon: 'bi-geo-alt-fill',
                                             color: 'text-info',
                                             heading: 'Location Error'
                                         }
@@ -116,15 +146,21 @@
                             });
                         },
                         function (error) {
+                            let errorMsg = 'Location access denied. Please enable it.';
+                            if (error.code === error.PERMISSION_DENIED) {
+                                errorMsg = 'Location permission denied. Please allow it in browser settings.';
+                            } else if (error.code === error.POSITION_UNAVAILABLE) {
+                                errorMsg = 'Location information is unavailable.';
+                            } else if (error.code === error.TIMEOUT) {
+                                errorMsg = 'Location request timed out.';
+                            }
+
                             $('#scan-output').html(`
                                 <div class="text-center">
                                     <div class="text-danger" style="font-size: 100px;">
                                         <i class="bi bi-geo-alt-slash-fill"></i>
                                     </div>
-                                    <div class="mt-2 fs-5">
-                                        Location access denied.<br>
-                                        Please enable it in your browser settings.
-                                    </div>
+                                    <div class="mt-2 fs-5">${errorMsg}</div>
                                 </div>
                             `);
                         },
@@ -146,42 +182,15 @@
                 }
             }
 
-            // Initial location request
             requestLocation();
 
-            // Retry button handler
             $(document).on('click', '#retry-location-btn', function () {
                 requestLocation();
             });
-
-            // Optional: detect if permission is permanently denied
-            if (navigator.permissions) {
-                navigator.permissions.query({ name: 'geolocation' }).then(function (result) {
-                    if (result.state === 'denied') {
-                        $('#scan-output').append(`
-                            <div class="alert alert-warning mt-3" role="alert">
-                                You have permanently denied location access. Please enable it from your browser settings.
-                            </div>
-                        `);
-                    }
-                });
-            }
         });
-    </script>
-    @else
-    <div class="container-fluid px-0 py-5">
-        <div class="row justify-content-center m-0">
-            <div class="col-12 col-md-8 col-lg-6 px-3 px-md-0">
-                <div class="card shadow-lg border-0 rounded-4">
-                    <div class="card-body text-center p-5">
-                        <h1 class="fw-bold text-danger mb-3">Gym or Member not found</h1>
-                        <p class="text-muted">Please contact the admin for assistance.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </script>
     @endif
 </body>
+
 
 </html>

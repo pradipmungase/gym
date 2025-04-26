@@ -51,6 +51,7 @@ Route::post('/resendOtp', [AuthController::class, 'resendOtp'])->name('resendOtp
 Route::post('/verifyOtp', [AuthController::class, 'verifyOtp'])->name('verifyOtp');
 Route::match(['get', 'post'], '/markAttendanceByLatLong/{gym_id}/{member_id}', [AttendanceController::class, 'markAttendanceByLatLong'])->name('members.markAttendanceByLatLong');
 
+Route::match(['get', 'post'], '/marketing', [MarketingController::class, 'index'])->name('marketing.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -110,4 +111,3 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::match(['get', 'post'], '/marketing', [MarketingController::class, 'index'])->name('marketing.index');
