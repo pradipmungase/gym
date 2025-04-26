@@ -252,7 +252,7 @@ function uploadFile($file, $folderName, $id)
 
 
 function getNotification(){
-    $notifications = DB::table('notifications')->where('gym_id', Auth::user()->id)->get();
+    $notifications = DB::table('notifications')->where('gym_id', Auth::user()->id)->limit(5)->get();
     return $notifications;
 }
 

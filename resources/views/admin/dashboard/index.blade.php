@@ -10,19 +10,25 @@
                         @php
                             $hour = now()->format('H');
                             if ($hour >= 5 && $hour < 12) {
-                                $greeting = 'Good morning';
+                                $greeting = 'Good Morning';
+                                $icon = '🌅'; // Morning icon
                             } elseif ($hour >= 12 && $hour < 17) {
-                                $greeting = 'Good afternoon';
+                                $greeting = 'Good Afternoon';
+                                $icon = '☀️'; // Afternoon icon
                             } elseif ($hour >= 17 && $hour < 21) {
-                                $greeting = 'Good evening';
+                                $greeting = 'Good Evening';
+                                $icon = '🌇'; // Evening icon
                             } else {
-                                $greeting = 'Good night';
+                                $greeting = 'Good Night';
+                                $icon = '🌙'; // Night icon
                             }
                         @endphp
 
-                        <h1 class="page-header-title">{{ $greeting }}, <span
-                                class="user_name">{{ Auth::user()->owner_name }}</span></h1>
 
+                        <h1 class="page-header-title">
+                            {{ $icon }} {{ $greeting }}, <span
+                                class="user_name">{{ Auth::user()->owner_name }}</span>
+                        </h1>
                         <p class="page-header-text">Here's is your dashboard .</p>
                     </div>
                     <!-- End Col -->

@@ -323,8 +323,8 @@ class MembersController extends Controller{
 
         try {
             // Handle image upload if exists
-            if ($request->hasFile('menberImg')) {
-                $image = $request->file('menberImg');
+            if ($request->hasFile('memberImg')) {
+                $image = $request->file('memberImg');
                 $filename = uploadFile($image, 'memberProfilePicture', $id);
                 DB::table('members')->where('id', $id)->update([
                     'image' => $filename,
