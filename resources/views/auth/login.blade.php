@@ -380,17 +380,14 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <label for="password" class="form-label">Password <span
-                                            class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <input type="password" class="form-control" id="password" name="password"
-                                            required placeholder="Enter password">
-                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                            <i class="bi bi-eye-slash" id="passwordIcon"></i>
-                                        </button>
+                                    <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                                    <div class="position-relative">
+                                        <input type="password" class="form-control pe-5" id="password" name="password" required placeholder="Enter password">
+                                        <i class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y me-3" id="togglePassword" style="cursor: pointer;"></i>
                                         <div class="invalid-feedback">Password is required.</div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
 

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class MemberRegistrationController extends Controller{
 
     public function index(Request $request){
-        $gymId = $request->segment(2);
+        $gymId = decrypt($request->segment(2));
         $plans = Cache::remember("plans_gym_{$gymId}", 60 * 60, function () use ($gymId) {
             return DB::table('menbership_plans')
                     ->where('gym_id', $gymId)
@@ -94,7 +94,7 @@ class MemberRegistrationController extends Controller{
             }
             // Step 7: Insert into the database
             $insertId = DB::table('member_registration')->insertGetId([
-                'gym_id'           => $gymId,
+                'gym_id'           => decrypt($gymId),
                 'name'             => $request->registration_name,
                 'email'            => $request->registration_email,
                 'mobile_number'    => $request->registration_mobile,

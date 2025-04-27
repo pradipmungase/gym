@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules\Password;
-
+use Illuminate\Support\Facades\File;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Endroid\QrCode\Builder\Builder;
 
 class AuthController extends Controller{
 
@@ -31,7 +33,7 @@ class AuthController extends Controller{
         try {
             DB::beginTransaction();
 
-            DB::table('users')->insert([
+            $user = DB::table('users')->insert([
                 'gym_name' => $request->gym_name,
                 'owner_name' => $request->owner_name,
                 'mobile' => $request->mobile,
@@ -41,6 +43,8 @@ class AuthController extends Controller{
             ]);
 
             $user = User::where('mobile', $request->mobile)->first();
+            $user->qr_code = $this->generateQRCodeForGym($user->id);
+            $user->save();
 
             Auth::login($user);
 
@@ -55,6 +59,29 @@ class AuthController extends Controller{
             return response()->json(['status' => 'error', 'message' => 'Registration failed. Please try again.'], 500);
         }
     }
+
+    private function generateQRCodeForGym($gymId)
+    {
+        $fileName = $gymId . '_' . time() . '.png';
+        $userFolderPath = public_path('uploads/QRCodesForGyms/' . $gymId);
+
+        if (!File::exists($userFolderPath)) {
+            File::makeDirectory($userFolderPath, 0755, true);
+        }
+
+        $filePath = $userFolderPath . '/' . $fileName;
+        $qrText = route('memberRegistration', encrypt($gymId));
+        $result = Builder::create()
+            ->data($qrText)
+            ->size(300)
+            ->margin(10)
+            ->build();
+
+        file_put_contents($filePath, $result->getString());
+        
+        return 'uploads/QRCodesForGyms/' . $gymId . '/' . $fileName;
+    }
+
     public function checkLogin(Request $request)
     {
         $request->validate([

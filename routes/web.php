@@ -118,6 +118,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/memberRequest', [MemberRegistrationController::class, 'memberRequest'])->name('memberRequest');
     Route::get('/memberRequest/fetch', [MemberRegistrationController::class, 'fetch'])->name('memberRequest.fetch');
     Route::post('/memberRequest/reject/{id}', [MemberRegistrationController::class, 'reject'])->name('memberRequest.reject');
+
+    Route::get('/gymQRCode', [DashboardController::class, 'gymQRCode'])->name('gymQRCode');
 });
 
 

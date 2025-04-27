@@ -248,7 +248,7 @@ class MembersController extends Controller{
             }
 
             // Send WhatsApp message
-            // sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath);
+            sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath);
 
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Member added successfully!']);
@@ -409,7 +409,7 @@ class MembersController extends Controller{
 
         file_put_contents($filePath, $result->getString());
 
-        return $filePath;
+        return 'uploads/QRCodesImages/' . $memberId . '/' . $fileName;
     }
 
     public function view($id)

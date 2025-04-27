@@ -1479,6 +1479,13 @@ $(document).on('submit', '.register-form', function (e) {
                     // Display error
                     field.siblings('.invalid-feedback').text(messages[0]).show();
 
+                    // If password field error, adjust eye icon position
+                    if (key === 'password') {
+                        $('#togglePassword').css('margin-top', '-10px');
+                    } else {
+                        $('#togglePassword').css('margin-top', '0px');
+                    }
+
                     // Set focus on first invalid field
                     if (!firstErrorField) {
                         firstErrorField = field;
@@ -1488,8 +1495,6 @@ $(document).on('submit', '.register-form', function (e) {
                 if (firstErrorField) {
                     firstErrorField.focus();
                 }
-            } else {
-                // showToast('Something went wrong. Please try again.', 'bg-danger');
             }
         },
     });

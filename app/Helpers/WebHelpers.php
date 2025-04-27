@@ -35,7 +35,7 @@ function sendWhatsAppMessageForMemberRegistration($mobile, $name, $imagePath)
     try {
         $mobile = '7028143227';
         $gymName = Auth::user()->gym_name ?? 'Your Gym';
-        $base64Image = base64_encode(file_get_contents($imagePath));
+        $base64Image = base64_encode(file_get_contents(public_path($imagePath)));
 
         $message = "👋 Hello $name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nHere is your QR Code for daily attendance. 📲\n\nMake sure to scan it every day when you visit! ✅";
 
@@ -78,10 +78,11 @@ function sendWelcomeEmail($user)
 
         $message = "👋 Hey $user->owner_name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nWe're excited to have you on board! 💪\n\nIf you have any questions or need help, feel free to contact us at *7028143227*. 📞";
 
-
+        $base64Image = base64_encode(file_get_contents(public_path($user->qr_code)));
         Http::post('http://localhost:3000/send-message', [
             'number' => '91' . $mobile,
             'message' => $message,
+            'image' => $base64Image,
         ]);
     } catch (\Exception $e) {
         Log::error('WhatsApp Attendance Message Failed: ' . $e->getMessage());

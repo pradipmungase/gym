@@ -282,7 +282,7 @@
                         </div>
                         <div class="modal-body px-4">
                             <div class="row gy-4">
-                                <input type="hidden" id="gymId" value="{{ request()->segment(2) }}">
+                                <input type="hidden" id="gymId" value="{{ decrypt(request()->segment(2)) }}">
                                 <!-- 🧍 Personal Information -->
                                 <div class="col-12">
                                     <h5 class="border-bottom pb-2">🧍 Personal Information</h5>

@@ -432,7 +432,7 @@
                                                                                     class="form-check-stretched-bg"></span>
                                                                             </div>
                                                                             <img class="avatar avatar-sm avatar-circle"
-                                                                                src="@if ($notification->image) {{ asset($notification->image) }} @else {{ asset('assets/img/1920x400/img2.jpg') }} @endif"
+                                                                                src="@if ($notification->image) {{ asset($notification->image) }} @else {{ asset('assets/img/160x160/images%20(1).jpg') }} @endif"
                                                                                 alt="Image Description">
                                                                         </div>
                                                                     </div>
@@ -491,7 +491,7 @@
                                 <div class="avatar avatar-sm avatar-circle">
 
                                     <img class="avatar-img"
-                                        src="@if (Auth::user()->profile_picture) {{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }} @endif"
+                                        src="@if (Auth::user()->profile_picture) {{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/160x160/images%20(1).jpg') }} @endif"
                                         alt="Image Description">
                                     <span class="avatar-status avatar-sm-status avatar-status-success"></span>
                                 </div>
@@ -503,7 +503,7 @@
                                     <div class="d-flex align-items-center">
                                         <div class="avatar avatar-sm avatar-circle">
                                             <img class="avatar-img"
-                                                src="@if (Auth::user()->profile_picture) {{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/1920x400/img2.jpg') }} @endif"
+                                                src="@if (Auth::user()->profile_picture) {{ asset(Auth::user()->profile_picture) }}@else{{ asset('assets/img/160x160/images%20(1).jpg') }} @endif"
                                                 alt="Image Description">
                                         </div>
                                         <div class="flex-grow-1 ms-3">
@@ -518,6 +518,10 @@
 
                                 <a class="dropdown-item" href="{{ url('profile') }}">
                                     <i class="fas fa-user me-2"></i> Profile &amp; account
+                                </a>
+
+                                <a class="dropdown-item" href="{{ url('gymQRCode') }}">
+                                    <i class="bi bi-qr-code-scan me-2"></i> Gym QR Code
                                 </a>
 
                                 <a class="dropdown-item" href="#">

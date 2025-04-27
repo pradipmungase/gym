@@ -101,4 +101,9 @@ class DashboardController extends Controller{
             'trainers' => $trainers,
         ]);
     }
+
+    public function gymQRCode()
+    {
+        return view('admin.gymQRCode');
+    }
 }
