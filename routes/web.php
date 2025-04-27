@@ -121,6 +121,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/gymQRCode', [DashboardController::class, 'gymQRCode'])->name('gymQRCode');
     Route::post('/requestFeature/store', [DashboardController::class, 'storeRequestFeature'])->name('requestFeature.store');
+    Route::post('/profile/update', [DashboardController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/profile/change-password', [DashboardController::class, 'changePassword'])->name('profile.changePassword');
+    Route::delete('/profile/delete-account', [DashboardController::class, 'deleteAccount'])->name('profile.deleteAccount');
+
 });
 
 

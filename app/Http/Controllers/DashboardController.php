@@ -125,4 +125,65 @@ class DashboardController extends Controller{
 
         return redirect()->back()->with('success', 'Your request has been sent successfully');
     }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'gymName' => ['required', 'string', 'max:255'],
+            'ownerName' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email:rfc,dns  ', 'max:255','unique:users,email,'.Auth::user()->id],
+            'mobile' => ['required', 'regex:/^[6-9]\d{9}$/','unique:users,mobile,'.Auth::user()->id],
+            'gymAddress' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $user = Auth::user();
+        $user->gym_name = $request->gymName;
+        $user->owner_name = $request->ownerName;
+        $user->email = $request->email;
+        $user->mobile = $request->mobile;
+        $user->gym_address = $request->gymAddress;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'currentPassword' => 'required',
+            'newPassword' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',      // at least one lowercase
+                'regex:/[A-Z]/',      // at least one uppercase
+                'regex:/[0-9]/',      // at least one digit
+            ],
+            'confirmNewPassword' => 'required|same:newPassword',
+        ]);
+
+        $user = Auth::user();
+
+        // Check if old password matches
+        if (!Hash::check($request->currentPassword, $user->password)) {
+            return back()->withErrors(['currentPassword' => 'Current password is incorrect']);
+        }
+
+        // Update password
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password changed successfully');
+    }
+
+    public function deleteAccount(Request $request)
+    {
+        $user = auth()->user();
+        $user->delete(); // Soft delete or force delete based on your app setup
+
+        auth()->logout();
+
+        return redirect('/')->with('success', 'Your account has been deleted successfully.');
+    }
+
 }
