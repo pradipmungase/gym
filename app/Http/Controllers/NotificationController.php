@@ -25,6 +25,7 @@ class NotificationController extends Controller{
     {
         $this->generateBirthdayNotifications();
         $this->generateMembershipExpiryNotifications();
+        $this->generateTodaySummaryNotifications();
     }
 
     public function generateBirthdayNotifications()
@@ -187,5 +188,97 @@ class NotificationController extends Controller{
         }
     }
 
+    public function generateTodaySummaryNotifications()
+    {
+        $today = Carbon::today()->toDateString();
+        $nowTime = now()->toTimeString();
+        $nowTimestamp = now();
+
+        // Fetch all gyms (assuming gyms are those who have active members)
+        $gymIds = DB::table('members')
+            ->where('status', 'active')
+            ->pluck('gym_id')
+            ->unique();
+
+        // Start a transaction to ensure atomicity
+        DB::beginTransaction();
+
+        try {
+            foreach ($gymIds as $gymId) {
+
+                // Check if a notification already exists for the gym today to avoid duplicates
+                $existingNotification = DB::table('notifications')
+                    ->where('gym_id', $gymId)
+                    ->whereDate('date', $today)
+                    ->where('type', 'today_overall_summary')
+                    ->exists();
+
+                if ($existingNotification) {
+                    // Skip this gym if a notification already exists
+                    continue;
+                }
+
+                // 1. Count today's new members for this gym
+                $newMembersCount = DB::table('members')
+                    ->where('status', 'active')
+                    ->where('gym_id', $gymId)
+                    ->whereDate('created_at', $today)
+                    ->count();
+
+                // 2. Count today's membership expiries for this gym
+                $expiringMembershipsCount = DB::table('member_memberships')
+                    ->where('gym_id', $gymId)
+                    ->where('status', 'active')
+                    ->whereDate('end_date', $today)
+                    ->count();
+
+                // 3. Count today's payments for this gym
+                $paymentsAmount = DB::table('member_payments')
+                    ->where('gym_id', $gymId)
+                    ->whereDate('payment_date', $today)
+                    ->sum('amount_paid');
+
+                // If all counts are zero, skip this gym
+                if ($newMembersCount == 0 && $expiringMembershipsCount == 0 && $paymentsAmount == 0) {
+                    continue;
+                }
+
+                // Create summary message
+                $description = "Today's Summary:\n";
+                $description .= "🧑‍🤝‍🧑 New Members: {$newMembersCount}\n";
+                $description .= "📅 Memberships Expired: {$expiringMembershipsCount}\n";
+                $description .= "💰 Payments amount: ₹{$paymentsAmount}";
+
+                // Insert notification for this gym
+                DB::table('notifications')->insert([
+                    'gym_id' => $gymId,
+                    'title' => 'Today\'s Overall Summary',
+                    'description' => $description,
+                    'date' => $today,
+                    'time' => $nowTime,
+                    'type' => 'today_overall_summary',
+                    'member_id' => null,
+                    'trainer_id' => null,
+                    'status' => 'unread',
+                    'image' => null,
+                    'created_at' => $nowTimestamp,
+                    'updated_at' => $nowTimestamp,
+                ]);
+
+                // Send push notification to all users of this gym
+                sendPushNotificationToGymUsers($gymId, 'Today\'s Summary', $description);
+            }
+
+            // Commit transaction if everything is successful
+            DB::commit();
+
+        } catch (\Exception $e) {
+            // Rollback the transaction if an error occurs
+            DB::rollBack();
+
+            // Log the error or handle it in a way that suits your application
+            \Log::error('Error generating today summary notifications: ' . $e->getMessage());
+        }
+    }
 
 }

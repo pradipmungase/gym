@@ -24,7 +24,6 @@ class DashboardController extends Controller{
 
     public function index()
     {
-        sendPushNotification();
         return view('admin.dashboard.index');
     }
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('description');
             $table->date('date');
             $table->time('time');
-            $table->enum('type', ['member', 'trainer','member','summary','membership_expiry']);
+            $table->string('type');
             $table->integer('member_id')->nullable();
             $table->integer('trainer_id')->nullable();
             $table->enum('status', ['read', 'unread']);

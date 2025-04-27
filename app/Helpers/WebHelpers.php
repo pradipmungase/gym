@@ -9,6 +9,7 @@ use App\Notifications\WebPushNotification;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str; 
 
+
 function sendWhatsAppMessageForAttendanceMarked($member)
 {
     try {
@@ -160,24 +161,29 @@ function sendAnnouncement($for, $title, $description, $date)
 }       
 
 
-function sendPushNotification(){
-        
-    $user = User::find(4); // The specific user you want to notify
+function sendPushNotificationToAllUsers($title, $body){
+    $users = User::all();
+    foreach($users as $user){
+        if ($user->pushSubscriptions()->exists()) {
+            $user->notify(new WebPushNotification([
+                'title' => $title,
+                'body' => $body,
+                'url' => url('/admin/dashboard'),
+                'action_text' => 'View',
+            ]));
+        }
+    }
+}
 
+function sendPushNotificationToGymUsers($gymId, $title, $body){
+    $user = User::where('id', $gymId)->first();
     if ($user->pushSubscriptions()->exists()) {
         $user->notify(new WebPushNotification([
-            'title' => 'Personalized Notification',
-            'body' => 'Hello ' . $user->gym_name . ', this is your custom message!',
+            'title' => $title,
+            'body' => $body,    
             'url' => url('/admin/dashboard'),
-            'action_text' => 'View Dashboard',
-            'user_id' => $user->id,
-            'custom_data' => [
-                'order_id' => 123456
-            ]
+            'action_text' => 'View',
         ]));
-        return response()->json(['message' => 'Dynamic notification sent to user']);
-    }else{
-        return response()->json(['message' => 'User not found']);
     }
 }
 
@@ -251,13 +257,28 @@ function uploadFile($file, $folderName, $id)
     return $file_path;
 }
 
+function getNotification() {
+    $notifications = DB::table('notifications')
+        ->where('gym_id', Auth::user()->id)
+        ->orderBy('id', 'desc')
+        ->limit(5)
+        ->get();
 
+    // Append relative time to each notification in a shorter format
+    foreach ($notifications as $notification) {
+        $createdAt = Carbon::parse($notification->created_at);
+        $minutes = $createdAt->diffInMinutes();
+        $hours = $createdAt->diffInHours();
+        $days = $createdAt->diffInDays();
 
-function getNotification(){
-    $notifications = DB::table('notifications')->where('gym_id', Auth::user()->id)->orderBy('id', 'desc')->limit(5)->get();
+        if ($minutes < 60) {
+            $notification->relative_time = $minutes . 'm ago';
+        } elseif ($hours < 24) {
+            $notification->relative_time = $hours . 'h ago';
+        } else {
+            $notification->relative_time = $days . 'd ago';
+        }
+    }
+
     return $notifications;
 }
-
-
-
-

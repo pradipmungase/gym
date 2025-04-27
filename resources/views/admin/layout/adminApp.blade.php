@@ -440,9 +440,9 @@
                                                                     <div class="col ms-n2">
                                                                         <h5 class="mb-1">{{ $notification->title }}
                                                                         </h5>
-                                                                        <p class="text-body fs-5">
-                                                                            {{ $notification->description }}</p>
+                                                                     <p class="text-body fs-5">{!! nl2br(e($notification->description)) !!}</p>
                                                                     </div>
+                                                                        <small class="col-auto text-muted text-cap">{{  $notification->relative_time }}</small>
                                                                 </div>
                                                                 @if ($notification->type == 'member')
                                                                     <a class="stretched-link" href="{{ url('members/view/'.encrypt($notification->member_id)) }}"></a>

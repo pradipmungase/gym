@@ -345,7 +345,7 @@
                 <form id="register-form" class="register-form" autocomplete="off" method="POST" action="#">
                     @csrf
                     <div class="modal-content">
-                        <div class="modal-header text-white bg-dark">
+                        <div class="modal-header text-white">
                             <h5 class="modal-title" id="signupModalLabel">
                                 <i class="bi bi-person-plus-fill me-2"></i> Sign Up
                             </h5>
