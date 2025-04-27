@@ -120,6 +120,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/memberRequest/reject/{id}', [MemberRegistrationController::class, 'reject'])->name('memberRequest.reject');
 
     Route::get('/gymQRCode', [DashboardController::class, 'gymQRCode'])->name('gymQRCode');
+    Route::post('/requestFeature/store', [DashboardController::class, 'storeRequestFeature'])->name('requestFeature.store');
 });
 
 

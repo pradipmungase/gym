@@ -106,4 +106,23 @@ class DashboardController extends Controller{
     {
         return view('admin.gymQRCode');
     }
+
+    public function storeRequestFeature(Request $request)
+    {
+        $request->validate([
+            'feature_name' => 'required',
+            'description' => 'required',
+        ]);
+
+        $trainers = DB::table('request_feature')->insert([
+            'gym_id' => Auth::user()->id,
+            'feature_name' => $request->feature_name,
+            'description' => $request->description,
+            'status' => 'requested',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Your request has been sent successfully');
+    }
 }

@@ -668,11 +668,17 @@
                         </div>
 
                         <!-- Support -->
-
                         <div class="nav-item">
                             <a class="nav-link" href="{{ url('support') }}" role="button">
                                 <i class="bi-question-circle nav-icon"></i>
                                 <span class="nav-link-title">Support</span>
+                            </a>
+                        </div>
+
+                        <div class="nav-item">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#requestFeatureModal" role="button">
+                                <i class="bi-question-circle nav-icon"></i>
+                                <span class="nav-link-title">Request Feature</span>
                             </a>
                         </div>
 
@@ -731,6 +737,51 @@
     </aside>
     @yield('content')
 
+
+<div class="modal fade" id="requestFeatureModal" tabindex="-1" aria-labelledby="requestFeatureModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="requestFeatureModalLabel">Request Feature</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('requestFeature.store') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="featureName" class="form-label">Feature Name <span class="text-danger">*</span></label>    
+                        <input type="text" 
+                               class="form-control" 
+                               id="featureName" 
+                               name="feature_name" 
+                               placeholder="Enter the feature name" 
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                        <textarea class="form-control" 
+                                  id="description" 
+                                  name="description" 
+                                  rows="3" 
+                                  placeholder="Describe the feature you want" 
+                                  required></textarea>
+                    </div>
+                    <div class="modal-footer px-4">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle me-1"></i> Submit
+                        </button>
+                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i> Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
     <!-- Footer -->
     <div class="footer">
         <div class="row justify-content-between align-items-center">
@@ -774,7 +825,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- JS Global Compulsory  -->
     <script src="{{ asset('') }}assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
