@@ -252,8 +252,8 @@
                                         class="text-danger">*</span></label>
                                 <select class="form-select" id="gender" name="gender" required>
                                     <option selected disabled value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
                                 </select>
                                 <div class="invalid-feedback">Gender is required.</div>
                             </div>

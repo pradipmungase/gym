@@ -193,7 +193,7 @@
                                 <div class="col-md-6 col-lg-3">
                                     <label class="form-label">Plan Price</label>
                                     <input type="text" class="form-control" value="0"
-                                        name="memberRequestPlanPrice" id="memberRequestPlanPrice" readonly>
+                                        name="plan_price" id="memberRequestPlanPrice" readonly>
                                     <div class="invalid-feedback">The plan price field must be at least 0.</div>
                                 </div>
 
@@ -201,14 +201,14 @@
                                     <label class="form-label">Final Price <span style="font-size: smaller;">(After
                                             Discount)</span></label>
                                     <input type="text" class="form-control text-success" value="0"
-                                        name="memberRequestFinalPrice" id="memberRequestFinalPrice" readonly>
+                                        name="final_price" id="memberRequestFinalPrice" readonly>
                                     <div class="invalid-feedback">The final price field must be at least 0.</div>
                                 </div>
 
                                 <div class="col-md-6 col-lg-3">
                                     <label class="form-label">Due Amount</label>
                                     <input type="text" class="form-control text-danger fw-bold" value="0"
-                                        name="memberRequestDueAmount" id="memberRequestDueAmount" readonly>
+                                        name="due_amount" id="memberRequestDueAmount" readonly>
                                     <div class="invalid-feedback">The due amount field must be at least 0.</div>
                                 </div>
                             </div>
@@ -262,7 +262,7 @@
                             <i class="bi bi-check-circle me-1"></i> Accept
                         </button>
                         <button type="submit" id="rejectMemberRequestBtn" class="btn btn-danger">
-                            <i class="bi bi-check-circle me-1"></i> Reject
+                            <i class="bi bi-x-circle me-1"></i> Reject
                         </button>
                         <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel

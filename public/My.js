@@ -2147,11 +2147,10 @@ $(document).on('click', '.view-member-btn', function () {
     $('#memberRequestPaymentMode').val(members.payment_mode);
     $('#memberRequestAdmissionFee').val(members.admission_fee);
     $('#memberRequestDiscountType').val(members.discount_type);
-    $('#memberRequestDiscount').val(members.discount_inpute);
+    $('#memberRequestDiscount').val(members.discount_input);
     $('#memberRequestPlanPrice').val(members.plan_price);
     $('#memberRequestFinalPrice').val(members.final_price_after_discount);
     $('#memberRequestDueAmount').val(members.due_amount);
-
 
     $('#viewmemberModal').modal('show');
 });
@@ -2268,27 +2267,30 @@ $('#rejectMemberRequestBtn').on('click', function (e) {
 
 
 $('#acceptMemberRequestBtn').on('click', function (e) {
-    e.preventDefault();  // Prevent the default form submit
+    e.preventDefault();
 
-    const originalBtnHtml = $(this).html();  // Get the HTML of the clicked button
-    $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...');  // Disable and change text
+    const originalBtnHtml = $(this).html();
+    $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Submitting...');
 
-    const formData = new FormData($('#viewmemberForm')[0]);  // Create FormData from the form
-    // Ensure you get the form data correctly
+    // ✨ Clear previous errors
+    $('#viewmemberForm .is-invalid').removeClass('is-invalid');
+    $('#viewmemberForm .invalid-feedback').hide().text('');
+
+    const formData = new FormData($('#viewmemberForm')[0]);
 
     $.ajax({
-        url: "/members/store", // Ensure this matches your route
+        url: "/members/store",
         method: 'POST',
         data: formData,
-        contentType: false, // Required for FormData
-        processData: false, // Required for FormData
+        contentType: false,
+        processData: false,
         success: function (response) {
             if (response.status === 'success') {
                 $('#viewmemberModal').modal('hide');
-                $('#viewmemberForm')[0].reset();  // Reset the form
-                $('.js-file-attach-reset-img').click(); // Reset image
-                fetchmembers();  // This will fetch members if necessary
-                showToast(response.message, 'bg-success');  // Show success toast
+                $('#viewmemberForm')[0].reset();
+                $('.js-file-attach-reset-img').click();
+                fetchmembersRequest();
+                showToast(response.message, 'bg-success');
             } else {
                 if (response.expiry_date == 'expiry_date') {
                     $('#memberRequestJoiningDate').addClass('is-invalid');
@@ -2303,18 +2305,39 @@ $('#acceptMemberRequestBtn').on('click', function (e) {
                 const errors = xhr.responseJSON.errors;
                 let firstErrorField = null;
 
+                const errorFieldMapping = {
+                    birth_date: 'memberRequestBirthDate',
+                    gender: 'memberRequestGender',
+                    plan_price: 'memberRequestPlanPrice',
+                    final_price: 'memberRequestFinalPrice',
+                    due_amount: 'memberRequestDueAmount',
+                    admission_fee: 'memberRequestAdmissionFee',
+                    payment_mode: 'memberRequestPaymentMode',
+                    discount: 'memberRequestDiscount',
+                    discount_type: 'memberRequestDiscountType',
+                    name: 'memberRequestName',
+                    email: 'memberRequestEmail',
+                    mobile: 'memberRequestMobile',
+                    batch: 'memberRequestBatch',
+                    trainer: 'memberRequestTrainer',
+                    joining_date: 'memberRequestJoiningDate',
+                    menberImg: 'memberRequestMenberImg',
+                    plan: 'memberRequestPlan',
+                    paymentMode: 'memberRequestPaymentMode',
+                };
+
                 $.each(errors, function (key, messages) {
-                    const field = $(`#${key}`);
+                    const fieldId = errorFieldMapping[key] || key;
+                    const field = $(`#${fieldId}`);
+
                     field.addClass('is-invalid');
                     field.siblings('.invalid-feedback').text(messages[0]).show();
 
-                    // Store the first invalid field to focus
                     if (!firstErrorField) {
                         firstErrorField = field;
                     }
                 });
 
-                // Focus the first error field
                 if (firstErrorField) {
                     firstErrorField.focus();
                 }
@@ -2323,7 +2346,8 @@ $('#acceptMemberRequestBtn').on('click', function (e) {
             }
         },
         complete: function () {
-            $('#acceptMemberRequestBtn').prop('disabled', false).html(originalBtnHtml);  // Reset button state
+            $('#acceptMemberRequestBtn').prop('disabled', false).html(originalBtnHtml);
         }
     });
 });
+

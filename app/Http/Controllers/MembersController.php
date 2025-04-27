@@ -119,7 +119,7 @@ class MembersController extends Controller{
             ],
             'joining_date' => 'required|date|before_or_equal:today',
             'birth_date' => 'nullable|date|before:today',
-            'gender' => 'required|in:Male,Female,Other',
+            'gender' => 'required|in:male,female',
             'plan' => 'required|exists:menbership_plans,id',
             'trainer' => 'nullable|exists:trainers,id',
             'batch' => 'required|string|max:50',
@@ -241,6 +241,11 @@ class MembersController extends Controller{
             // Generate QR code and update the path
             $qrCodePath = $this->generateQRCode($insertId);
             DB::table('members')->where('id', $insertId)->update(['qr_code_path' => $qrCodePath, 'updated_at' => now()]);
+
+
+            if($request->MembersRequestId){
+                DB::table('member_registration')->where('id', $request->MembersRequestId)->update(['status' => 'approved', 'updated_at' => now()]);
+            }
 
             // Send WhatsApp message
             // sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath);

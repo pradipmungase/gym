@@ -31,20 +31,31 @@ class MemberRegistrationController extends Controller{
 
     public function store(Request $request, $gymId)
     {
+        $request->merge([
+            'registration_plan_price' => str_replace(',', '', $request->registration_plan_price),
+            'registration_final_price' => str_replace(',', '', $request->registration_final_price),
+            'registration_due_amount' => str_replace(',', '', $request->registration_due_amount),
+            'registration_admission_fee' => str_replace(',', '', $request->registration_admission_fee),
+        ]);
         // Step 1: Initialize validation rules
         $validationRules = [
-            'registration_name'         => 'required|string|max:255',
-            'registration_email'        => 'required|email|max:255',
-            'registration_mobile'       => 'required|digits:10',
-            'registration_birth_date'   => 'required|date',
+            'registration_name' => 'required|string|max:255',
+            'registration_email' => 'required|email:rfc,dns|unique:member_registration,email',
+            'registration_mobile' => [
+                'required',
+                'regex:/^[6-9]\d{9}$/',
+                'unique:member_registration,mobile_number'
+            ],
+            'registration_birth_date'   => 'required|date|before:today',
             'registration_gender'       => 'required|in:male,female',
             'registration_joining_date' => 'required|date',
             'registration_batch'        => 'required|string|max:50',
             'registration_trainer'      => 'nullable|integer|exists:trainers,id',
             'registration_plan'         => 'required|integer|exists:menbership_plans,id',
-            'registration_plan_price'   => 'required|string',
-            'registration_final_price'  => 'required|string',
-            'registration_due_amount'   => 'required|string|min:1',
+            'registration_plan_price'   => 'required|numeric',
+            'registration_final_price'  => 'required|numeric',
+            'registration_due_amount'   => 'required|numeric|min:1',
+            'registration_admission_fee' => 'nullable|numeric',
             'registration_discount'     => 'nullable|numeric',
             'registration_discount_type'=> 'nullable|string',
         ];
@@ -94,12 +105,11 @@ class MemberRegistrationController extends Controller{
                 'batch'            => $request->registration_batch,
                 'trainer_id'       => $request->registration_trainer,
                 'plan_id'          => $request->registration_plan,
-                'plan_price'       => str_replace(',', '', $request->registration_plan_price),
-                'plan_price'      => str_replace(',', '', $request->registration_final_price),
-                'due_amount'       => str_replace(',', '', $request->registration_due_amount),
+                'plan_price'       => $request->registration_plan_price,
+                'due_amount'       => $request->registration_due_amount,
                 'discount'         => $request->registration_discount,
                 'admission_fee'    => $request->registration_admission_fee,
-                'final_price_after_discount' => str_replace(',', '', $request->memberRequestFinalPrice),
+                'final_price_after_discount' => $request->registration_plan_price,
                 'payment_mode'     => $request->registration_payment_mode,
                 'created_at'       => now(),
                 'updated_at'       => now(),
@@ -203,8 +213,7 @@ class MemberRegistrationController extends Controller{
 
     public function reject($id)
     {
-        $member = DB::table('member_registration')->where('id', $id)->first();
-        DB::table('member_registration')->where('id', $id)->update(['status' => 'rejected']);
+        DB::table('member_registration')->where('id', $id)->update(['status' => 'rejected', 'updated_at' => now()]);
         return response()->json(['status' => 'success', 'message' => 'Member request rejected successfully.']);
     }
 }
