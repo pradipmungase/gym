@@ -219,8 +219,8 @@
         <div class="w-lg-75 text-center mx-lg-auto text-center mx-auto">
           <!-- Heading -->
           <div class="mb-7 animated fadeInUp">
-            <h1 class="display-2 mb-3">Admin &amp; Dashboard theme <span class="text-primary text-highlight-warning">for everyone!</span></h1>
-            <p class="fs-2">Developer friendly and highly customizable Admin &amp; Dashboard theme.</p>
+            <h1 class="display-2 mb-3">GYM Management System <span class="text-primary text-highlight-warning">For All Gym Owners!</span></h1>
+            <p class="fs-2">user friendly and highly customizable GYM Management System.</p>
           </div>
           <!-- End Heading -->
         </div>
