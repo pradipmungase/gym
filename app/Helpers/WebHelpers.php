@@ -114,10 +114,11 @@ function sendAnnouncement($for, $title, $description, $date)
     try {
         $defaultMobile = '7028143227';
         $gymName = Auth::user()->gym_name ?? 'Your Gym';
+        $formattedDate = Carbon::parse($date)->format('d M, Y');
         if($for == 'all'){
             $members = DB::table('members')->where('gym_id', Auth::user()->id)->get();
             foreach($members as $member){
-                $message = "👋 Hello $member->name,\n\n$title\n\n$description\n\n$date\n\n$gymName";
+                $message = "👋 Hello $member->name,\n\n$title\n\n$description\n\n$formattedDate\n\n$gymName";
                 Http::post('http://localhost:3000/send-message', [
                     'number' => '91' . $defaultMobile,
                     'message' => $message,
@@ -125,7 +126,7 @@ function sendAnnouncement($for, $title, $description, $date)
             }
             $trainers = DB::table('trainers')->where('gym_id', Auth::user()->id)->get();
             foreach($trainers as $trainer){
-                $message = "👋 Hello $trainer->name,\n\n$title\n\n$description\n\n$date\n\n$gymName";
+                $message = "👋 Hello $trainer->name,\n\n$title\n\n$description\n\n$formattedDate\n\n$gymName";
                 Http::post('http://localhost:3000/send-message', [
                     'number' => '91' . $defaultMobile,
                     'message' => $message,
@@ -135,7 +136,7 @@ function sendAnnouncement($for, $title, $description, $date)
         }elseif($for == 'members'){
             $members = DB::table('members')->where('gym_id', Auth::user()->id)->get();
             foreach($members as $member){
-                $message = "👋 Hello $member->name,\n\n$title\n\n$description\n\n$date\n\n$gymName";
+                $message = "👋 Hello $member->name,\n\n$title\n\n$description\n\n$formattedDate\n\n$gymName";
                 Http::post('http://localhost:3000/send-message', [
                     'number' => '91' . $defaultMobile,
                     'message' => $message,
@@ -144,7 +145,7 @@ function sendAnnouncement($for, $title, $description, $date)
         }elseif($for == 'trainers'){    
             $trainers = DB::table('trainers')->where('gym_id', Auth::user()->id)->get();
             foreach($trainers as $trainer){
-                $message = "👋 Hello $trainer->name,\n\n$title\n\n$description\n\n$date\n\n$gymName ";
+                $message = "👋 Hello $trainer->name,\n\n$title\n\n$description\n\n$formattedDate\n\n$gymName ";
                 Http::post('http://localhost:3000/send-message', [
                     'number' => '91' . $defaultMobile,
                     'message' => $message,

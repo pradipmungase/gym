@@ -25,7 +25,7 @@
 
     <div class="modal fade" id="addAnnouncementModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="addAnnouncementModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <form id="addAnnouncementForm" method="POST" action="#">
                 <div class="modal-content">
                     <div class="modal-header text-white">
@@ -40,7 +40,7 @@
                         <div class="row g-3">
 
                             <!-- Full Name -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="title" class="form-label">
                                     Title <span class="text-danger">*</span>
                                 </label>
@@ -50,23 +50,16 @@
                             </div>
 
 
-                            <!-- Mobile No -->
-                            <div class="col-md-6">
-                                <label for="description" class="form-label">
-                                    Description <span class="text-danger">*</span>
-                                </label>
-                                <textarea class="form-control" id="description" name="description" required></textarea>
-                                <div class="invalid-feedback">Description is required.</div>
-                            </div>
 
-                            <div class="col-md-6">
+
+                            <div class="col-md-4">
                                 <label for="date" class="form-label">
                                     Date <span class="text-danger">*</span>
                                 </label>
-                                <input type="date" class="form-control" id="date" name="date" required>
+                                <input type="date" class="form-control" id="date" name="date" required min="{{ date('Y-m-d') }}">
                                 <div class="invalid-feedback">Date is required.</div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="for" class="form-label">
                                     For <span class="text-danger">*</span>
                                 </label>
@@ -77,6 +70,14 @@
                                     <option value="trainers">Trainers</option>
                                 </select>
                                 <div class="invalid-feedback">For is required.</div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="description" class="form-label">
+                                    Description <span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control" placeholder="Enter Description" id="description" name="description" required></textarea>
+                                <div class="invalid-feedback">Description is required.</div>
                             </div>
                         </div>
                         <br><br>
