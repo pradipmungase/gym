@@ -36,133 +36,7 @@
             </div>
 
 
-
-            <div class="row">
-                <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-                    <a class="card h-100 text-decoration-none border-0 shadow-sm transition-3d-hover" href="#"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 1rem;">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 fw-bold mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span class="text-white-50">Total Members</span>
-                            </div>
-                            <div>
-                                <i class="bi bi-people-fill fs-1"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-                    <a class="card h-100 text-decoration-none border-0 shadow-sm transition-3d-hover" href="#"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 1rem;">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 fw-bold mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span class="text-white-50">Total Members</span>
-                            </div>
-                            <div>
-                                <i class="bi bi-people-fill fs-1"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-                    <a class="card h-100 text-decoration-none border-0 shadow-sm transition-3d-hover" href="#"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 1rem;">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 fw-bold mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span class="text-white-50">Total Members</span>
-                            </div>
-                            <div>
-                                <i class="bi bi-people-fill fs-1"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-                    <a class="card h-100 text-decoration-none border-0 shadow-sm transition-3d-hover" href="#"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 1rem;">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 fw-bold mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span class="text-white-50">Total Members</span>
-                            </div>
-                            <div>
-                                <i class="bi bi-people-fill fs-1"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-                    <a class="card h-100 text-decoration-none border-0 shadow-sm transition-3d-hover" href="#"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 1rem;">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 fw-bold mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span class="text-white-50">Total Members</span>
-                            </div>
-                            <div>
-                                <i class="bi bi-people-fill fs-1"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-                    <a class="card h-100 text-decoration-none border-0 shadow-sm transition-3d-hover" href="#"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 1rem;">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 fw-bold mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span class="text-white-50">Total Members</span>
-                            </div>
-                            <div>
-                                <i class="bi bi-people-fill fs-1"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-                    <a class="card h-100 text-decoration-none border-0 shadow-sm transition-3d-hover" href="#"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 1rem;">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 fw-bold mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span class="text-white-50">Total Members</span>
-                            </div>
-                            <div>
-                                <i class="bi bi-people-fill fs-1"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
-                    <a class="card h-100 text-decoration-none border-0 shadow-sm transition-3d-hover" href="#"
-                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 1rem;">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 fw-bold mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span class="text-white-50">Total Members</span>
-                            </div>
-                            <div>
-                                <i class="bi bi-people-fill fs-1"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-
-
-            {{-- <!-- Row 1 -->
+            <!-- Row 1 -->
             <div class="row mt-4">
                 <!-- Card 1 -->
                 <div class="col-md-3">
@@ -184,10 +58,8 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>52147</div>
-                                <span>Total Members</span>
+                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
+                                <span>Total Trainer</span>
                             </div>
                             <i class="bi bi-briefcase-fill fs-1"></i>
                         </div>
@@ -200,10 +72,8 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>52147</div>
-                                <span>Total Members</span>
+                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
+                                <span>Member Expired</span>
                             </div>
                             <i class="bi bi-person-badge-fill fs-1"></i>
                         </div>
@@ -216,9 +86,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>52147</div>
+                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
                                 <span>Total Members</span>
                             </div>
                             <i class="bi bi-flag-fill fs-1"></i>
@@ -235,9 +103,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>52147</div>
+                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
                                 <span>Total Members</span>
                             </div>
                             <i class="bi bi-person-plus-fill fs-1"></i>
@@ -251,9 +117,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>52147</div>
+                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
                                 <span>Total Members</span>
                             </div>
                             <i class="bi bi-hourglass-split fs-1"></i>
@@ -267,9 +131,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>52147</div>
+                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
                                 <span>Total Members</span>
                             </div>
                             <i class="bi bi-tags-fill fs-1"></i>
@@ -283,9 +145,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{
-           "isCommaSeparated": true
-         }'>52147</div>
+                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
                                 <span>Total Members</span>
                             </div>
                             <i class="bi bi-card-checklist fs-1"></i>
@@ -293,8 +153,6 @@
                     </div>
                 </div>
             </div>
- --}}
-
 
         </div>
         <!-- End Content -->

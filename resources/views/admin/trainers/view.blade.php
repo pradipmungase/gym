@@ -89,12 +89,13 @@
             </div>
             <!-- End Card -->
 
+
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Member Details</h3>
                 </div>
                 <div class="card-body table-responsive">
-                    @if ($trainerMembers->count())
+                    @if ($members->count())
                         <table id="datatable"
                             class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
                             <thead class="thead-light">
@@ -107,14 +108,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($trainerMembers as $index => $member)
+                                @foreach ($members as $index => $member)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $member->name }}</td>
                                         <td>{{ $member->mobile }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($member->joining_date)->format('d M, Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($member->start_date)->format('d M, Y') }}</td>
                                         <td class="text-danger">
-                                            {{ \Carbon\Carbon::parse($member->expiry_date)->format('d M, Y') }}</td>
+                                            {{ \Carbon\Carbon::parse($member->end_date)->format('d M, Y') }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

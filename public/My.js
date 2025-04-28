@@ -560,6 +560,7 @@ $(document).on('click', '.btn-edit-trainer', function () {
     $('#editTrainerAddress').val(trainer.address);
     $('#editJoiningDate').val(trainer.joining_date);
     $('#editMonthlySalary').val(trainer.monthly_salary);
+    $('#editDateOfBirth').val(trainer.birth_date);
 
     const fallbackImg = "/assets/img/160x160/images (1).jpg";
     if (trainer.image) {

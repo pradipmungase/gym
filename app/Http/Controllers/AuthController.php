@@ -20,7 +20,11 @@ class AuthController extends Controller{
         $request->validate([
             'gym_name' => 'required|string|max:255',
             'owner_name' => 'required|string|max:255',
-            'mobile' => 'required|string|digits:10|unique:users,mobile',
+            'mobile' => [
+                'required',
+                'regex:/^[6-9]\d{9}$/',
+                'unique:users,mobile'
+            ],
             'password' => ['required', 'string', Password::min(8)
                 ->mixedCase()
                 ->letters()

@@ -53,7 +53,8 @@
         </div>
     </main>
 
-    <div class="modal fade" id="addTrainerModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="addTrainerModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addTrainerModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="addTrainerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="addTrainerForm" method="POST" action="#" enctype="multipart/form-data">
                 @csrf
@@ -62,8 +63,8 @@
                         <h5 class="modal-title" id="addTrainerModalLabel">
                             <i class="bi bi-person-plus-fill me-2"></i> Add New Trainer
                         </h5>
-                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body px-4">
@@ -156,6 +157,13 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <label for="dateOfBirth" class="form-label">Date of Birth <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="dateOfBirth" name="birth_date"
+                                    required>
+                                <div class="invalid-feedback">Date of birth is required.</div>
+                            </div>
 
                         </div>
                     </div>
@@ -173,8 +181,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editTrainerModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="editTrainerModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editTrainerModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="editTrainerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <form id="editTrainerForm" method="POST" action="#" enctype="multipart/form-data">
                 @csrf
@@ -184,8 +192,8 @@
                         <h5 class="modal-title" id="editTrainerModalLabel">
                             <i class="bi bi-pencil-square me-2"></i> Edit Trainer
                         </h5>
-                        <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="clearFromDataWithError btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body px-4">
@@ -238,12 +246,12 @@
                             </div>
 
 
-                                                        <!-- Joining Date -->
+                            <!-- Joining Date -->
                             <div class="col-md-6">
                                 <label for="editJoiningDate" class="form-label">Joining Date <span
                                         class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="editJoiningDate" name="joining_date" placeholder="e.g., 2025-01-01"
-                                    required>
+                                <input type="date" class="form-control" id="editJoiningDate" name="joining_date"
+                                    placeholder="e.g., 2025-01-01" required>
                                 <div class="invalid-feedback">Joining date is required.</div>
                             </div>
 
@@ -251,15 +259,15 @@
                             <div class="col-md-6">
                                 <label for="editMonthlySalary" class="form-label">Monthly Salary <span
                                         class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="editMonthlySalary" name="monthly_salary" placeholder="e.g., 30000"
-                                    required>
+                                <input type="number" class="form-control" id="editMonthlySalary" name="monthly_salary"
+                                    placeholder="e.g., 30000" required>
                                 <div class="invalid-feedback">Monthly salary is required.</div>
                             </div>
 
 
 
-                     
-                                                        <div class="col-md-6 col-lg-6">
+
+                            <div class="col-md-6 col-lg-6">
                                 <div class="d-flex align-items-center">
                                     <!-- Avatar -->
                                     <label class="avatar avatar-xl avatar-circle" for="avatarUploader">
@@ -282,6 +290,13 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-6">
+                                <label for="editDateOfBirth" class="form-label">Date of Birth <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="editDateOfBirth" name="birth_date"
+                                    required>
+                                <div class="invalid-feedback">Date of birth is required.</div>
+                            </div>  
 
 
                         </div>

@@ -48,6 +48,7 @@ class TrainerController extends Controller{
             'image'           => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'joining_date'    => 'required|date',
             'monthly_salary'  => 'required|numeric|min:1',
+            'birth_date'   => 'required|date|before:today',
         ], [
             'name.required'            => 'Trainer name is required.',
             'name.max'                 => 'Name should not exceed 255 characters.',
@@ -67,6 +68,8 @@ class TrainerController extends Controller{
             'monthly_salary.required'  => 'Monthly salary is required.',
             'monthly_salary.numeric'   => 'Monthly salary must be a number.',
             'monthly_salary.min'       => 'Monthly salary must be at least 1.',
+            'birth_date.required'   => 'Date of birth is required.',
+            'birth_date.date'       => 'Enter a valid date of birth.',
         ]);
 
         DB::beginTransaction();
@@ -83,6 +86,7 @@ class TrainerController extends Controller{
                 'image'           => null,
                 'joining_date'    => $request->input('joining_date'),
                 'monthly_salary'  => $request->input('monthly_salary'),
+                'birth_date'      => $request->input('birth_date'),
                 'gym_id'          => $gymId,
                 'created_at'      => now(),
                 'updated_at'      => now(),
@@ -118,6 +122,7 @@ class TrainerController extends Controller{
             'image' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'joining_date' => ['required', 'date'],
             'monthly_salary' => ['required', 'numeric', 'min:1'],
+            'birth_date' => ['required', 'date', 'before:today'],
         ]);
 
         try {
@@ -131,6 +136,7 @@ class TrainerController extends Controller{
                 'address' => $request->input('address'),
                 'joining_date' => $request->input('joining_date'),
                 'monthly_salary' => $request->input('monthly_salary'),
+                'birth_date' => $request->input('birth_date'),
                 'updated_at' => now(),
             ];
 
@@ -167,13 +173,16 @@ class TrainerController extends Controller{
         $id = decrypt($id);
         $trainer = DB::table('trainers')->where('id', $id)->first();
 
-        $trainerMembers = DB::table('member_details')
+        $trainerMembers = DB::table('trainers')
+            ->where('id', $id)
+            ->get();
+        
+        $members = DB::table('members')
+            ->join('member_memberships', 'members.id', '=', 'member_memberships.member_id')
             ->where('trainer_id', $id)
-            ->join('members', 'member_details.member_id', '=', 'members.id')
-            ->select('members.*', 'member_details.expiry_date') // Select member columns and expiry_date from member_details
             ->get();
 
-        return view('admin.trainers.view', compact('trainer','trainerMembers'));
+        return view('admin.trainers.view', compact('trainer','trainerMembers','members'));
     }
 
 
