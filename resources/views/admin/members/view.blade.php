@@ -202,44 +202,44 @@
                 <div class="card-header">
                     <h3 class="card-title">Old Membership</h3>
                 </div>
-<div class="card-body table-responsive">
-    @if ($oldMembershipPlans->count())
-        <table id="datatable"
-            class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
-            <thead class="thead-light">
-                <tr>
-                    <th>#</th>
-                    <th>Plan Name</th>
-                    <th>Plan Price (₹)</th>
-                    <th>Duration</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Batch</th>
-                    <th>Renewed At</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($oldMembershipPlans as $index => $plan)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ ucfirst($plan->name) }}</td>
-                        <td class="text-success">
-                            <del>₹ {{ number_format($plan->plan_price ?? 0, 2) }}</del>
-                            ₹ {{ number_format($plan->final_price ?? 0, 2) }}
-                        </td>
-                        <td>{{ $plan->duration }} {{ ucfirst($plan->duration_type) }}</td>
-                        <td>{{ \Carbon\Carbon::parse($plan->start_date)->format('d M, Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($plan->end_date)->format('d M, Y') }}</td>
-                        <td>{{ $plan->batch ?? 'N/A' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($plan->updated_at)->format('d M, Y') }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p class="text-center text-muted">No renewal plans found.</p>
-    @endif
-</div>
+                <div class="card-body table-responsive">
+                    @if ($oldMembershipPlans->count())
+                        <table id="datatable"
+                            class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Plan Name</th>
+                                    <th>Plan Price (₹)</th>
+                                    <th>Duration</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Batch</th>
+                                    <th>Renewed At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($oldMembershipPlans as $index => $plan)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ ucfirst($plan->name) }}</td>
+                                        <td class="text-success">
+                                            <del>₹ {{ number_format($plan->plan_price ?? 0, 2) }}</del>
+                                            ₹ {{ number_format($plan->final_price ?? 0, 2) }}
+                                        </td>
+                                        <td>{{ $plan->duration }} {{ ucfirst($plan->duration_type) }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($plan->start_date)->format('d M, Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($plan->end_date)->format('d M, Y') }}</td>
+                                        <td>{{ $plan->batch ?? 'N/A' }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($plan->updated_at)->format('d M, Y') }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p class="text-center text-muted">No renewal plans found.</p>
+                    @endif
+                </div>
 
             </div>
         </div>

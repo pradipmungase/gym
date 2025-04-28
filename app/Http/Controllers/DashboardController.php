@@ -17,14 +17,97 @@ use Endroid\QrCode\Builder\Builder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Crypt;
 
-
-
 class DashboardController extends Controller{
     
 
     public function index()
     {
-        return view('admin.dashboard.index');
+        $gymId = Auth::user()->id;
+
+        $memberPayments = DB::table('member_payments')
+            ->where('gym_id', $gymId)
+            ->select(
+                DB::raw('SUM(CASE WHEN due_amount > 0 THEN due_amount ELSE 0 END) as total_due_amount'),
+                DB::raw('SUM(CASE WHEN amount_paid > 0 THEN amount_paid ELSE 0 END) as total_paid_amount'),
+                DB::raw('SUM(CASE WHEN DATE(payment_date) = CURDATE() THEN amount_paid ELSE 0 END) as today_collection')
+            )
+            ->first();
+
+        $stats = [
+            [
+                'title' => 'Total Members',
+                'value' => DB::table('members')->where('gym_id', $gymId)->count(),
+                'bg_color' => 'bg-primary',
+                'icon' => 'bi-person-circle',
+                'text_color' => 'text-white'
+            ],
+            [
+                'title' => 'Total Trainers',
+                'value' => DB::table('trainers')->where('gym_id', $gymId)->count(),
+                'bg_color' => 'bg-info',
+                'icon' => 'bi-person-badge',
+                'text_color' => 'text-white'
+            ],
+            [
+                'title' => 'Member Expired',
+                'value' => DB::table('member_memberships')
+                            ->where('gym_id', $gymId)
+                            ->where('end_date', '<', now())
+                            ->count(),
+                'bg_color' => 'bg-danger',
+                'icon' => 'bi-exclamation-triangle-fill',
+                'text_color' => 'text-white'
+            ],
+            [
+                'title' => 'Total Membership Plans',
+                'value' => DB::table('menbership_plans')->where('gym_id', $gymId)->count(),
+                'bg_color' => 'bg-success',
+                'icon' => 'bi-clipboard-check',
+                'text_color' => 'text-dark'
+            ],
+            [
+                'title' => 'Total Due Amount',
+                'value' => $memberPayments->total_due_amount ?? 0,
+                'bg_color' => 'bg-danger',
+                'icon' => 'bi-currency-exchange',
+                'text_color' => 'text-white'
+            ],
+            [
+                'title' => 'Total Paid Amount',
+                'value' => $memberPayments->total_paid_amount ?? 0,
+                'bg_color' => 'bg-success',
+                'icon' => 'bi-currency-dollar',
+                'text_color' => 'text-white'
+            ],
+            [
+                'title' => 'Upcoming Expiry',
+                'value' => DB::table('member_memberships')
+                            ->where('gym_id', $gymId)
+                            ->where('end_date', '>', now())
+                            ->count(),
+                'bg_color' => 'bg-info',
+                'icon' => 'bi-calendar-event',
+                'text_color' => 'text-white'
+            ],
+            [
+                'title' => 'Today Collection',
+                'value' => $memberPayments->today_collection ?? 0,
+                'bg_color' => 'bg-primary',
+                'icon' => 'bi-wallet2',
+                'text_color' => 'text-white'
+            ],
+        ];
+
+        $lastFevTractions = DB::table('member_payments')
+            ->join('menbership_plans', 'member_payments.membership_id', '=', 'menbership_plans.id')
+            ->join('members', 'member_payments.member_id', '=', 'members.id')
+            ->select('member_payments.*', 'members.name as member_name', 'menbership_plans.name as plan_name')
+            ->where('member_payments.gym_id', $gymId)
+            ->orderBy('payment_date', 'desc')
+            ->limit(5)
+            ->get();
+
+        return view('admin.dashboard.index', compact('stats', 'lastFevTractions'));
     }
 
     public function saveLatitudeAndLongitude(Request $request)
@@ -115,7 +198,7 @@ class DashboardController extends Controller{
             'description' => 'required',
         ]);
 
-        $trainers = DB::table('request_feature')->insert([
+        DB::table('request_feature')->insert([
             'gym_id' => Auth::user()->id,
             'feature_name' => $request->feature_name,
             'description' => $request->description,
@@ -123,7 +206,7 @@ class DashboardController extends Controller{
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
+        sendRequestFeatureWhatsappMessage($request->feature_name, $request->description);
         return redirect()->back()->with('success', 'Your request has been sent successfully');
     }
 

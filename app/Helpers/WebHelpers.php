@@ -266,3 +266,10 @@ function sendWhatsAppMessageForMemberPayment($mobile, $name, $paid_amount, $paym
     sendWhatsappMessage($mobile, $message, $image = null, $type = 'member_payment');
 }
   
+
+function sendRequestFeatureWhatsappMessage($feature_name, $description)
+{
+    $mobile = Auth::user()->mobile;
+    $message = "Hi " . auth()->user()->owner_name . ",\n\nYour new feature request has been submitted.\n\nOur team will work on it and update you as soon as possible.\n\nThanks!";
+    sendWhatsappMessage($mobile, $message, $image = null, $type = 'request_feature');
+}

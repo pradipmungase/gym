@@ -34,124 +34,97 @@
                     <!-- End Col -->
                 </div>
             </div>
-
-
-            <!-- Row 1 -->
-            <div class="row mt-4">
-                <!-- Card 1 -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-primary shadow rounded-3 mb-2">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 mb-1" data-hs-counter-options='{"isCommaSeparated": true}'>52147
-                                </div>
-                                <span>Total Members</span>
-                            </div>
-                            <i class="bi bi-people-fill fs-1"></i>
+<div class="row mt-4">
+    @foreach($stats as $stat)
+        <div class="col-md-3 mb-3">
+            <div class="card {{ $stat['bg_color'] }} shadow rounded-3">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="h1 mb-1 {{ $stat['text_color'] }}">
+                            {{ $stat['value'] }}
                         </div>
+                        <span class="{{ $stat['text_color'] }}">{{ $stat['title'] }}</span>
                     </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-success shadow rounded-3 mb-2">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span>Total Trainer</span>
-                            </div>
-                            <i class="bi bi-briefcase-fill fs-1"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-primary shadow rounded-3 mb-2">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span>Member Expired</span>
-                            </div>
-                            <i class="bi bi-person-badge-fill fs-1"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-danger shadow rounded-3 mb-2">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span>Total Members</span>
-                            </div>
-                            <i class="bi bi-flag-fill fs-1"></i>
-                        </div>
-                    </div>
+                    <i class="bi {{ $stat['icon'] }} fs-1 {{ $stat['text_color'] }}"></i>
                 </div>
             </div>
+        </div>
+    @endforeach
+</div>
 
-            <!-- Row 2 -->
-            <div class="row mt-2">
-                <!-- Card 5 -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-info shadow rounded-3 mb-2">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span>Total Members</span>
-                            </div>
-                            <i class="bi bi-person-plus-fill fs-1"></i>
-                        </div>
-                    </div>
+
+
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Last 5 Transactions</h3>
+                </div>
+                <div class="card-body table-responsive">
+                    @if ($lastFevTractions->count())
+                        <table id="datatable"
+                            class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Member Name</th>
+                                    <th>Plan Name</th>
+                                    <th>Payment Mode</th>
+                                    <th>Amount (Paid / Due / Plan Price)</th>
+                                    <th>Payment Type</th>
+                                    <th>Payment Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($lastFevTractions as $index => $payment)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ ucfirst($payment->member_name) }}</td>
+                                        <td>{{ ucfirst($payment->plan_name) }}</td>
+                                        <td>
+                                            @php
+                                                $icons = [
+                                                    'phone pay' => asset('assets/images/phonepe-icon.png'),
+                                                    'google pay' => asset('assets/images/google-pay-icon.png'),
+                                                    'cash' => asset('assets/images/euro-notes-color-icon.png'),
+                                                    'other' => asset('assets/images/credit-card-color-icon.png'),
+                                                ];
+
+                                                $mode = strtolower($payment->payment_mode);
+                                            @endphp
+
+                                            @if (isset($icons[$mode]))
+                                                <img src="{{ $icons[$mode] }}" alt="{{ $payment->payment_mode }}"
+                                                    style="width:40px; height:40px; margin-right:5px; vertical-align:middle;">
+                                            @endif
+                                            {{ ucfirst($payment->payment_mode) }}
+                                        </td>
+
+
+                                        {{-- <td>{{ ucfirst($payment->payment_mode) }}</td> --}}
+                                        <td>
+                                            <span class="text-success">Paid: ₹
+                                                {{ number_format($payment->amount_paid, 2) }}</span><br>
+                                            <span class="text-danger">Due: ₹
+                                                {{ number_format($payment->due_amount, 2) }}</span><br>
+                                            <span class="text-info">
+                                                Plan Price:
+                                                @if ($payment->payment_type != 'Due Payment')
+                                                    <del>₹ {{ number_format($payment->original_plan_amount, 2) }}</del>
+                                                @endif
+                                                ₹ {{ number_format($payment->after_discount_amount, 2) }}
+                                            </span>
+                                        </td>
+                                        <td>{{ ucfirst($payment->payment_type) }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d M, Y') }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p class="text-center text-muted">No payment records found.</p>
+                    @endif
                 </div>
 
-                <!-- Card 6 -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-secondary shadow rounded-3 mb-2">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span>Total Members</span>
-                            </div>
-                            <i class="bi bi-hourglass-split fs-1"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 7 -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-success shadow rounded-3 mb-2">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span>Total Members</span>
-                            </div>
-                            <i class="bi bi-tags-fill fs-1"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 8 -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-light text-dark shadow rounded-3 mb-2">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="js-counter h1 mb-1"
-                                    data-hs-counter-options='{"isCommaSeparated": true}'>52147</div>
-                                <span>Total Members</span>
-                            </div>
-                            <i class="bi bi-card-checklist fs-1"></i>
-                        </div>
-                    </div>
-                </div>
             </div>
 
         </div>
