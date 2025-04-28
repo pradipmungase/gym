@@ -480,7 +480,7 @@ class MembersController extends Controller{
                 'updated_at' => now(),
             ]);
 
-            sendWhatsAppMessageForMemberPayment($request->mobile, $request->member_name, $total_amount, $request->payment_mode, $request->due_amount, $request->payment_date);
+            sendWhatsAppMessageForMemberPayment($request->mobile, $request->member_name, $request->amount, ucfirst($request->payment_mode), $request->due_amount, $request->payment_date);
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Payment added successfully!']);
         } catch (\Exception $e) {
