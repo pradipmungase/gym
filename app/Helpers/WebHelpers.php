@@ -51,7 +51,6 @@ function sendWhatsAppMessageForMemberRegistration($mobile, $name, $imagePath)
     }
 }
 
-
 function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
 {
     $latFrom = deg2rad($latitudeFrom);
@@ -66,7 +65,6 @@ function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo
         cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
     return $angle * $earthRadius;
 }
-
 
 function sendWelcomeEmail($user)
 {
@@ -110,7 +108,6 @@ function sendForgotPasswordWhatsappMessage($user)
         // Don't throw error to caller
     }
 }
-
 
 function sendAnnouncement($for, $title, $description, $date)
 {
@@ -159,7 +156,6 @@ function sendAnnouncement($for, $title, $description, $date)
         // Don't throw error to caller
     }
 }       
-
 
 function sendPushNotificationToAllUsers($title, $body){
     $users = User::all();
@@ -229,7 +225,6 @@ function sendWhatsAppMessageForMemberPayment($mobile, $name, $total_amount, $pay
         // Don't throw error to caller
     }
 }   
-
 
 function uploadFile($file, $folderName, $id)
 {

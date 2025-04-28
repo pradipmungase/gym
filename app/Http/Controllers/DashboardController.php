@@ -72,6 +72,7 @@ class DashboardController extends Controller{
         }
 
         $members = DB::table('members')
+            ->where('gym_id', Auth::user()->id)
             ->where('name', 'like', '%' . $keyword . '%')
             ->orWhere('mobile', 'like', '%' . $keyword . '%')
             ->select('id', 'name', 'image','mobile')
@@ -79,6 +80,7 @@ class DashboardController extends Controller{
             ->get();
 
         $trainers = DB::table('trainers')
+            ->where('gym_id', Auth::user()->id)
             ->where('name', 'like', '%' . $keyword . '%')
             ->orWhere('phone', 'like', '%' . $keyword . '%')
             ->select('id', 'name', 'image','phone')

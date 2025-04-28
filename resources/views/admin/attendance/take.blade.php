@@ -4,7 +4,7 @@
         <div class="content container-fluid">
 
             <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-            <div style="display: flex; height: 100vh;">
+            <div style="display: flex;">
                 <!-- Webcam Section -->
                 <div id="reader" style="width: 50%;">
                     <!-- Webcam stream will appear here -->
