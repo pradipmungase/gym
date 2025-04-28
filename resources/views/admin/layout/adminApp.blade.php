@@ -87,6 +87,9 @@
             /* Bootstrap 'success' color */
             border-color: #2F6AD9 !important;
         }
+        textarea{
+            overflow: hidden;
+        }
     </style>
 
     <script>

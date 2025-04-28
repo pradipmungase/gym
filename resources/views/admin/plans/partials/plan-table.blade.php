@@ -14,29 +14,22 @@
                 <td class="table-column-ps-0">{{ $plans->firstItem() + $loop->index }}</td>
                 <td>{{ $plan->name }}</td>
                 <td>{{ $plan->duration }} {{ ucfirst($plan->duration_type) }}</td>
-                <td>₹ {{ number_format($plan->price, 2) }}</td>
+                <td class="text-success">₹ {{ number_format($plan->price, 2) }}</td>
                 <td>
-                    <div>
-                        <div class="dropdown">
-                            <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Options
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item edit-plan-btn" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#editPlanModal"
-                                        data-plan='@json($plan)'>
-                                        <i class="bi bi-pencil me-2"></i> Edit
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('plans.view', encrypt($plan->id)) }}">
-                                        <i class="bi bi-eye me-2"></i> View Details
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <!-- Edit Button -->
+                        <button type="button" class="btn btn-outline-info btn-sm d-flex align-items-center gap-1"
+                            data-bs-toggle="modal" data-bs-target="#editPlanModal"
+                            data-plan='@json($plan)' data-bs-toggle="tooltip" title="Edit Plan">
+                            <i class="bi bi-pencil-square fs-5"></i> Edit
+                        </button>
+
+                        <!-- View Button as Link -->
+                        <a href="{{ route('plans.view', encrypt($plan->id)) }}"
+                            class="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
+                            data-bs-toggle="tooltip" title="View Plan">
+                            <i class="bi bi-eye fs-5"></i> View
+                        </a>
                     </div>
                 </td>
             </tr>
@@ -46,8 +39,8 @@
                     <div class="d-flex flex-column align-items-center p-4">
                         <img class="mb-3" src="{{ asset('assets/svg/illustrations/oc-error.svg') }}" alt="No data"
                             style="width: 10rem;" data-hs-theme-appearance="default">
-                        <img class="mb-3" src="{{ asset('assets/svg/illustrations-light/oc-error.svg') }}" alt="No data"
-                            style="width: 10rem;" data-hs-theme-appearance="dark">
+                        <img class="mb-3" src="{{ asset('assets/svg/illustrations-light/oc-error.svg') }}"
+                            alt="No data" style="width: 10rem;" data-hs-theme-appearance="dark">
                         <p class="mb-0">No data available.</p>
                     </div>
                 </td>
@@ -56,4 +49,4 @@
     </tbody>
 </table>
 
-@include('admin.pagination.paginationNumber',['data'=>$plans])
+@include('admin.pagination.paginationNumber', ['data' => $plans])

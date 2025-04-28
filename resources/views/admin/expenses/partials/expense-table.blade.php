@@ -16,33 +16,27 @@
                 <td>{{ $expense->name }}</td>
                 <td class="text-warning">₹ {{ number_format($expense->amount, 2) }}</td>
                 <td>{{ \Carbon\Carbon::parse($expense->date)->format('d M, Y') }}</td>
-                <td>{{ $expense->description }}</td>
+                <td>{{ \Illuminate\Support\Str::limit($expense->description, 20, '...') ?? 'No description' }}</td>
                 <td>
-                    <div>
-                        <div class="dropdown">
-                            <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Options
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item edit-expense-btn" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#editExpenseModal"
-                                        data-expense='@json($expense)'>
-                                        <i class="bi bi-pencil me-2"></i> Edit
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item view-expense-btn" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#viewExpenseModal"
-                                        data-expense='@json($expense)'>
-                                        <i class="bi bi-eye me-2"></i> View Details
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <!-- Edit Button -->
+                        <button type="button"
+                            class="btn-sm btn btn-outline-info  d-flex align-items-center gap-2 edit-expense-btn"
+                            data-bs-toggle="modal" data-bs-target="#editExpenseModal"
+                            data-expense='@json($expense)'>
+                            <i class="bi bi-pencil"></i> Edit
+                        </button>
+
+                        <!-- View Button -->
+                        <button type="button"
+                            class="btn btn-sm btn-outline-success  d-flex align-items-center gap-2 view-expense-btn"
+                            data-bs-toggle="modal" data-bs-target="#viewExpenseModal"
+                            data-expense='@json($expense)'>
+                            <i class="bi bi-eye"></i> View
+                        </button>
                     </div>
                 </td>
+
             </tr>
         @empty
             <tr>
@@ -50,8 +44,8 @@
                     <div class="d-flex flex-column align-items-center p-4">
                         <img class="mb-3" src="{{ asset('assets/svg/illustrations/oc-error.svg') }}" alt="No data"
                             style="width: 10rem;" data-hs-theme-appearance="default">
-                        <img class="mb-3" src="{{ asset('assets/svg/illustrations-light/oc-error.svg') }}" alt="No data"
-                            style="width: 10rem;" data-hs-theme-appearance="dark">
+                        <img class="mb-3" src="{{ asset('assets/svg/illustrations-light/oc-error.svg') }}"
+                            alt="No data" style="width: 10rem;" data-hs-theme-appearance="dark">
                         <p class="mb-0">No data available.</p>
                     </div>
                 </td>
@@ -60,4 +54,4 @@
     </tbody>
 </table>
 
-@include('admin.pagination.paginationNumber',['data'=>$expenses])
+@include('admin.pagination.paginationNumber', ['data' => $expenses])

@@ -33,19 +33,18 @@
         <div class="content container-fluid">
             <div class="page-header">
                 <div class="row align-items-center justify-content-between mb-4">
-                    <div class="col-6">
+                    <div class="col-8">
                         <h1 class="page-header-title mb-0">Trainer Details</h1>
                     </div>
-                    <div class="col-6 text-end">
-                        <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#addTrainerModal">
-                            <i class="bi bi-person-plus-fill me-1"></i> Add Trainer
-                        </a>
+                    <div class="col-4 text-end">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTrainerModal">
+                            <i class="bi bi-plus-circle me-1"></i> &nbsp; Add
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div id="trainers-table-container" class="text-center my-4 table-responsive datatable-custom"
-                style="height: 800px">
+            <div id="trainers-table-container" class="text-center my-4 table-responsive datatable-custom">
                 <div class="spinner-border text-primary" role="status"></div>
                 <p class="mt-2">Loading...</p>
             </div>
@@ -61,7 +60,7 @@
                 <div class="modal-content">
                     <div class="modal-header text-white">
                         <h5 class="modal-title" id="addTrainerModalLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Add New Trainer
+                            <i class="bi bi-plus-circle me-2"></i> Add New Trainer
                         </h5>
                         <button type="button" class="clearFromDataWithError btn-close btn-close-white"
                             data-bs-dismiss="modal" aria-label="Close"></button>

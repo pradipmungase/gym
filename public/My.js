@@ -861,7 +861,7 @@ $(document).ready(function () {
             error: function (xhr) {
                 let errors = xhr.responseJSON.errors;
                 $.each(errors, function (field, messages) {
-                    let input = $('[editName="' + field + '"]');
+                    let input = $('[name="' + field + '"]'); // corrected here
                     input.addClass('is-invalid');
                     input.next('.invalid-feedback').text(messages[0]);
                 });

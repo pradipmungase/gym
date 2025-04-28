@@ -36,24 +36,20 @@
                 <td>{{ $trainer->phone }}</td>
                 <td>{{ \Carbon\Carbon::parse($trainer->joining_date)->format('d M, Y') }}</td>
                 <td>
-                    <div class="dropdown">
-                        <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Options
+                    <div class="d-flex gap-2 justify-content-center">
+                        <!-- Edit Button -->
+                        <button type="button" class="btn btn-outline-info btn-sm d-flex align-items-center gap-1 btn-edit-trainer"
+                            data-bs-toggle="modal" data-bs-target="#editTrainerModal"
+                            data-trainer='@json($trainer)' data-bs-toggle="tooltip" title="Edit Plan">
+                            <i class="bi bi-pencil-square fs-5"></i> Edit
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <a class="dropdown-item btn-edit-trainer"
-                                    data-trainer='@json($trainer)'>
-                                    <i class="bi bi-pencil me-2"></i> Edit
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('trainer.view', encrypt($trainer->id)) }}">
-                                    <i class="bi bi-eye me-2"></i> View Details
-                                </a>
-                            </li>
-                        </ul>
+
+                        <!-- View Button as Link -->
+                        <a href="{{ route('trainer.view', encrypt($trainer->id)) }}"
+                            class="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
+                            data-bs-toggle="tooltip" title="View Plan">
+                            <i class="bi bi-eye fs-5"></i> View
+                        </a>
                     </div>
                 </td>
             </tr>

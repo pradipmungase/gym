@@ -55,21 +55,24 @@ class ExpenseController extends Controller{
     public function update(Request $request)
     {
         $request->validate([
-            'editName' => 'required|string|max:255',
-            'amount'  => 'required|numeric|min:1',
-            'date'     => 'required|date',
-            'expense_id'   => 'required|exists:expenses,id',
+            'name' => 'required|string|max:255',
+            'amount' => 'required|numeric|min:1',
+            'date' => 'required|date',
+            'description' => 'nullable|string|max:255',
+            'expense_id' => 'required|exists:expenses,id',
         ]);
 
         DB::table('expenses')->where('id', $request->input('expense_id'))->update([
-            'name' => $request->input('editName'),
-            'amount'  => $request->input('amount'),
-            'date'     => $request->input('date'),    
+            'name' => $request->input('name'),
+            'amount' => $request->input('amount'),
+            'description' => $request->input('description'),
+            'date' => $request->input('date'),
             'updated_at' => now(),
         ]);
 
         return response()->json(['message' => 'Expense updated successfully']);
     }
+
 
     public function view($id)
     {

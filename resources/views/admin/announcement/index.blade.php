@@ -4,18 +4,18 @@
         <div class="content container-fluid">
             <div class="page-header">
                 <div class="row align-items-center justify-content-between mb-4">
-                    <div class="col-6">
+                    <div class="col-8">
                         <h1 class="page-header-title mb-0">Announcement Details</h1>
                     </div>
-                    <div class="col-6 text-end">
+                    <div class="col-4 text-end">
                         <a class="btn btn-primary" href="#" data-bs-toggle="modal"
                             data-bs-target="#addAnnouncementModal">
-                            <i class="bi bi-person-plus-fill me-1"></i> Add Announcement
+                            <i class="bi bi-plus-circle me-1"></i> &nbsp; Add
                         </a>
                     </div>
                 </div>
             </div>
-            <div id="announcement-table-container" class="text-center my-4 table-responsive datatable-custom" style="height: 800px">
+            <div id="announcement-table-container" class="text-center my-4 table-responsive datatable-custom">
                 <div class="spinner-border text-primary" role="status"></div>
                 <p class="mt-2">Loading...</p>
             </div>
@@ -30,7 +30,7 @@
                 <div class="modal-content">
                     <div class="modal-header text-white">
                         <h5 class="modal-title" id="addAnnouncementModalLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Add New Announcement
+                            <i class="bi bi-plus-circle me-2"></i> Add New Announcement
                         </h5>
                         <button type="button" class="clearFromDataWithError btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
