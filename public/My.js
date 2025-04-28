@@ -22,6 +22,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
+                resetAllModals();
                 showToast(response.message, 'bg-success');
                 form[0].reset();
                 $('#addPlanModal').modal('hide');
@@ -69,6 +70,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
+                resetAllModals();
                 showToast(response.message, 'bg-success');
                 form[0].reset();
                 $('#editPlanModal').modal('hide');
@@ -114,6 +116,7 @@ function fetchPlans(page = 1) {
         url: "plans/fetch?page=" + page,
         type: 'GET',
         success: function (data) {
+            resetAllModals();
             $('#plans-table-container').html(data);
         },
         error: function () {
@@ -134,6 +137,7 @@ function fetchmembers(page = 1, query = '', genders = [], status = '') {
             status: status
         },
         success: function (data) {
+            resetAllModals();
             $('#members-table-container').html(data);
         },
         error: function () {
@@ -176,6 +180,7 @@ function fetchTrainers(page = 1) {
         url: "trainer/fetch?page=" + page,
         type: 'GET',
         success: function (data) {
+            resetAllModals();
             $('#trainers-table-container').html(data);
         },
         error: function () {
@@ -190,6 +195,7 @@ function fetchAttendance(page = 1) {
         url: "attendance/fetch?page=" + page,
         type: 'GET',
         success: function (data) {
+            resetAllModals();
             $('#attendance-table-container').html(data);
         },
         error: function () {
@@ -261,6 +267,7 @@ $(document).ready(function () {
             processData: false, // Required for FormData
             success: function (response) {
                 if (response.status === 'success') {
+                    resetAllModals();
                     $('#addMemberModal').modal('hide');
                     $('#addMemberForm')[0].reset();
                     $('.js-file-attach-reset-img').click();
@@ -331,6 +338,7 @@ $(document).ready(function () {
             processData: false, // Required for FormData
             success: function (response) {
                 if (response.status === 'success') {
+                    resetAllModals();
                     $('#editmemberModal').modal('hide');
                     $('#editmemberForm')[0].reset();
                     fetchmembers();
@@ -500,6 +508,7 @@ $(document).ready(function () {
             contentType: false,   // Important for FormData
             success: function (response) {
                 if (response.status === 'success') {
+                    resetAllModals();
                     $('#addTrainerModal').modal('hide');
                     $('#addTrainerForm')[0].reset();
                     $('.js-file-attach-reset-img').click();
@@ -683,6 +692,7 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 if (response.status === 'success') {
+                    resetAllModals();
                     $('#editTrainerModal').modal('hide');
                     $('#editTrainerForm')[0].reset();
                     fetchTrainers(); // Refresh the list
@@ -756,6 +766,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
+                resetAllModals();
                 showToast(response.message, 'bg-success');
                 form[0].reset();
                 $('#addExpenseModal').modal('hide');
@@ -783,6 +794,7 @@ function fetchExpenses(page = 1) {
         url: "expenses/fetch?page=" + page,
         type: 'GET',
         success: function (data) {
+            resetAllModals();
             $('#expenses-table-container').html(data);
         },
         error: function () {
@@ -853,6 +865,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
+                resetAllModals();
                 showToast(response.message, 'bg-success');
                 form[0].reset();
                 $('#editExpenseModal').modal('hide');
@@ -988,6 +1001,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
+                resetAllModals();
                 showToast(response.message, 'bg-success');
                 form[0].reset();
                 $('#addAnnouncementModal').modal('hide');
@@ -1015,6 +1029,7 @@ function fetchAnnouncement(page = 1) {
         url: "announcement/fetch?page=" + page,
         type: 'GET',
         success: function (data) {
+            resetAllModals();
             $('#announcement-table-container').html(data);
         },
         error: function () {
@@ -1043,6 +1058,7 @@ function resendOtp() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (res) {
+            resetAllModals();   
             showToast(res.message, 'bg-success');
             startResendOtpCountdown(); // Restart countdown
         },
@@ -1105,7 +1121,7 @@ $(document).ready(function () {
                 if (response.status == 'success') {
                     $('#otpErrorMsg').hide().text('');
                     $('#otp').removeClass('is-invalid');
-
+                    resetAllModals();
                     showToast(response.message, 'bg-success');
                     setTimeout(function () {
                         window.location.href = response.link;
@@ -1151,6 +1167,7 @@ function handleProfileImageUpload(file) {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
+                    resetAllModals();
                     showToast(response.message, 'bg-success');
                 },
                 error: function (xhr) {
@@ -1196,6 +1213,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
+                resetAllModals();
                 let html = '';
 
                 // Trainers Section
@@ -1285,6 +1303,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
+                resetAllModals();
                 let html = '';
 
                 // Trainers Section
@@ -1347,6 +1366,7 @@ function deleteMember(memberId) {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
+                resetAllModals();
                 showToast(response.message, 'bg-success');
                 fetchmembers();
             },
@@ -1400,6 +1420,7 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response.status == 'success') {
+                    resetAllModals();
                     showToast(response.message, 'bg-success');
                     form[0].reset();
                     $('#addPaymentModal').modal('hide');
@@ -1454,6 +1475,7 @@ $(document).on('submit', '.register-form', function (e) {
         },
         success: function (response) {
             if (response.status === 'success') {
+                resetAllModals();
                 window.location.href = '/dashboard';
             } else {
                 showToast(response.message, 'bg-danger');
@@ -1547,6 +1569,7 @@ function updateUserStatus(memberId) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {
+            resetAllModals();
         },
         error: function (xhr, status, error) {
             showToast(xhr.responseJSON.message, 'bg-danger');
@@ -1577,6 +1600,7 @@ $(document).on('submit', '#addNoteForm', function (e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {
+            resetAllModals();
             showToast(response.message, 'bg-success');
             form[0].reset();
             $('#addNoteModel').modal('hide');
@@ -1756,6 +1780,7 @@ $(document).on('submit', '#changePlanForm', function (e) {
         },
         success: function (response) {
             if (response.status === 'success') {
+                resetAllModals();   
                 $('#changePlanModel').modal('hide');
                 $('#changePlanForm')[0].reset();
                 fetchmembers();
@@ -1934,6 +1959,7 @@ $(document).on('submit', '#renewMembershipForm', function (e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {
+            resetAllModals();
             showToast(response.message, 'bg-success');
             form[0].reset();
             $('#renewMembershipModal').modal('hide');
@@ -2047,6 +2073,7 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 if (response.status === 'success') {
+                    resetAllModals();
                     $('#memberRegstration').modal('hide');
                     form.reset();
                     $('.js-file-attach-reset-img').click();
@@ -2103,6 +2130,7 @@ function fetchmembersRequest(page = 1, query = '', genders = [], status = '') {
             status: status
         },
         success: function (data) {
+            resetAllModals();
             $('#membersRequest-table-container').html(data);
         },
         error: function () {
@@ -2255,6 +2283,7 @@ $('#rejectMemberRequestBtn').on('click', function (e) {
         },
         success: function (response) {
             $('#viewmemberModal').modal('hide');
+            resetAllModals();
             showToast(response.message, 'bg-success');
             fetchmembersRequest();
         },
@@ -2292,6 +2321,7 @@ $('#acceptMemberRequestBtn').on('click', function (e) {
         processData: false,
         success: function (response) {
             if (response.status === 'success') {
+                resetAllModals();
                 $('#viewmemberModal').modal('hide');
                 $('#viewmemberForm')[0].reset();
                 $('.js-file-attach-reset-img').click();
