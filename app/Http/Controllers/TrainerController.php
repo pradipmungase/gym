@@ -180,6 +180,7 @@ class TrainerController extends Controller{
         $members = DB::table('members')
             ->join('member_memberships', 'members.id', '=', 'member_memberships.member_id')
             ->where('trainer_id', $id)
+            ->where('member_memberships.status', 'active')
             ->get();
 
         return view('admin.trainers.view', compact('trainer','trainerMembers','members'));

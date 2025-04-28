@@ -814,20 +814,19 @@
     </div>
     <!-- End Footer -->
 
-    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
-        <!-- Toast -->
-        <div id="dynamicToast" class="toast text-white bg-primary border-0 rounded-3 shadow-sm fade" role="alert"
-            aria-live="assertive" aria-atomic="true">
-            <div class="d-flex align-items-center">
-                <div class="toast-body d-flex align-items-center gap-2" id="toastMessage">
-                    <i class="bi bi-info-circle-fill fs-5"></i> <!-- Bootstrap icon (optional) -->
-                    <!-- Message will be inserted here -->
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+    <!-- Toast -->
+    <div id="dynamicToast" class="toast fade align-items-center text-bg-primary border-0 rounded-4 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body d-flex align-items-center gap-3">
+                <i class="bi bi-check-circle-fill fs-4"></i> <!-- Icon larger and spaced -->
+                <span id="toastMessage">Your message will appear here.</span>
             </div>
+            <button type="button" class="btn-close btn-close-white me-3 m-auto text-white" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
+</div>
+
 
     <!-- JS Global Compulsory  -->
     <script src="{{ asset('') }}assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>

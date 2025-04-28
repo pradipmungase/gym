@@ -66,7 +66,7 @@ function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo
     return $angle * $earthRadius;
 }
 
-function sendWelcomeEmail($user)
+function sendWelcomeWhatsappMessage($user)
 {
     try {
         $mobile = '7028143227'; // Replace with dynamic: $member->mobile ?? fallback

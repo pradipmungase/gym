@@ -124,6 +124,11 @@ class PlanController extends Controller{
     {
         $id = decrypt($id);
         $plan = DB::table('menbership_plans')->where('id', $id)->first();
-        return view('admin.plans.view', compact('plan'));
+        $members = DB::table('members')
+            ->join('member_memberships', 'members.id', '=', 'member_memberships.member_id')
+            ->where('member_memberships.plan_id', $id)
+            ->where('member_memberships.status', 'active')
+            ->get();
+        return view('admin.plans.view', compact('plan', 'members'));
     }
 }

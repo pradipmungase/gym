@@ -18,7 +18,7 @@
                 <td>
                     <div class="d-flex gap-2 justify-content-center">
                         <!-- Edit Button -->
-                        <button type="button" class="btn btn-outline-info btn-sm d-flex align-items-center gap-1"
+                        <button type="button" class="btn btn-outline-info btn-sm d-flex align-items-center gap-1 edit-plan-btn"
                             data-bs-toggle="modal" data-bs-target="#editPlanModal"
                             data-plan='@json($plan)' data-bs-toggle="tooltip" title="Edit Plan">
                             <i class="bi bi-pencil-square fs-5"></i> Edit
