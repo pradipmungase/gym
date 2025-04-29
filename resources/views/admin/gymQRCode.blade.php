@@ -34,6 +34,10 @@
             <button type="button" class="btn btn-success" onclick="shareQRCode()">
               <i class="bi bi-share me-1"></i> Share QR
             </button>
+            <a href="{{ route('memberRegistration', encrypt(auth()->user()->id)) }}" target="_blank" class="btn btn-info">
+              <i class="bi bi-link-45deg me-1"></i> Open Link
+            </a>
+
           </div>
 
           <!-- Reminder Text -->

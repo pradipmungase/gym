@@ -94,7 +94,7 @@ class MemberRegistrationController extends Controller{
             }
             // Step 7: Insert into the database
             $insertId = DB::table('member_registration')->insertGetId([
-                'gym_id'           => decrypt($gymId),
+                'gym_id'           => $gymId,
                 'name'             => $request->registration_name,
                 'email'            => $request->registration_email,
                 'mobile_number'    => $request->registration_mobile,
@@ -121,6 +121,9 @@ class MemberRegistrationController extends Controller{
                 DB::table('member_registration')->where('id', $insertId)->update(['image' => $path]);
             }
 
+
+            sendWhatsAppMessageForMembberRequstToGymOwner($request->registration_name, $gymId);
+            sendPushNotificationToGymUsers($gymId, 'New Member Registration Request', 'A new member registration request has been received. Please review the request.');
             // Step 8: Commit the transaction
             DB::commit();
 

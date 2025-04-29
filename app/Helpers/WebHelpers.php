@@ -53,6 +53,7 @@ function uploadFile($file, $folderName, $id)
     return $file_path;
 }
 
+
 function getNotification() {
     $notifications = DB::table('notifications')
         ->where('gym_id', Auth::user()->id)
@@ -60,13 +61,13 @@ function getNotification() {
         ->limit(5)
         ->get();
 
-    // Append relative time to each notification in a shorter format
     foreach ($notifications as $notification) {
         $createdAt = Carbon::parse($notification->created_at);
         $minutes = $createdAt->diffInMinutes();
         $hours = $createdAt->diffInHours();
         $days = $createdAt->diffInDays();
 
+        // Set relative time
         if ($minutes < 60) {
             $notification->relative_time = $minutes . 'm ago';
         } elseif ($hours < 24) {
@@ -74,10 +75,22 @@ function getNotification() {
         } else {
             $notification->relative_time = $days . 'd ago';
         }
+
+        // Update title if type is "today_overall_summary"
+        if ($notification->type === 'today_overall_summary') {
+            if ($createdAt->isToday()) {
+                $notification->title = "Today's Overall Summary";
+            } elseif ($createdAt->isYesterday()) {
+                $notification->title = "Yesterday's Overall Summary";
+            } else {
+                $notification->title = $createdAt->format('d M Y') . ' Overall Summary';
+            }
+        }
     }
 
     return $notifications;
 }
+
 
 function sendPushNotificationToAllUsers($title, $body){
     $users = User::all();
@@ -123,7 +136,7 @@ function sendWhatsappMessage($mobile, $message, $image = null, $type = 'general'
         ];
 
         if (!empty($image)) {
-            $payload['image'] = $image;
+            $payload['imageBase64'] = $image;
         }
 
         $response = Http::post('http://localhost:3000/send-message', $payload);
@@ -169,13 +182,22 @@ function sendForgotPasswordWhatsappMessage($user)
     sendWhatsappMessage($mobile, $message, $image = null, $type = 'forgot_password');
 }
 
-function sendWelcomeWhatsappMessage($user)
+function sendWelcomeWhatsappMessageToGymOwner($user)
 {
     $mobile = $user->mobile;
     $gymName = Auth::user()->gym_name ?? 'Your Gym';
     $message = "👋 Hey $user->owner_name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nWe're excited to have you on board! 💪\n\nIf you have any questions or need help, feel free to contact us at *7028143227*. 📞";
     $base64Image = base64_encode(file_get_contents(public_path($user->qr_code)));
-    sendWhatsappMessage($mobile, $message, $image = null, $type = 'member_registration');
+    sendWhatsappMessage($mobile, $message, $base64Image, $type = 'member_registration');
+}
+
+
+function sendWhatsappNotificationToGymUser($gymId, $description)
+{
+    $gym = DB::table('users')->where('id', $gymId)->first();
+    $mobile = $gym->mobile;
+    $message = "👋 Hey $gym->owner_name,\n\n$description";
+    sendWhatsappMessage($mobile, $message, $image = null, $type = 'daily_summary');
 }
 
 function sendAnnouncement($for, $title, $description, $date)
@@ -227,7 +249,7 @@ function sendWhatsAppMessageForMemberRegistration($mobile, $name, $imagePath)
     $gymName = Auth::user()->gym_name ?? 'Your Gym';
     $base64Image = base64_encode(file_get_contents(public_path($imagePath)));
     $message = "👋 Hello $name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nHere is your QR Code for daily attendance. 📲\n\nMake sure to scan it every day when you visit! ✅";
-    sendWhatsappMessage($mobile, $message, $imagePath, $type = 'member_registration');
+    sendWhatsappMessage($mobile, $message, $base64Image, $type = 'member_registration');
 }
 
 function sendMarketingWhatsapp($whatsappNumber, $outputdata)
@@ -272,4 +294,13 @@ function sendRequestFeatureWhatsappMessage($feature_name, $description)
     $mobile = Auth::user()->mobile;
     $message = "Hi " . auth()->user()->owner_name . ",\n\nYour new feature request has been submitted.\n\nOur team will work on it and update you as soon as possible.\n\nThanks!";
     sendWhatsappMessage($mobile, $message, $image = null, $type = 'request_feature');
+}
+
+
+function sendWhatsAppMessageForMembberRequstToGymOwner($name, $gymId)
+{
+    $ownerDetails = DB::table('users')->where('id', $gymId)->first();
+    $mobile = $ownerDetails->mobile;
+    $message = "Hi " . $ownerDetails->owner_name . ",\n\nYour have received a new member registration request.\n\nName: $name\n\nThanks!";
+    sendWhatsappMessage($mobile, $message, $image = null, $type = 'member_registration_request');
 }

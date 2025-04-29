@@ -54,7 +54,7 @@ class AuthController extends Controller{
 
             DB::commit();
 
-            sendWelcomeWhatsappMessage($user);
+            sendWelcomeWhatsappMessageToGymOwner($user);
             session()->flash('success', 'Welcome to GYM Manager!');
             return response()->json(['status' => 'success', 'message' => 'Welcome to GYM Manager!'], 200);
 

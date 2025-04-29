@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('mobile');
             $table->text('message');
-            $table->string('image')->nullable();
+            $table->text('image')->nullable();
             $table->string('type');
             $table->string('status');
             $table->text('response');

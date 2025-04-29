@@ -195,9 +195,8 @@ class NotificationController extends Controller{
         $nowTimestamp = now();
 
         // Fetch all gyms (assuming gyms are those who have active members)
-        $gymIds = DB::table('members')
-            ->where('status', 'active')
-            ->pluck('gym_id')
+        $gymIds = DB::table('users')
+            ->pluck('id')
             ->unique();
 
         // Start a transaction to ensure atomicity
@@ -240,7 +239,7 @@ class NotificationController extends Controller{
 
                 // If all counts are zero, skip this gym
                 if ($newMembersCount == 0 && $expiringMembershipsCount == 0 && $paymentsAmount == 0) {
-                    continue;
+                    // continue;
                 }
 
                 // Create summary message
@@ -267,6 +266,7 @@ class NotificationController extends Controller{
 
                 // Send push notification to all users of this gym
                 sendPushNotificationToGymUsers($gymId, 'Today\'s Summary', $description);
+                sendWhatsappNotificationToGymUser($gymId, $description);
             }
 
             // Commit transaction if everything is successful

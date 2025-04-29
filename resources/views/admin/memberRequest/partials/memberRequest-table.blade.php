@@ -70,20 +70,20 @@
                         <td>
                             @php
                                 $statusColors = [
-                                    'pending' => 'primary',  // yellow
+                                    'pending' => 'info',  // yellow
                                     'approved' => 'success', // green
                                     'rejected' => 'danger',  // red
                                 ];
                             @endphp
-                            <span class="badge bg-{{ $statusColors[$memberRequest->member_status] ?? 'secondary' }}">{{ $memberRequest->member_status }}</span>
-
-
+                            <span class="badge bg-{{ $statusColors[$memberRequest->member_status] ?? 'secondary' }}">{{ ucwords($memberRequest->member_status) }}</span>
                             </div>
                         </td>
                         <td>
-                            <a class="dropdown-item view-member-btn" href="#" data-bs-toggle="modal"
-                                data-bs-target="#viewmemberModal" data-member='@json($memberRequest)'>
-                                <i class="bi bi-eye me-2"></i> View
+                            <a href="#"
+                                class="btn btn-outline-success btn-sm d-flex align-items-center gap-1 view-member-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewmemberModal" data-member='@json($memberRequest)' title="View Plan">
+                                <i class="bi bi-eye fs-5"></i> View
                             </a>
                         </td>
                     </tr>
