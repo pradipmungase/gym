@@ -78,8 +78,8 @@
                                 @foreach ($lastFevTractions as $index => $payment)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ ucfirst($payment->member_name) }}</td>
-                                        <td>{{ ucfirst($payment->plan_name) }}</td>
+                                        <td>{{ ucwords($payment->member_name) }}</td>
+                                        <td>{{ ucwords($payment->plan_name) }}</td>
                                         <td>
                                             @php
                                                 $icons = [
@@ -94,9 +94,9 @@
 
                                             @if (isset($icons[$mode]))
                                                 <img src="{{ $icons[$mode] }}" alt="{{ $payment->payment_mode }}"
-                                                    style="width:40px; height:40px; margin-right:5px; vertical-align:middle;">
+                                                    style="width:25px; height:25px; margin-right:5px; vertical-align:middle;">
                                             @endif
-                                            {{ ucfirst($payment->payment_mode) }}
+                                            {{ ucwords($payment->payment_mode) }}
                                         </td>
 
 

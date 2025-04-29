@@ -1900,6 +1900,8 @@
           setActiveStyle()
         })
       })()
+
+      $('#welcomeMessageModal').modal('show');
     </script>
 
   <!-- End Style Switcher JS -->

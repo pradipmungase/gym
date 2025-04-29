@@ -25,7 +25,9 @@ class DashboardController extends Controller{
         $gymId = Auth::user()->id;
 
         $memberPayments = DB::table('member_payments')
-            ->where('gym_id', $gymId)
+            ->join('members', 'member_payments.member_id', '=', 'members.id')
+            ->where('member_payments.gym_id', $gymId)
+            ->where('members.deleted_at', null)
             ->select(
                 DB::raw('SUM(CASE WHEN due_amount > 0 THEN due_amount ELSE 0 END) as total_due_amount'),
                 DB::raw('SUM(CASE WHEN amount_paid > 0 THEN amount_paid ELSE 0 END) as total_paid_amount'),
@@ -35,41 +37,10 @@ class DashboardController extends Controller{
 
         $stats = [
             [
-                'title' => 'Total Members',
-                'value' => DB::table('members')->where('gym_id', $gymId)->count(),
+                'title' => 'Today Collection',
+                'value' => $memberPayments->today_collection ?? 0,
                 'bg_color' => 'bg-primary',
-                'icon' => 'bi-person-circle',
-                'text_color' => 'text-white'
-            ],
-            [
-                'title' => 'Total Trainers',
-                'value' => DB::table('trainers')->where('gym_id', $gymId)->count(),
-                'bg_color' => 'bg-info',
-                'icon' => 'bi-person-badge',
-                'text_color' => 'text-white'
-            ],
-            [
-                'title' => 'Member Expired',
-                'value' => DB::table('member_memberships')
-                            ->where('gym_id', $gymId)
-                            ->where('end_date', '<', now())
-                            ->count(),
-                'bg_color' => 'bg-danger',
-                'icon' => 'bi-exclamation-triangle-fill',
-                'text_color' => 'text-white'
-            ],
-            [
-                'title' => 'Total Membership Plans',
-                'value' => DB::table('menbership_plans')->where('gym_id', $gymId)->count(),
-                'bg_color' => 'bg-success',
-                'icon' => 'bi-clipboard-check',
-                'text_color' => 'text-dark'
-            ],
-            [
-                'title' => 'Total Due Amount',
-                'value' => $memberPayments->total_due_amount ?? 0,
-                'bg_color' => 'bg-danger',
-                'icon' => 'bi-currency-exchange',
+                'icon' => 'bi-wallet2',
                 'text_color' => 'text-white'
             ],
             [
@@ -80,22 +51,60 @@ class DashboardController extends Controller{
                 'text_color' => 'text-white'
             ],
             [
+                'title' => 'Total Due Amount',
+                'value' => $memberPayments->total_due_amount ?? 0,
+                'bg_color' => 'bg-danger',
+                'icon' => 'bi-currency-exchange',
+                'text_color' => 'text-white'
+            ],
+            [
+                'title' => 'Member Expired',
+                'value' => DB::table('member_memberships')
+                            ->join('members', 'member_memberships.member_id', '=', 'members.id')
+                            ->where('members.deleted_at', null)
+                            ->where('member_memberships.gym_id', $gymId)
+                            ->where('member_memberships.end_date', '<', now())
+                            ->count(),
+                'bg_color' => 'bg-danger',
+                'icon' => 'bi-exclamation-triangle-fill',
+                'text_color' => 'text-white'
+            ],
+            [
+                'title' => 'Total Members',
+                'value' => DB::table('members')->where('gym_id', $gymId)->where('deleted_at', null)->count(),
+                'bg_color' => 'bg-primary',
+                'icon' => 'bi-person-circle',
+                'text_color' => 'text-white'
+            ],
+            [
+                'title' => 'Total Trainers',
+                'value' => DB::table('trainers')->where('gym_id', $gymId)->where('deleted_at', null)->count(),
+                'bg_color' => 'bg-info',
+                'icon' => 'bi-person-badge',
+                'text_color' => 'text-white'
+            ],
+
+            [
+                'title' => 'Total Membership Plans',
+                'value' => DB::table('menbership_plans')->where('gym_id', $gymId)->where('deleted_at', null)->count(),
+                'bg_color' => 'bg-success',
+                'icon' => 'bi-clipboard-check',
+                'text_color' => 'text-dark'
+            ],
+
+            [
                 'title' => 'Upcoming Expiry',
                 'value' => DB::table('member_memberships')
-                            ->where('gym_id', $gymId)
-                            ->where('end_date', '>', now())
+                            ->join('members', 'member_memberships.member_id', '=', 'members.id')
+                            ->where('members.deleted_at', null)
+                            ->where('member_memberships.gym_id', $gymId)
+                            ->where('member_memberships.end_date', '>', now())
                             ->count(),
                 'bg_color' => 'bg-info',
                 'icon' => 'bi-calendar-event',
                 'text_color' => 'text-white'
             ],
-            [
-                'title' => 'Today Collection',
-                'value' => $memberPayments->today_collection ?? 0,
-                'bg_color' => 'bg-primary',
-                'icon' => 'bi-wallet2',
-                'text_color' => 'text-white'
-            ],
+
         ];
 
         $lastFevTractions = DB::table('member_payments')
