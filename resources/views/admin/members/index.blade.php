@@ -33,13 +33,14 @@
         <div class="content container-fluid">
             <div class="page-header">
                 <div class="row align-items-center justify-content-between mb-4">
-                    <div class="col-6">
+                    <div class="col-8">
                         <h1 class="page-header-title mb-0">Member Details</h1>
                     </div>
-                    <div class="col-6 text-end">
-                        <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#addMemberModal">
-                            <i class="bi bi-person-plus-fill me-1"></i> Add Member
-                        </a>
+                    <div class="col-4 text-end">
+                        <button type="button" class="btn btn-primary btn-sm "
+                            data-bs-toggle="modal" data-bs-target="#addMemberModal">
+                            <i class="bi bi-plus-circle fs-5"></i> &nbsp; Add
+                        </button>
                     </div>
                 </div>
             </div>
@@ -422,7 +423,7 @@
                 <div class="modal-content">
                     <div class="modal-header text-white">
                         <h5 class="modal-title" id="editmemberModalLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Edit member
+                            <i class="bi bi-pencil-square me-2"></i> Edit member
                         </h5>
                         <button type="button" class="clearFromDataWithError btn-close btn-close-white"
                             data-bs-dismiss="modal" aria-label="Close"></button>
@@ -558,7 +559,7 @@
                 <div class="modal-content">
                     <div class="modal-header text-white">
                         <h5 class="modal-title" id="addPaymentModalLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Add Payment
+                            <i class="bi bi-cash-coin me-2"></i> Add Payment
                         </h5>
                         <button type="button" class="clearFromDataWithError btn-close btn-close-white"
                             data-bs-dismiss="modal" aria-label="Close"></button>
@@ -640,7 +641,7 @@
                 <div class="modal-content">
                     <div class="modal-header text-white">
                         <h5 class="modal-title" id="addNoteModelLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Add Note
+                            <i class="bi bi-pencil-square me-2"></i> Add Note
                         </h5>
                         <button type="button" class="clearFromDataWithError btn-close btn-close-white"
                             data-bs-dismiss="modal" aria-label="Close"></button>
@@ -680,7 +681,7 @@
                 <div class="modal-content">
                     <div class="modal-header text-white">
                         <h5 class="modal-title" id="changePlanModelLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Change Membership Plan
+                            <i class="bi bi-pencil-square me-2"></i> Change Membership Plan
                         </h5>
                         <button type="button" class="clearFromDataWithError btn-close btn-close-white"
                             data-bs-dismiss="modal" aria-label="Close"></button>
@@ -895,7 +896,7 @@
                 <div class="modal-content">
                     <div class="modal-header text-white">
                         <h5 class="modal-title" id="renewMembershipModalLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i> Renew Membership
+                            <i class="bi bi-cash-coin me-2"></i> Renew Membership
                             <br>
                             <span class="text-info">Member will be removed from then expiry of current plan and added to
                                 new plan.</span>
