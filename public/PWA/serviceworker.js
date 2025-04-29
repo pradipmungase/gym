@@ -9,12 +9,12 @@
 	"description":"GYM Manager is a powerful gym management portal that helps you manage your gym operations efficiently.",
 	"icons":[
 	{
-	"src":"images/images.png",					 
+	"src":"/logo/1.png",					 
 	"sizes":"192x192",
 	"type":"image/png"
 	},
 	{
-	"src":"images/images.png",
+	"src":"/logo/1.png",
 	"sizes":"512x512",
 	"type":"image/png"
 	}
