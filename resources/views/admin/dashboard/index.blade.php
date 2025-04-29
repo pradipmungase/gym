@@ -69,7 +69,7 @@
                                     <th>Member Name</th>
                                     <th>Plan Name</th>
                                     <th>Payment Mode</th>
-                                    <th>Amount (Paid / Due / Plan Price)</th>
+                                    <th>Amount (Paid / Due)</th>
                                     <th>Payment Type</th>
                                     <th>Payment Date</th>
                                 </tr>
@@ -98,21 +98,11 @@
                                             @endif
                                             {{ ucwords($payment->payment_mode) }}
                                         </td>
-
-
-                                        {{-- <td>{{ ucfirst($payment->payment_mode) }}</td> --}}
                                         <td>
                                             <span class="text-success">Paid: ₹
                                                 {{ number_format($payment->amount_paid, 2) }}</span><br>
                                             <span class="text-danger">Due: ₹
-                                                {{ number_format($payment->due_amount, 2) }}</span><br>
-                                            <span class="text-info">
-                                                Plan Price:
-                                                @if ($payment->payment_type != 'Due Payment')
-                                                    <del>₹ {{ number_format($payment->original_plan_amount, 2) }}</del>
-                                                @endif
-                                                ₹ {{ number_format($payment->after_discount_amount, 2) }}
-                                            </span>
+                                                {{ number_format($payment->due_amount, 2) }}</span>
                                         </td>
                                         <td>{{ ucfirst($payment->payment_type) }}</td>
                                         <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d M, Y') }}</td>

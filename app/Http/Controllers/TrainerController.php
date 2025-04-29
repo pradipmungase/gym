@@ -181,6 +181,7 @@ class TrainerController extends Controller{
             ->join('member_memberships', 'members.id', '=', 'member_memberships.member_id')
             ->where('trainer_id', $id)
             ->where('member_memberships.status', 'active')
+            ->where('members.deleted_at', null)
             ->get();
 
         return view('admin.trainers.view', compact('trainer','trainerMembers','members'));

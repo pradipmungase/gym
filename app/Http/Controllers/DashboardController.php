@@ -25,15 +25,32 @@ class DashboardController extends Controller{
         $gymId = Auth::user()->id;
 
         $memberPayments = DB::table('member_payments')
+                    ->join('members', 'member_payments.member_id', '=', 'members.id')
+                    ->where('member_payments.gym_id', $gymId)
+                    ->where('members.deleted_at', null)
+                    ->select(
+                        DB::raw('SUM(CASE WHEN amount_paid > 0 THEN amount_paid ELSE 0 END) as total_paid_amount'),
+                        DB::raw('SUM(CASE WHEN DATE(payment_date) = CURDATE() THEN amount_paid ELSE 0 END) as today_collection')
+                    )
+                    ->first();
+
+
+        $subquery = DB::table('member_payments as mp1')
+            ->select('mp1.id')
+            ->join(DB::raw('(SELECT MAX(id) as max_id FROM member_payments GROUP BY member_id) as mp2'), function ($join) {
+                $join->on('mp1.id', '=', 'mp2.max_id');
+            })
+            ->where('mp1.gym_id', $gymId)
+            ->where('mp1.due_amount', '>', 0);
+
+        $totalDueAmount = DB::table('member_payments')
             ->join('members', 'member_payments.member_id', '=', 'members.id')
             ->where('member_payments.gym_id', $gymId)
-            ->where('members.deleted_at', null)
-            ->select(
-                DB::raw('SUM(CASE WHEN due_amount > 0 THEN due_amount ELSE 0 END) as total_due_amount'),
-                DB::raw('SUM(CASE WHEN amount_paid > 0 THEN amount_paid ELSE 0 END) as total_paid_amount'),
-                DB::raw('SUM(CASE WHEN DATE(payment_date) = CURDATE() THEN amount_paid ELSE 0 END) as today_collection')
-            )
-            ->first();
+            ->whereNull('members.deleted_at')
+            ->whereIn('member_payments.id', $subquery)
+            ->sum('member_payments.due_amount');
+
+
 
         $stats = [
             [
@@ -52,7 +69,7 @@ class DashboardController extends Controller{
             ],
             [
                 'title' => 'Total Due Amount',
-                'value' => $memberPayments->total_due_amount ?? 0,
+                'value' => $totalDueAmount ?? 0,
                 'bg_color' => 'bg-danger',
                 'icon' => 'bi-currency-exchange',
                 'text_color' => 'text-white'
@@ -111,8 +128,9 @@ class DashboardController extends Controller{
             ->join('menbership_plans', 'member_payments.membership_id', '=', 'menbership_plans.id')
             ->join('members', 'member_payments.member_id', '=', 'members.id')
             ->select('member_payments.*', 'members.name as member_name', 'menbership_plans.name as plan_name')
+            ->where('members.deleted_at', null)
             ->where('member_payments.gym_id', $gymId)
-            ->orderBy('payment_date', 'desc')
+            ->orderBy('member_payments.id', 'desc')
             ->limit(5)
             ->get();
 
@@ -165,6 +183,7 @@ class DashboardController extends Controller{
 
         $members = DB::table('members')
             ->where('gym_id', Auth::user()->id)
+            ->where('deleted_at', null)
             ->where('name', 'like', '%' . $keyword . '%')
             ->orWhere('mobile', 'like', '%' . $keyword . '%')
             ->select('id', 'name', 'image','mobile')
@@ -173,6 +192,7 @@ class DashboardController extends Controller{
 
         $trainers = DB::table('trainers')
             ->where('gym_id', Auth::user()->id)
+            ->where('deleted_at', null)
             ->where('name', 'like', '%' . $keyword . '%')
             ->orWhere('phone', 'like', '%' . $keyword . '%')
             ->select('id', 'name', 'image','phone')

@@ -128,6 +128,7 @@ class PlanController extends Controller{
             ->join('member_memberships', 'members.id', '=', 'member_memberships.member_id')
             ->where('member_memberships.plan_id', $id)
             ->where('member_memberships.status', 'active')
+            ->where('members.deleted_at', null)
             ->get();
         return view('admin.plans.view', compact('plan', 'members'));
     }
