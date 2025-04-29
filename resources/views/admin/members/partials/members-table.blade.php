@@ -1,7 +1,7 @@
 <div class="card">
-    <!-- Table -->
-    <div class="table-responsive datatable-custom">
-        <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap card-table"'>
+    <!-- Table Container with overflow -->
+    <div class="table-responsive" style="overflow-x: auto;">
+        <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap card-table">
             <thead class="thead-light">
                 <tr>
                     <th>#</th>
@@ -138,8 +138,5 @@
             </tbody>
         </table>
     </div>
-    <!-- End Table -->
-
 </div>
-
 @include('admin.pagination.paginationNumber', ['data' => $members])

@@ -28,6 +28,16 @@
             border-radius: 50%;
             object-fit: cover;
         }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-table {
+            min-width: 1000px;
+            /* or any width you need to trigger scrolling */
+        }
     </style>
     <main id="content" role="main" class="main">
         <div class="content container-fluid">
@@ -37,8 +47,8 @@
                         <h1 class="page-header-title mb-0">Member Details</h1>
                     </div>
                     <div class="col-4 text-end">
-                        <button type="button" class="btn btn-primary btn-sm "
-                            data-bs-toggle="modal" data-bs-target="#addMemberModal">
+                        <button type="button" class="btn btn-primary btn-sm " data-bs-toggle="modal"
+                            data-bs-target="#addMemberModal">
                             <i class="bi bi-plus-circle fs-5"></i> &nbsp; Add
                         </button>
                     </div>
@@ -188,10 +198,9 @@
                     </div>
                 </div>
                 <!-- End Header -->
-                <div id="members-table-container"
-                    class="text-center my-4 table-responsive datatable-custom position-relative">
+                <div id="members-table-container" class="my-4 position-relative text-center">
                     <div class="spinner-border text-primary" role="status"></div>
-                    <p class="mt-2">Loading...</p>
+                    <p class="mt-2 text-center">Loading...</p>
                 </div>
             </div>
 
@@ -307,7 +316,7 @@
                             <div class="col-md-6 col-lg-4">
                                 <label for="trainer" class="form-label">Trainer</label>
                                 <select class="form-select" id="trainer" name="trainer">
-                                    <option selected  value="">Select Trainer</option>
+                                    <option selected value="">Select Trainer</option>
                                     @foreach ($trainers as $trainer)
                                         <option value="{{ $trainer->id }}">{{ $trainer->name }}</option>
                                     @endforeach
@@ -526,7 +535,7 @@
                             <div class="col-md-6 col-lg-4">
                                 <label for="editTrainer" class="form-label">Trainer</label>
                                 <select class="form-select" id="editTrainer" name="trainer">
-                                    <option selected  value="">Select Trainer</option>
+                                    <option selected value="">Select Trainer</option>
                                     @foreach ($trainers as $trainer)
                                         <option value="{{ $trainer->id }}">{{ $trainer->name }}</option>
                                     @endforeach
