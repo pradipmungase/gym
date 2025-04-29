@@ -23,7 +23,6 @@ class DashboardController extends Controller{
     public function index()
     {
         $gymId = Auth::user()->id;
-
         $memberPayments = DB::table('member_payments')
                     ->join('members', 'member_payments.member_id', '=', 'members.id')
                     ->where('member_payments.gym_id', $gymId)
