@@ -131,7 +131,7 @@
                         </div>
                         <div class="col-6 ps-5">
                             <span
-                                class="text-capitalize {{ $member->status == 'Active' ? 'text-success' : 'text-danger' }}">
+                                class="text-capitalize {{ $member->status == 'active' ? 'text-success' : 'text-danger' }}">
                                 {{ ucfirst($member->status) }}
                             </span>
                         </div>
@@ -161,7 +161,7 @@
                             class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>#</th>
+                                    {{-- <th>#</th> --}}
                                     <th>Plan Name</th>
                                     <th>Payment Mode</th>
                                     <th>Paid Amount (₹)</th>
@@ -174,9 +174,26 @@
                             <tbody>
                                 @foreach ($memberPayments as $index => $payment)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
+                                        {{-- <td>{{ $index + 1 }}</td> --}}
                                         <td>{{ ucfirst($payment->name) }}</td>
-                                        <td>{{ ucfirst($payment->payment_mode) }}</td>
+                                                                                <td>
+                                            @php
+                                                $icons = [
+                                                    'phone pay' => asset('assets/images/phonepe-icon.png'),
+                                                    'google pay' => asset('assets/images/google-pay-icon.png'),
+                                                    'cash' => asset('assets/images/euro-notes-color-icon.png'),
+                                                    'other' => asset('assets/images/credit-card-color-icon.png'),
+                                                ];
+
+                                                $mode = strtolower($payment->payment_mode);
+                                            @endphp
+
+                                            @if (isset($icons[$mode]))
+                                                <img src="{{ $icons[$mode] }}" alt="{{ $payment->payment_mode }}"
+                                                    style="width:25px; height:25px; margin-right:5px; vertical-align:middle;">
+                                            @endif
+                                            {{ ucwords($payment->payment_mode) }}
+                                        </td>
                                         <td class="text-success">₹ {{ number_format($payment->amount_paid, 2) }}</td>
                                         <td class="text-danger">₹ {{ number_format($payment->due_amount, 2) }}</td>
                                         <td>
@@ -237,7 +254,7 @@
                             </tbody>
                         </table>
                     @else
-                        <p class="text-center text-muted">No renewal plans found.</p>
+                        <p class="text-center text-muted">No old membership plans found.</p>
                     @endif
                 </div>
 

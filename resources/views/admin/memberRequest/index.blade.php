@@ -257,7 +257,8 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer px-4">
+                    <div id="acceptRejectBtn">
+                    <div class="modal-footer px-4 justify-content-end">
                         <button type="submit" id="acceptMemberRequestBtn" class="btn btn-success">
                             <i class="bi bi-check-circle me-1"></i> Accept
                         </button>
@@ -267,6 +268,7 @@
                         <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Cancel
                         </button>
+                    </div>
                     </div>
                 </div>
             </form>

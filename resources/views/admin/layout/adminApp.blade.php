@@ -90,6 +90,10 @@
         textarea{
             overflow: hidden;
         }
+        .page-header{
+            padding-bottom: 0px !important;
+            margin-bottom: 0px !important;
+        }
     </style>
 
     <script>

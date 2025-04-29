@@ -2186,6 +2186,12 @@ $(document).on('click', '.view-member-btn', function () {
     $('#memberRequestFinalPrice').val(members.final_price_after_discount);
     $('#memberRequestDueAmount').val(members.due_amount);
 
+    if (members.status == 'pending') {
+        $('#acceptRejectBtn').css('display', 'block');
+    } else {
+        $('#acceptRejectBtn').css('display', 'none');
+    }
+
     $('#viewmemberModal').modal('show');
 });
 

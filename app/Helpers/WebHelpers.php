@@ -304,3 +304,194 @@ function sendWhatsAppMessageForMembberRequstToGymOwner($name, $gymId)
     $message = "Hi " . $ownerDetails->owner_name . ",\n\nYour have received a new member registration request.\n\nName: $name\n\nThanks!";
     sendWhatsappMessage($mobile, $message, $image = null, $type = 'member_registration_request');
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function test() {
+    // Your closing prices (newest first - reversed from your example)
+$closingPrices = [
+    812.55, 817.35, 798.65, 813.4, 813.45, 822.4, 816.7, 797.45, 771.75, 763.5,
+    753.85, 742.2, 768.6, 746.9, 767.45, 779.2, 775.95, 771.7, 771.5, 772.3,
+    764, 772.85, 780.8, 753.2, 749.55, 745.1, 736.7, 723.15, 727.85, 723.05,
+    729.85, 728.9, 732.75, 732.05, 730.35, 716.05, 695.3, 688.8, 703.9, 710.9,
+    716.4, 722, 729.7, 727.3, 725.8, 727.7, 722.15, 727.65, 733.15, 731.1,
+    736.8, 737.2, 752.25, 766.05, 779.2, 760.95, 766, 772.9, 762.6, 758.45,
+    752.4, 749.2, 744.15, 745.9, 753.45, 759.05, 779.25, 764.1, 766.3, 753.7,
+    748.15, 729.5, 743.25, 760.45, 771.15, 778.75, 776.4, 793.4, 801.2, 793.2,
+    794.95, 788.3, 799.65, 812.45, 812.05, 821.15, 812, 832.8, 838.15, 850.55,
+    860.95, 861.55, 853.7, 861.6, 867.5, 858.05, 863.65, 865.45, 859.7, 853.95,
+    836.4, 838.95, 838.85, 834.1, 839.4, 844.45, 816.05, 780.75, 803, 814.3,
+    804.25, 808.65, 826.7, 847.65, 843.15, 859.6, 854.8, 849.2, 829.85, 821.2,
+    820.2, 822.45, 832.7, 792.05, 780.95, 794.55, 786, 790.4, 813.95, 820.4,
+    811.05, 805.45, 804.65, 805.15, 799.75, 797.1, 797.4, 781.45, 770.65,
+    796.65, 794.1, 796.95, 787.9, 802.65, 801.85, 793.1, 798.25, 801.85,
+    781.7, 789.95, 792.75, 782.9, 785.55, 790.85, 787.75, 768.6, 782.65,
+    784.25, 782.5, 818.75, 816.5, 824.8, 822.15, 815.6, 814.5, 809.4, 815.9,
+    815.05, 815.35, 820.3, 815.55, 820.3, 813.7, 812.1, 803, 797.55, 812.6,
+    824.3, 808.05, 808.65, 797.7, 811.65, 847.85, 862.65, 872.4, 872.8, 871.6,
+    862.45, 848.5, 852, 863.9, 876.8, 889.35, 893.55, 880.7, 881.35, 859.7,
+    856.7, 849, 861.3, 856.25, 859.75, 839.3, 839.95, 826.15, 841.95, 848.95,
+    844, 845.35, 842.25, 832.7, 836.3, 843.75, 852.6, 844.9, 839.2, 843.9,
+    839.1, 835.55, 831.8, 829.95, 816.95, 789.75, 775.2, 905.65, 830.35,
+    825.85, 822.65, 831.15, 833.7, 828.6, 832.1, 818.75, 830.65, 821, 817.85,
+    811.95, 820.3, 818.2, 808.8, 817.35, 819.8, 810.8, 801.9, 807.8, 831.45,
+    830.05
+];
+
+    // Reverse to chronological order (oldest first)
+    $chronologicalPrices = array_reverse($closingPrices);
+
+    $rsiValues = calculateRSIWithClosingPrices($chronologicalPrices);
+
+
+
+$rsiValues = [
+    ['close' => 818.75, 'rsi' => 44.88],
+    ['close' => 832.1, 'rsi' => 51.23],
+    ['close' => 828.6, 'rsi' => 49.62],
+    ['close' => 833.7, 'rsi' => 51.99],
+    ['close' => 831.15, 'rsi' => 50.71],
+    ['close' => 822.65, 'rsi' => 46.57],
+    ['close' => 825.85, 'rsi' => 48.28],
+    ['close' => 830.35, 'rsi' => 50.67],
+    ['close' => 905.65, 'rsi' => 73.1], // Sell signal
+    ['close' => 775.2, 'rsi' => 39.55], // Buy signal
+    ['close' => 789.75, 'rsi' => 42.71],
+];
+
+// Initial capital
+$capital = 100000;
+$initialCapital = $capital;
+
+// Dynamic holding days (you can change this value)
+$maxHoldingDays = 10;
+
+$inPosition = false;
+$buyPrice = 0;
+$quantity = 0;
+$holdingDays = 0;
+$totalProfit = 0;
+
+foreach ($rsiValues as $index => $data) {
+    $rsi = $data['rsi'];
+    $price = $data['close'];
+
+    if (!$inPosition && $rsi < 40) {
+        // BUY
+        $buyPrice = $price;
+        $quantity = floor($capital / $buyPrice);
+        $capital -= $quantity * $buyPrice;
+        $inPosition = true;
+        $holdingDays = 0;
+        echo "Day $index: BUY at ₹$buyPrice, Qty: $quantity<br>";
+    } elseif ($inPosition) {
+        $holdingDays++;
+
+        // SELL condition: RSI > 65 OR holding period exceeded
+        if ($rsi > 65 || $holdingDays >= $maxHoldingDays) {
+            $sellPrice = $price;
+            $profit = ($sellPrice - $buyPrice) * $quantity;
+            $capital += $quantity * $sellPrice;
+            $totalProfit += $profit;
+            echo "Day $index: SELL at ₹$sellPrice, Qty: $quantity, Holding: $holdingDays days, Profit: ₹" . round($profit, 2) . "<br>";
+            $inPosition = false;
+            $quantity = 0;
+            $buyPrice = 0;
+            $holdingDays = 0;
+        }
+    }
+}
+
+// Final forced exit if still holding
+if ($inPosition) {
+    $lastClose = end($rsiValues)['close'];
+    $profit = ($lastClose - $buyPrice) * $quantity;
+    $capital += $quantity * $lastClose;
+    $totalProfit += $profit;
+    echo "Final SELL at ₹$lastClose, Qty: $quantity, Holding: $holdingDays days, Profit: ₹" . round($profit, 2) . "<br>";
+}
+
+$returnPercent = ($totalProfit / $initialCapital) * 100;
+
+echo "<br><strong>Total Profit:</strong> ₹" . round($totalProfit, 2);
+echo "<br><strong>Return Percentage:</strong> " . round($returnPercent, 2) . "%";
+
+
+    exit;
+}
+
+function calculateRSIWithClosingPrices($closingPrices, $period = 14) {
+    if (count($closingPrices) < $period + 1) {
+        return null; // Not enough data points
+    }
+
+    $result = [];
+    $gains = [];
+    $losses = [];
+
+    // Calculate daily changes
+    for ($i = 1; $i < count($closingPrices); $i++) {
+        $change = $closingPrices[$i] - $closingPrices[$i - 1];
+        $gains[] = max($change, 0);
+        $losses[] = abs(min($change, 0));
+    }
+
+    // Initial averages (simple moving average)
+    $avgGain = array_sum(array_slice($gains, 0, $period)) / $period;
+    $avgLoss = array_sum(array_slice($losses, 0, $period)) / $period;
+
+    // First RSI value
+    $rs = ($avgLoss == 0) ? INF : ($avgGain / $avgLoss);
+    $rsi = 100 - (100 / (1 + $rs));
+    $result[] = [
+        'close' => $closingPrices[$period],
+        'rsi' => round($rsi, 2)
+    ];
+
+    // Subsequent values with Wilder's smoothing
+    for ($i = $period; $i < count($gains); $i++) {
+        $currentGain = $gains[$i];
+        $currentLoss = $losses[$i];
+
+        // Wilder's smoothing formula
+        $avgGain = (($avgGain * ($period - 1)) + $currentGain) / $period;
+        $avgLoss = (($avgLoss * ($period - 1)) + $currentLoss) / $period;
+
+        $rs = ($avgLoss == 0) ? INF : ($avgGain / $avgLoss);
+        $rsi = 100 - (100 / (1 + $rs));
+        
+        $result[] = [
+            'close' => $closingPrices[$i + 1], // +1 because changes start from index 1
+            'rsi' => round($rsi, 2)
+        ];
+    }
+
+    return $result;
+}
+
