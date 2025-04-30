@@ -142,9 +142,9 @@
       <nav class="js-mega-menu navbar-nav-wrap">
         <!-- Logo -->
 
-        <a class="navbar-brand" href="./index.html" aria-label="Front">
-          <img class="navbar-brand-logo" src="./assets/svg/logos/logo.svg" alt="Logo" data-hs-theme-appearance="default">
-          <img class="navbar-brand-logo" src="./assets/svg/logos-light/logo.svg" alt="Logo" data-hs-theme-appearance="dark">
+        <a class="navbar-brand" href="{{ url('/') }}" aria-label="Front" style="max-width: unset !important;">
+          <img class="navbar-brand-logo" src="{{ asset('assets/images/blackFullLogo.png') }}" alt="Logo" data-hs-theme-appearance="default">
+          <img class="navbar-brand-logo" src="{{ asset('assets/images/blackFullLogo.png') }}" alt="Logo" data-hs-theme-appearance="dark">
         </a>
 
         <!-- End Logo -->

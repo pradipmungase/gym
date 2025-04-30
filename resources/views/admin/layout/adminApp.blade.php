@@ -87,12 +87,27 @@
             /* Bootstrap 'success' color */
             border-color: #2F6AD9 !important;
         }
-        textarea{
+
+        textarea {
             overflow: hidden;
         }
-        .page-header{
+
+        .page-header {
             padding-bottom: 0px !important;
             margin-bottom: 0px !important;
+        }
+
+        .navbar-brand-logo {
+            width: 100%;
+            min-width: none !important;
+            max-width: none !important;
+            margin-top: auto;
+        }
+
+        .navbar-brand-logo-mini {
+            width: 100%;
+            min-width: none !important;
+            max-width: none !important;
         }
     </style>
 
@@ -274,7 +289,8 @@
 
     <script src="{{ asset('') }}assets/js/hs.theme-appearance.js"></script>
 
-    <script src="{{ asset('') }}assets/vendor/hs-navbar-vertical-aside/dist/hs-navbar-vertical-aside-mini-cache.js"></script>
+    <script src="{{ asset('') }}assets/vendor/hs-navbar-vertical-aside/dist/hs-navbar-vertical-aside-mini-cache.js">
+    </script>
 
     <!-- ========== HEADER ========== -->
 
@@ -282,11 +298,15 @@
         class="navbar navbar-expand-lg navbar-fixed navbar-height navbar-container navbar-bordered bg-white">
         <div class="navbar-nav-wrap">
             <!-- Logo -->
-            <a class="navbar-brand" href="{{ url('/dashboard') }}" aria-label="Front">
-                <h3 class="navbar-brand-logo" data-hs-theme-appearance="default">GYM Manager</h3>
-                <h3 class="navbar-brand-logo" data-hs-theme-appearance="dark">GYM Manager</h3>
-                <h3 class="navbar-brand-logo-mini" data-hs-theme-appearance="default">GM</h3>
-                <h3 class="navbar-brand-logo-mini" data-hs-theme-appearance="dark">GM</h3>
+            <a class="navbar-brand" href="{{ url('/dashboard') }}" aria-label="Front" style="width: 30% !important;">
+                <img class="navbar-brand-logo" src="{{ asset('assets/images/shortLogoResized.png') }}" alt="Logo"
+                    data-hs-theme-appearance="default">
+                <img class="navbar-brand-logo" src="{{ asset('assets/images/shortLogoResized.png') }}" alt="Logo"
+                    data-hs-theme-appearance="dark">
+                <img class="navbar-brand-logo-mini" src="{{ asset('assets/images/shortLogoResized.png') }}" alt="Logo"
+                    data-hs-theme-appearance="default">
+                <img class="navbar-brand-logo-mini" src="{{ asset('assets/images/shortLogoResized.png') }}" alt="Logo"
+                    data-hs-theme-appearance="dark">
             </a>
             <!-- End Logo -->
 
@@ -353,7 +373,8 @@
                                         </div>
 
                                         <input type="search" class="form-control mobileViewSearch"
-                                            placeholder="Search Member & Trainer" aria-label="Search Member & Trainer">
+                                            placeholder="Search Member & Trainer"
+                                            aria-label="Search Member & Trainer">
                                         <a class="input-group-append input-group-text" href="javascript:;">
                                             <i class="bi-x-lg"></i>
                                         </a>
@@ -387,7 +408,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item d-sm-inline-block">
                         <button id="installBtn" type="button"
-                            class="btn btn-ghost-secondary btn-icon rounded-circle" style="left: 10px;"
+                            class="btn btn-ghost-secondary btn-icon rounded-circle"
                             title="Install App">
                             <i class="bi bi-file-arrow-down"></i>
                         </button>
@@ -404,7 +425,7 @@
                             </button>
 
                             <div class="dropdown-menu dropdown-menu-end dropdown-card navbar-dropdown-menu navbar-dropdown-menu-borderless"
-                                aria-labelledby="navbarNotificationsDropdown" style="width: 24rem;">
+                                aria-labelledby="navbarNotificationsDropdown" style="width: 22.1rem;">
                                 <div class="card">
                                     <!-- Header -->
                                     <div class="card-header card-header-content-between">
@@ -447,16 +468,21 @@
                                                                     <div class="col ms-n2">
                                                                         <h5 class="mb-1">{{ $notification->title }}
                                                                         </h5>
-                                                                     <p class="text-body fs-5">{!! nl2br(e($notification->description)) !!}</p>
+                                                                        <p class="text-body fs-5">
+                                                                            {!! nl2br(e($notification->description)) !!}</p>
                                                                     </div>
-                                                                        <small class="col-auto text-muted text-cap">{{  $notification->relative_time }}</small>
+                                                                    <small
+                                                                        class="col-auto text-muted text-cap">{{ $notification->relative_time }}</small>
                                                                 </div>
                                                                 @if ($notification->type == 'member')
-                                                                    <a class="stretched-link" href="{{ url('members/view/'.encrypt($notification->member_id)) }}"></a>
+                                                                    <a class="stretched-link"
+                                                                        href="{{ url('members/view/' . encrypt($notification->member_id)) }}"></a>
                                                                 @elseif ($notification->type == 'trainer')
-                                                                    <a class="stretched-link" href="{{ url('trainers/view/'.encrypt($notification->trainer_id)) }}"></a>
+                                                                    <a class="stretched-link"
+                                                                        href="{{ url('trainers/view/' . encrypt($notification->trainer_id)) }}"></a>
                                                                 @elseif ($notification->type == 'membership_expiry')
-                                                                    <a class="stretched-link" href="{{ url('members/view/'.encrypt($notification->member_id)) }}"></a>
+                                                                    <a class="stretched-link"
+                                                                        href="{{ url('members/view/' . encrypt($notification->member_id)) }}"></a>
                                                                 @endif
                                                             </li>
                                                         @endforeach
@@ -554,14 +580,16 @@
         <div class="navbar-vertical-container">
             <div class="navbar-vertical-footer-offset">
                 <!-- Logo -->
-
-                <a class="navbar-brand" href="{{ url('/dashboard') }}" aria-label="Front">
-                    <h3 class="navbar-brand-logo" data-hs-theme-appearance="default">GYM Manager</h3>
-                    <h3 class="navbar-brand-logo" data-hs-theme-appearance="dark">GYM Manager</h3>
-                    <h3 class="navbar-brand-logo-mini" data-hs-theme-appearance="default">GM</h3>
-                    <h3 class="navbar-brand-logo-mini" data-hs-theme-appearance="dark">GM</h3>
+                <a class="navbar-brand" href="{{ url('/dashboard') }}" aria-label="">
+                    <img class="navbar-brand-logo" src="{{ asset('assets/images/blackFullLogo.png') }}"
+                        alt="Logo" data-hs-theme-appearance="default">
+                    <img class="navbar-brand-logo" src="{{ asset('assets/images/whiteFullLogo.png') }}"
+                        alt="Logo" data-hs-theme-appearance="dark">
+                    <img class="navbar-brand-logo-mini" src="{{ asset('assets/images/shortLogo.png') }}"
+                        alt="Logo" data-hs-theme-appearance="default">
+                    <img class="navbar-brand-logo-mini" src="{{ asset('assets/images/shortLogo.png') }}"
+                        alt="Logo" data-hs-theme-appearance="dark">
                 </a>
-
                 <!-- End Logo -->
 
                 <!-- Navbar Vertical Toggle -->
@@ -683,7 +711,8 @@
                         </div>
 
                         <div class="nav-item">
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#requestFeatureModal" role="button">
+                            <a class="nav-link" href="#" data-bs-toggle="modal"
+                                data-bs-target="#requestFeatureModal" role="button">
                                 <i class="bi-question-circle nav-icon"></i>
                                 <span class="nav-link-title">Request Feature</span>
                             </a>
@@ -745,47 +774,43 @@
     @yield('content')
 
 
-<div class="modal fade" id="requestFeatureModal" tabindex="-1" aria-labelledby="requestFeatureModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="requestFeatureModalLabel">Request Feature</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('requestFeature.store') }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="featureName" class="form-label">Feature Name <span class="text-danger">*</span></label>    
-                        <input type="text" 
-                               class="form-control" 
-                               id="featureName" 
-                               name="feature_name" 
-                               placeholder="Enter the feature name" 
-                               required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
-                        <textarea class="form-control" 
-                                  id="description" 
-                                  name="description" 
-                                  rows="3" 
-                                  placeholder="Describe the feature you want" 
-                                  required></textarea>
-                    </div>
-                    <div class="modal-footer px-4">
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-check-circle me-1"></i> Submit
-                        </button>
-                        <button type="button" class="clearFromDataWithError btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle me-1"></i> Cancel
-                        </button>
-                    </div>
-                </form>
+    <div class="modal fade" id="requestFeatureModal" tabindex="-1" aria-labelledby="requestFeatureModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="requestFeatureModalLabel">Request Feature</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('requestFeature.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="featureName" class="form-label">Feature Name <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="featureName" name="feature_name"
+                                placeholder="Enter the feature name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description <span
+                                    class="text-danger">*</span></label>
+                            <textarea class="form-control" id="description" name="description" rows="3"
+                                placeholder="Describe the feature you want" required></textarea>
+                        </div>
+                        <div class="modal-footer px-4">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle me-1"></i> Submit
+                            </button>
+                            <button type="button" class="clearFromDataWithError btn btn-secondary"
+                                data-bs-dismiss="modal">
+                                <i class="bi bi-x-circle me-1"></i> Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
@@ -818,18 +843,20 @@
     </div>
     <!-- End Footer -->
 
-<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080;">
-    <!-- Toast -->
-    <div id="dynamicToast" class="toast fade align-items-center text-bg-primary border-0 rounded-4 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body d-flex align-items-center gap-3">
-                <i class="bi bi-check-circle-fill fs-4"></i> <!-- Icon larger and spaced -->
-                <span id="toastMessage">Your message will appear here.</span>
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+        <!-- Toast -->
+        <div id="dynamicToast" class="toast fade align-items-center text-bg-primary border-0 rounded-4 shadow-lg"
+            role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-3">
+                    <i class="bi bi-check-circle-fill fs-4"></i> <!-- Icon larger and spaced -->
+                    <span id="toastMessage">Your message will appear here.</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-3 m-auto text-white"
+                    data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <button type="button" class="btn-close btn-close-white me-3 m-auto text-white" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
-</div>
 
 
     <!-- JS Global Compulsory  -->

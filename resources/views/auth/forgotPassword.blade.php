@@ -261,9 +261,9 @@
 
         <!-- Content -->
         <div class="container py-5 py-sm-7">
-            {{-- <a class="d-flex justify-content-center mb-5" href="./index.html"> --}}
-            {{-- <img class="zi-2" src="./assets/svg/logos/logo.svg" alt="Image Description" style="width: 8rem;"> --}}
-            {{-- </a> --}}
+            <a class="d-flex justify-content-center mb-5" href="{{ url('/') }}">
+                <img class="zi-2" src="{{ asset('assets/images/blackFullLogo.png') }}" alt="Image Description" style="width: 18rem;">
+            </a>
 
             <div class="mx-auto" style="max-width: 30rem;">
                 <!-- Card -->
