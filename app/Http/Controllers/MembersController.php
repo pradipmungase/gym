@@ -549,7 +549,7 @@ class MembersController extends Controller{
 
         // Discount type requires discount value
         if ($request->filled('discount_type')) {
-            $conditionalRules['discount'] = 'required|numeric|min:0|max:100';
+            $conditionalRules['discount'] = 'required|numeric|min:0';
         }
 
         // Discount value requires discount type
@@ -655,12 +655,11 @@ class MembersController extends Controller{
                 'updated_at' => now(),
             ]);
 
+            sendWhatsAppMessageForMemberPlanChange($request->changePlanMemberId,$member_memberships->plan_id,$request->plan,$request->new_plan_price,$request->new_plan_price_after_discount,$request->joining_date,$expiry_date,$request->new_due_amount);
+
             // Commit the transaction
             DB::commit();
-
-            // Return success response
             return response()->json(['status' => 'success', 'message' => 'Plan changed successfully!']);
-
         } catch (\Throwable $th) {
             // Rollback the transaction on error
             DB::rollBack();
@@ -775,6 +774,7 @@ class MembersController extends Controller{
 
             DB::table('member_payments')->insert($paymentData);
 
+            sendWhatsAppMessageForMemberRenewal($request->renewMembershipMemberId,$request->new_plan_price,$request->new_plan_price_after_discount,$request->new_due_amount,$endDate);
             // Commit the transaction
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Membership renewed successfully!']);

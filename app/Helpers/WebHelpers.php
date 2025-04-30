@@ -305,6 +305,62 @@ function sendWhatsAppMessageForMembberRequstToGymOwner($name, $gymId)
 }
 
 
+function sendWhatsAppMessageForMemberPlanChange($memberId, $oldPlanId, $newPlanId, $newPlanPrice, $newPlanPriceAfterDiscount, $joiningDate, $expiryDate,$newDueAmount)
+{
+    $memberDetails = DB::table('members')->where('id', $memberId)->first();
+
+    if (!$memberDetails) return;
+
+    $mobile = $memberDetails->mobile;
+    $memberName = $memberDetails->name ?? 'Member';
+    $gymName = Auth::user()->gym_name ?? 'Your Gym';
+
+    $formattedJoinDate = Carbon::parse($joiningDate)->format('d M Y');
+    $formattedExpiryDate = Carbon::parse($expiryDate)->format('d M Y');
+
+    $oldPlan = DB::table('menbership_plans')->where('id', $oldPlanId)->first();
+    $newPlan = DB::table('menbership_plans')->where('id', $newPlanId)->first();
+
+    $oldPlanName = $oldPlan->name ?? 'Previous Plan';
+    $newPlanName = $newPlan->name ?? 'New Plan';
+
+    $message = "🎉 *Membership Plan Updated!* 🎉\n\n"
+            . "Hi *$memberName*,\n\n"
+            . "Your membership at *$gymName* has been successfully updated. Here are the details:\n\n"
+            . "🗓️ *Start Date:* $formattedJoinDate\n"
+            . "📅 *Expiry Date:* $formattedExpiryDate\n"
+            . "🔁 *Previous Plan:* $oldPlanName\n"
+            . "✅ *New Plan:* $newPlanName\n"
+            . "💰 *Plan Price:* ₹$newPlanPrice\n"
+            . "🎁 *Discounted Price:* ₹$newPlanPriceAfterDiscount\n"
+            . "💸 *Due Amount:* ₹$newDueAmount\n\n"
+            . "We’re excited to continue supporting your fitness journey! 💪\n\n"
+            . "Regards,\n*$gymName* Team";
+
+    sendWhatsappMessage($mobile, $message, null, 'member_plan_change');
+}
+
+function sendWhatsAppMessageForMemberRenewal($memberId, $newPlanPrice, $newPlanPriceAfterDiscount, $newDueAmount,$expiryDate)
+{
+    $memberDetails = DB::table('members')->where('id', $memberId)->first();
+    $mobile = $memberDetails->mobile;
+    $memberName = $memberDetails->name ?? 'Member';
+    $gymName = Auth::user()->gym_name ?? 'Your Gym';
+    $formattedExpiryDate = Carbon::parse($expiryDate)->format('d M Y');
+
+    $message = "🎉 *Membership Renewed!* 🎉\n\n"
+            . "Hi *$memberName*,\n\n"
+            . "Your membership at *$gymName* has been successfully renewed. Here are the details:\n\n"
+            . "📅 *Expiry Date:* $formattedExpiryDate\n"
+            . "💰 *Plan Price:* ₹$newPlanPrice\n"
+            . "🎁 *Discounted Price:* ₹$newPlanPriceAfterDiscount\n"
+            . "💸 *Due Amount:* ₹$newDueAmount\n\n"
+            . "We’re excited to continue supporting your fitness journey! 💪\n\n"
+            . "Regards,\n*$gymName* Team";
+
+    sendWhatsappMessage($mobile, $message, null, 'member_renewal');
+}
+
 
 
 
