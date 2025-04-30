@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('whatsapp_mess_tracking', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('mobile');
             $table->text('message');
-            $table->text('image')->nullable();
-            $table->string('type');
-            $table->string('status');
+            $table->string('image')->nullable();
+            $table->string('type')->index();
+            $table->string('status')->index();
             $table->text('response');
             $table->timestamps();
         });

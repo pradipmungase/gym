@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('request_feature', function (Blueprint $table) {
-            $table->id();
-            $table->integer('gym_id');
+            $table->bigIncrements('id');
+            $table->integer('gym_id')->index();
             $table->string('feature_name');
             $table->text('description')->nullable();
-            $table->enum('status', ['requested', 'approved', 'rejected'])->default('requested');
+            $table->enum('status', ['requested', 'approved', 'rejected'])->default('requested')->index();
             $table->timestamps();
         });
     }

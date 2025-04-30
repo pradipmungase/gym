@@ -12,19 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('member_payments', function (Blueprint $table) {
-            $table->id();
-            $table->integer('member_id');
-            $table->integer('membership_id');
-            $table->integer('gym_id');
-
-            $table->enum('payment_mode', ['cash','phone pay','google pay','other','system'])->nullable();
-            $table->decimal('amount_paid', 10, 2)->nullable();
-            $table->decimal('due_amount', 10, 2)->nullable();
+            $table->bigIncrements('id');
+            $table->integer('member_id')->index();
+            $table->integer('membership_id')->index();
+            $table->integer('gym_id')->index();
+            $table->enum('payment_mode', ['cash','phone pay','google pay','other','system'])->nullable()->index();
+            $table->decimal('amount_paid', 10, 2)->nullable()->index();
+            $table->decimal('due_amount', 10, 2)->nullable()->index();
             $table->decimal('after_discount_amount', 10, 2)->nullable();
-            $table->dateTime('payment_date')->nullable();
+            $table->dateTime('payment_date')->nullable()->index();
             $table->decimal('original_plan_amount', 10, 2)->nullable();
-            $table->enum('payment_type', ['admission','Due Payment','renewal','Plan Change','system'])->nullable();
-
+            $table->enum('payment_type', ['admission','Due Payment','renewal','Plan Change','system'])->nullable()->index();
             $table->timestamps();
         });
 

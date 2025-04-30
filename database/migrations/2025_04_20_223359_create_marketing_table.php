@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
             Schema::create('marketing', function (Blueprint $table) {
-                $table->id();
-                $table->string('whatsappNumber')->nullable();
+                $table->bigIncrements('id');
+                $table->string('whatsappNumber')->index();
                 $table->string('name')->nullable();
                 $table->string('pincode')->nullable();
                 $table->string('address')->nullable();

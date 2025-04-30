@@ -12,18 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('trainers', function (Blueprint $table) {
-            $table->id();
-            $table->integer('gym_id');
-            $table->string('name');
-            $table->string('email');
+            $table->bigIncrements('id');
+            $table->integer('gym_id')->index();
+            $table->string('name')->index();
+            $table->string('email')->nullable();
             $table->string('phone');
             $table->string('gender');
             $table->string('address')->nullable();
             $table->string('image')->nullable();
             $table->date('joining_date');
             $table->date('birth_date')->nullable();
-            $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->integer('monthly_salary')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active')->index();
+            $table->integer('monthly_salary');
             $table->integer('daily_salary')->nullable();
             $table->softDeletes();
             $table->timestamps();

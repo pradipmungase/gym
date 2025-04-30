@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('gym_name');
             $table->string('owner_name');
             $table->string('mobile');
@@ -20,13 +20,14 @@ return new class extends Migration
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('profile_picture')->nullable();
-            $table->string('qr_code')->nullable();
+            $table->string('qr_code');
             $table->string('gym_address')->nullable();
             $table->string('email')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
         });
+
     }
 
     /**

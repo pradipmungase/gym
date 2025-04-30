@@ -12,26 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('member_memberships', function (Blueprint $table) {
-            $table->id();
-            $table->integer('member_id');
-            $table->integer('gym_id');
-            $table->integer('plan_id');
-            $table->integer('trainer_id')->nullable();
-
+            $table->bigIncrements('id');
+            $table->integer('member_id')->index();
+            $table->integer('gym_id')->index();
+            $table->integer('plan_id')->index();
+            $table->integer('trainer_id')->nullable()->index();
             $table->date('start_date');
             $table->date('end_date');
             $table->string('batch');
-
-            // Discount info
             $table->enum('discount_type', ['percentage', 'flat'])->nullable();
             $table->decimal('discount_value', 10, 2)->nullable();
-
             $table->decimal('plan_price', 10, 2);
             $table->decimal('discount_price', 10, 2)->nullable();
             $table->decimal('final_price', 10, 2);
-
-            $table->enum('status', ['active', 'expired', 'cancelled','changed','renew'])->default('active');
-
+            $table->enum('status', ['active', 'expired', 'cancelled','changed','renew'])->default('active')->index();
             $table->timestamps();
         });
 

@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
-            $table->integer('gym_id');
+            $table->bigIncrements('id');
+            $table->integer('gym_id')->index();
             $table->string('title');
             $table->string('description');
             $table->date('date');
             $table->time('time');
-            $table->string('type');
-            $table->integer('member_id')->nullable();
-            $table->integer('trainer_id')->nullable();
-            $table->enum('status', ['read', 'unread']);
+            $table->string('type')->index();
+            $table->integer('member_id')->nullable()->index();
+            $table->integer('trainer_id')->nullable()->index();
+            $table->enum('status', ['read', 'unread'])->index();
             $table->string('image')->nullable();
             $table->timestamps();
         });

@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('members', function (Blueprint $table) {
-            $table->id();
-            $table->integer('gym_id');
-            $table->string('name');
-            $table->string('email')->unique()->nullable();
+            $table->bigIncrements('id');
+            $table->integer('gym_id')->index();
+            $table->string('name')->index();
+            $table->string('email')->nullable();
             $table->string('mobile');
             $table->string('qr_code_path');
             $table->date('birth_date')->nullable();
             $table->enum('gender', ['male', 'female']);
             $table->integer('age')->nullable();
-            $table->enum('status', ['active', 'inactive']);
+            $table->enum('status', ['active', 'inactive'])->default('active')->index();
             $table->string('image')->nullable();
             $table->text('address')->nullable();
             $table->text('note')->nullable();
