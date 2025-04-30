@@ -23,12 +23,12 @@ class NotificationController extends Controller{
     
     public function index()
     {
-        $this->generateBirthdayNotifications();
+        $this->generateBirthdayAndAnniversaryNotifications();
         $this->generateMembershipExpiryNotifications();
         $this->generateTodaySummaryNotifications();
     }
 
-    public function generateBirthdayNotifications()
+    public function generateBirthdayAndAnniversaryNotifications()
     {
         $today = Carbon::today();
         $todayMonthDay = $today->format('m-d');
@@ -38,8 +38,10 @@ class NotificationController extends Controller{
 
         $notifications = [];
 
-        // ==== Fetch active members having birthday today ====
+        // ==== 1. Member Birthdays ====
         $members = DB::table('members')
+            ->join('users', 'members.gym_id', '=', 'users.id')
+            ->select('members.*', 'users.gym_name')
             ->where('status', 'active')
             ->whereRaw("DATE_FORMAT(birth_date, '%m-%d') = ?", [$todayMonthDay])
             ->get();
@@ -52,6 +54,7 @@ class NotificationController extends Controller{
                 ->exists();
 
             if (!$alreadyExists) {
+                // Notification
                 $notifications[] = [
                     'gym_id' => $member->gym_id,
                     'title' => 'Happy Birthday!',
@@ -66,12 +69,20 @@ class NotificationController extends Controller{
                     'created_at' => $nowTimestamp,
                     'updated_at' => $nowTimestamp,
                 ];
+
+                // WhatsApp Message
+                $message = "🎉 *Happy Birthday {$member->name}!* 🎉\n\n"
+                        . "Wishing you a fantastic day filled with joy and a year full of success and good health! 🥳\n\n"
+                        . "- *Team {$member->gym_name}*";
+                sendWhatsappMessage($member->mobile, $message, null, 'birthday_member');
             }
         }
 
-        // ==== Fetch active trainers having joining anniversary today ====
+        // ==== 2. Trainer Work Anniversary ====
         $trainersForAnniversary = DB::table('trainers')
-            ->where('status', 'active')
+            ->join('users', 'trainers.gym_id', '=', 'users.id')
+            ->select('trainers.*', 'users.gym_name')
+        ->where('status', 'active')
             ->whereRaw("DATE_FORMAT(joining_date, '%m-%d') = ?", [$todayMonthDay])
             ->get();
 
@@ -84,10 +95,11 @@ class NotificationController extends Controller{
                 ->exists();
 
             if (!$alreadyExists) {
+                // Notification
                 $notifications[] = [
                     'gym_id' => $trainer->gym_id,
                     'title' => 'Happy Work Anniversary!',
-                    'description' => 'Celebrating ' . $trainer->name . '\'s work anniversary today!',
+                    'description' => "Celebrating {$trainer->name}'s work anniversary today!",
                     'date' => $todayDate,
                     'time' => $nowTime,
                     'type' => 'trainer',
@@ -98,10 +110,16 @@ class NotificationController extends Controller{
                     'created_at' => $nowTimestamp,
                     'updated_at' => $nowTimestamp,
                 ];
+
+                // WhatsApp Message
+                $message = "🎉 *Happy Work Anniversary {$trainer->name}!* 🎉\n\n"
+                        . "Thank you for your hard work and dedication. We’re proud to have you on the team! 💪\n\n"
+                        . "- *Team {$trainer->gym_name}*";
+                sendWhatsappMessage($trainer->phone, $message, null, 'anniversary_trainer');
             }
         }
 
-        // ==== Fetch active trainers having birthday today ====
+        // ==== 3. Trainer Birthdays ====
         $trainersForBirthday = DB::table('trainers')
             ->where('status', 'active')
             ->whereRaw("DATE_FORMAT(birth_date, '%m-%d') = ?", [$todayMonthDay])
@@ -116,10 +134,11 @@ class NotificationController extends Controller{
                 ->exists();
 
             if (!$alreadyExists) {
+                // Notification
                 $notifications[] = [
                     'gym_id' => $trainer->gym_id,
                     'title' => 'Happy Birthday!',
-                    'description' => 'Wishing ' . $trainer->name . ' a wonderful birthday!',
+                    'description' => "Wishing {$trainer->name} a wonderful birthday!",
                     'date' => $todayDate,
                     'time' => $nowTime,
                     'type' => 'trainer',
@@ -130,10 +149,16 @@ class NotificationController extends Controller{
                     'created_at' => $nowTimestamp,
                     'updated_at' => $nowTimestamp,
                 ];
+
+                // WhatsApp Message
+                $message = "🎉 *Happy Birthday {$trainer->name}!* 🎉\n\n"
+                        . "May your day be filled with happiness and your year with success! 🥳\n\n"
+                        . "- *Team {$trainer->gym_name}*";
+                sendWhatsappMessage($trainer->mobile, $message, null, 'birthday_trainer');
             }
         }
 
-        // ==== Final Bulk Insert for all notifications ====
+        // ==== Final Bulk Insert ====
         if (!empty($notifications)) {
             DB::table('notifications')->insert($notifications);
         }
@@ -246,7 +271,7 @@ class NotificationController extends Controller{
                 $description = "Today's Summary:\n";
                 $description .= "🧑‍🤝‍🧑 New Members: {$newMembersCount}\n";
                 $description .= "📅 Memberships Expired: {$expiringMembershipsCount}\n";
-                $description .= "💰 Payments amount: ₹{$paymentsAmount}";
+                $description .= "💰 Payments Collected: ₹{$paymentsAmount}";
 
                 // Insert notification for this gym
                 DB::table('notifications')->insert([

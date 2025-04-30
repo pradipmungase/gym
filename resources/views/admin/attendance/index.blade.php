@@ -8,9 +8,9 @@
                         <h1 class="page-header-title mb-0">Today's Attendance Details</h1>
                     </div>
                     <div class="col-6 text-end">
-                        <button class="btn btn-primary" href="{{ url('attendance/take') }}">
+                        <a href="{{ url('attendance/take') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle me-1"></i> &nbsp; Take Attendance
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

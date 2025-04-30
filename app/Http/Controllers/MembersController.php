@@ -253,7 +253,7 @@ class MembersController extends Controller{
             }
 
             // Send WhatsApp message
-            sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath);
+            sendWhatsAppMessageForMemberRegistration($request->mobile, $request->name, $qrCodePath,$insertId);
 
             DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Member added successfully!']);

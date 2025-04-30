@@ -59,6 +59,7 @@ class AttendanceController extends Controller{
         $member = DB::table('members')
             ->where('id', $memberId)
             ->where('gym_id', $gymId)
+            ->where('status', 'active')
             ->first();
 
         if (!$member) {
@@ -105,13 +106,16 @@ class AttendanceController extends Controller{
         ]);
     }
 
-    public function markAttendanceByLatLong(Request $request, $gym_id, $member_id)
+    public function markAttendanceByLatLong(Request $request, $gymIDAndMemberID)
     {
+        $decoded = base64_decode($gymIDAndMemberID); // returns "2:1"
+        list($gym_id, $member_id) = explode("/", $decoded);
+
         $gym = DB::table('users')->where('id', $gym_id)->first();
         $member = DB::table('members')->where('id', $member_id)->first();
 
         if ($request->isMethod('get')) {
-            return view('takeAttendanceByLatLong', compact('gym', 'gym_id', 'member_id', 'member'));
+            return view('takeAttendanceByLatLong', compact('gym', 'gymIDAndMemberID', 'member'));
         }
 
         if (!$gym || !$member) {

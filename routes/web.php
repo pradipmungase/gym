@@ -51,7 +51,7 @@ Route::get('/resetPassword/{token}', [AuthController::class, 'resetPassword'])->
 Route::post('/resetPassword', [AuthController::class, 'finalResetPassword'])->name('finalResetPassword');
 Route::post('/resendOtp', [AuthController::class, 'resendOtp'])->name('resendOtp');
 Route::post('/verifyOtp', [AuthController::class, 'verifyOtp'])->name('verifyOtp');
-Route::match(['get', 'post'], '/markAttendanceByLatLong/{gym_id}/{member_id}', [AttendanceController::class, 'markAttendanceByLatLong'])->name('members.markAttendanceByLatLong');
+Route::match(['get', 'post'], '/markAttendanceByLatLong/{gymIDAndMemberID}/', [AttendanceController::class, 'markAttendanceByLatLong'])->name('members.markAttendanceByLatLong');
 
 Route::match(['get', 'post'], '/marketing', [MarketingController::class, 'index'])->name('marketing.index');
 Route::match(['get'], '/genrateNotifications', [NotificationController::class, 'index'])->name('genrateNotifications');

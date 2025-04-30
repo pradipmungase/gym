@@ -61,8 +61,7 @@
                                 <p class="mt-4">Fetching location...</p>
 
                                 <!-- Hidden inputs -->
-                                <input type="hidden" id="gym_id" value="{{ $gym_id }}">
-                                <input type="hidden" id="member_id" value="{{ $member_id }}">
+                                <input type="hidden" id="gymIDAndMemberID" value="{{ $gymIDAndMemberID }}">
                             </div>
                         </div>
                     </div>
@@ -78,11 +77,11 @@
                         function (position) {
                             const lat = position.coords.latitude;
                             const lng = position.coords.longitude;
-                            const gymId = $('#gym_id').val();
-                            const memberId = $('#member_id').val();
+
+                            const gymIDAndMemberID = $('#gymIDAndMemberID').val();
 
                             $.ajax({
-                                url: `/markAttendanceByLatLong/${gymId}/${memberId}`,
+                                url: `/markAttendanceByLatLong/${gymIDAndMemberID}`,
                                 method: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

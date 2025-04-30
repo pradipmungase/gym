@@ -244,10 +244,21 @@ function sendWhatsAppMessageForAttendanceMarked($member)
     sendWhatsappMessage($mobile, $message, $image = null, $type = 'attendance_marked');
 }
 
-function sendWhatsAppMessageForMemberRegistration($mobile, $name, $imagePath)
+function sendWhatsAppMessageForMemberRegistration($mobile, $name, $imagePath, $memberId)
 {
+    $gymID = Auth::user()->id;
     $gymName = Auth::user()->gym_name ?? 'Your Gym';
-    $message = "👋 Hello $name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nHere is your QR Code for daily attendance. 📲\n\nMake sure to scan it every day when you visit! ✅";
+
+    // Encode Gym ID and Member ID
+    $encoded = base64_encode("$gymID/$memberId");
+
+    // Generate full attendance link
+    $attendanceLink = route('members.markAttendanceByLatLong', ['gymIDAndMemberID' => $encoded]);
+
+    // Message with a proper call-to-action
+    $message = "👋 Hello $name,\n\nWelcome to *$gymName*! 🏋️‍♂️\n\nHere is your QR Code for daily attendance. 📲\n\n👉 *Click here to mark attendance:*\n$attendanceLink\n\nMake sure to scan or click the link every day when you visit! ✅";
+
+    // Send WhatsApp message
     sendWhatsappMessage($mobile, $message, $imagePath, $type = 'member_registration');
 }
 
