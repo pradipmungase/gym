@@ -136,7 +136,8 @@ function sendWhatsappMessage($mobile, $message, $image = null, $type = 'general'
         ];
 
         if (!empty($image)) {
-            $payload['imageBase64'] = $image;
+            $base64Image = base64_encode(file_get_contents(public_path($image)));
+            $payload['imageBase64'] = $base64Image;
         }
 
         $response = Http::post('http://localhost:3000/send-message', $payload);
@@ -187,8 +188,7 @@ function sendWelcomeWhatsappMessageToGymOwner($user)
     $mobile = $user->mobile;
     $gymName = Auth::user()->gym_name ?? 'Your Gym';
     $message = "👋 Hey $user->owner_name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nWe're excited to have you on board! 💪\n\nIf you have any questions or need help, feel free to contact us at *7028143227*. 📞";
-    $base64Image = base64_encode(file_get_contents(public_path($user->qr_code)));
-    sendWhatsappMessage($mobile, $message, $base64Image, $type = 'member_registration');
+    sendWhatsappMessage($mobile, $message, $user->qr_code, $type = 'member_registration');
 }
 
 
@@ -230,7 +230,7 @@ function sendAnnouncement($for, $title, $description, $date)
 
     } catch (\Exception $e) {
         Log::error('WhatsApp Announcement Message Failed: ' . $e->getMessage());
-        // Don't throw error to caller
+        throw $e;
     }
 }
 
@@ -247,9 +247,8 @@ function sendWhatsAppMessageForAttendanceMarked($member)
 function sendWhatsAppMessageForMemberRegistration($mobile, $name, $imagePath)
 {
     $gymName = Auth::user()->gym_name ?? 'Your Gym';
-    $base64Image = base64_encode(file_get_contents(public_path($imagePath)));
     $message = "👋 Hello $name,\n\nWelcome to *$gymName*! 🏋️‍♂️\nHere is your QR Code for daily attendance. 📲\n\nMake sure to scan it every day when you visit! ✅";
-    sendWhatsappMessage($mobile, $message, $base64Image, $type = 'member_registration');
+    sendWhatsappMessage($mobile, $message, $imagePath, $type = 'member_registration');
 }
 
 function sendMarketingWhatsapp($whatsappNumber, $outputdata)

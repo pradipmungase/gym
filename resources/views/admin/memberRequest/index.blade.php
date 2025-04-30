@@ -110,6 +110,7 @@
                                 <div class="invalid-feedback">Gender is required.</div>
                             </div>
 
+                            <input type="hidden" name="memberImgOld" id="memberImgOld">
                             <div class="col-md-6 col-lg-4">
                                 <div class="d-flex align-items-center">
                                     <!-- Avatar -->

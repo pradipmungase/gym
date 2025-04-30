@@ -190,6 +190,11 @@ class MembersController extends Controller{
                 DB::table('members')->where('id', $insertId)->update(['image' => $path]);
             }
 
+            if($request->memberImgOld != ''){
+                $image = $request->memberImgOld;
+                DB::table('members')->where('id', $insertId)->update(['image' => $image]);
+            }
+
             // Get plan details and calculate expiry date
             $plan = DB::table('menbership_plans')->where('id', $request->plan)->first();
             $expiry_date = $this->calculateExpiryDate($request->joining_date, $plan->duration, $plan->duration_type);

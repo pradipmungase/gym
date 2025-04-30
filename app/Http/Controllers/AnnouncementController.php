@@ -29,6 +29,7 @@ class AnnouncementController extends Controller{
         $announcements = DB::table('announcements')->where('gym_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.announcement.partials.announcement-table', compact('announcements'))->render(); // returns only table partial
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -38,21 +39,38 @@ class AnnouncementController extends Controller{
             'for'     => 'required|string|max:255',
         ]);
 
+        DB::beginTransaction();
 
-        DB::table('announcements')->insert([
-            'title' => $request->input('title'),
-            'description'  => $request->input('description'),
-            'date'     => $request->input('date'),
-            'for'     => $request->input('for'),
-            'gym_id'    => Auth::user()->id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        try {
+            DB::table('announcements')->insert([
+                'title' => $request->input('title'),
+                'description'  => $request->input('description'),
+                'date'     => $request->input('date'),
+                'for'     => $request->input('for'),
+                'gym_id'    => Auth::user()->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-        sendAnnouncement($request->input('for'), $request->input('title'), $request->input('description'), $request->input('date'));
-        
-        return response()->json(['message' => 'Announcement added successfully']);
+            sendAnnouncement(
+                $request->input('for'),
+                $request->input('title'),
+                $request->input('description'),
+                $request->input('date')
+            );
+
+            DB::commit();
+
+            return response()->json(['message' => 'Announcement added successfully']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error storing announcement: '.$e->getMessage());
+
+            return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
+        }
     }
+
 
     public function update(Request $request)
     {

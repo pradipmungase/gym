@@ -2185,6 +2185,7 @@ $(document).on('click', '.view-member-btn', function () {
     $('#memberRequestPlanPrice').val(members.plan_price);
     $('#memberRequestFinalPrice').val(members.final_price_after_discount);
     $('#memberRequestDueAmount').val(members.due_amount);
+    $('#memberImgOld').val(members.image);
 
     if (members.status == 'pending') {
         $('#acceptRejectBtn').css('display', 'block');

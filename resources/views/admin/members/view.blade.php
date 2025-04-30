@@ -183,6 +183,7 @@
                                                     'google pay' => asset('assets/images/google-pay-icon.png'),
                                                     'cash' => asset('assets/images/euro-notes-color-icon.png'),
                                                     'other' => asset('assets/images/credit-card-color-icon.png'),
+                                                    'system' => asset('assets/images/led-television-color-icon.png'),
                                                 ];
 
                                                 $mode = strtolower($payment->payment_mode);

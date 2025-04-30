@@ -200,7 +200,7 @@
                 }
 
                 $('#output2').html(`<div class="text-success">Notifications access granted ✅</div>`);
-                showToast('Successfully subscribed to push notifications!', 'bg-success');
+                showToast('Notifications access granted', 'bg-success');
 
             } catch (error) {
                 console.error('Push error:', error);

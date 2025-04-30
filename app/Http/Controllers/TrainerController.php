@@ -45,7 +45,7 @@ class TrainerController extends Controller{
             ],
             'gender'          => 'required|string',
             'address'         => 'required|string',
-            'image'           => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'trainerImage'           => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'joining_date'    => 'required|date',
             'monthly_salary'  => 'required|numeric|min:1',
             'birth_date'   => 'required|date|before:today',
@@ -60,9 +60,9 @@ class TrainerController extends Controller{
             'phone.unique'             => 'This phone number is already in use.',
             'gender.required'          => 'Please select a gender.',
             'address.required'         => 'Address is required.',
-            'image.image'              => 'The file must be an image.',
-            'image.mimes'              => 'Allowed image types are jpeg, png, jpg, gif, svg.',
-            'image.max'                => 'Image size must not exceed 2MB.',
+            'trainerImage.image'              => 'The file must be an image.',
+            'trainerImage.mimes'              => 'Allowed image types are jpeg, png, jpg, gif, svg.',
+            'trainerImage.max'                => 'Image size must not exceed 2MB.',
             'joining_date.required'    => 'Joining date is required.',
             'joining_date.date'        => 'Enter a valid joining date.',
             'monthly_salary.required'  => 'Monthly salary is required.',
@@ -92,8 +92,8 @@ class TrainerController extends Controller{
                 'updated_at'      => now(),
             ]);
 
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
+            if ($request->hasFile('trainerImage')) {
+                $image = $request->file('trainerImage');
                 $path = uploadFile($image, 'trainersProfilePicture', $trainerId); // you already have this method
                 DB::table('trainers')->where('id', $trainerId)->update(['image' => $path]);
             }

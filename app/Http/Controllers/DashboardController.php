@@ -54,21 +54,21 @@ class DashboardController extends Controller{
         $stats = [
             [
                 'title' => 'Today Collection',
-                'value' => $memberPayments->today_collection ?? 0,
+                'value' => number_format($memberPayments->today_collection ?? 0, 2),
                 'bg_color' => 'bg-primary',
                 'icon' => 'bi-wallet2',
                 'text_color' => 'text-white'
             ],
             [
                 'title' => 'Total Paid Amount',
-                'value' => $memberPayments->total_paid_amount ?? 0,
+                'value' => number_format($memberPayments->total_paid_amount ?? 0, 2),
                 'bg_color' => 'bg-success',
                 'icon' => 'bi-currency-dollar',
                 'text_color' => 'text-white'
             ],
             [
                 'title' => 'Total Due Amount',
-                'value' => $totalDueAmount ?? 0,
+                'value' => number_format($totalDueAmount ?? 0, 2),
                 'bg_color' => 'bg-danger',
                 'icon' => 'bi-currency-exchange',
                 'text_color' => 'text-white'
@@ -143,7 +143,7 @@ class DashboardController extends Controller{
             $user->latitude = $request->latitude;
             $user->longitude = $request->longitude;
             $user->save();
-            return response()->json(['success' => true, 'message' => 'Latitude and longitude saved successfully']);
+            return response()->json(['success' => true, 'message' => 'Location access granted.']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }

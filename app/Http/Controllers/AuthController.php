@@ -12,7 +12,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\File;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Endroid\QrCode\Builder\Builder;
-
+use Illuminate\Support\Facades\Log;
 class AuthController extends Controller{
 
     public function register(Request $request)
@@ -30,7 +30,6 @@ class AuthController extends Controller{
                 ->letters()
                 ->numbers()
                 ->symbols()
-                // ->uncompromised() // checks if password has been exposed in data leaks
             ],
         ]);
 
@@ -49,16 +48,15 @@ class AuthController extends Controller{
             $user = User::where('mobile', $request->mobile)->first();
             $user->qr_code = $this->generateQRCodeForGym($user->id);
             $user->save();
-
             Auth::login($user);
+            sendWelcomeWhatsappMessageToGymOwner($user);
 
             DB::commit();
-
-            sendWelcomeWhatsappMessageToGymOwner($user);
             session()->flash('success', 'Welcome to GYM Manager!');
             return response()->json(['status' => 'success', 'message' => 'Welcome to GYM Manager!'], 200);
 
         } catch (\Exception $e) {
+            Log::error('Registration failed: ' . $e->getMessage());
             DB::rollBack();
             return response()->json(['status' => 'error', 'message' => 'Registration failed. Please try again.'], 500);
         }

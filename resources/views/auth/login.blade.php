@@ -342,7 +342,7 @@
 
         <div class="modal fade" id="signupModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="signupModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-md">
-                <form id="register-form" class="register-form" autocomplete="off" method="POST" action="#">
+                <form id="register-form" class="register-form" method="POST" action="#">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header text-white">

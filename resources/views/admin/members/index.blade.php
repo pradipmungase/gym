@@ -907,7 +907,7 @@
                         <h5 class="modal-title" id="renewMembershipModalLabel">
                             <i class="bi bi-cash-coin me-2"></i> Renew Membership
                             <br>
-                            <span class="text-info">Member will be removed from then expiry of current plan and added to
+                            <span class="text-warning">Member will be removed from then expiry of current plan and added to
                                 new plan.</span>
                         </h5>
                         <button type="button" class="clearFromDataWithError btn-close btn-close-white"
@@ -982,7 +982,7 @@
 
                                 <!-- Payment Method -->
                                 <div class="col-6 col-md-3 col-lg-3">
-                                    <label for="renewMembershipPaymentMode" class="form-label">Amount Mode</label>
+                                    <label for="renewMembershipPaymentMode" class="form-label">Payment Mode</label>
                                     <select class="form-select" id="renewMembershipPaymentMode" name="payment_mode">
                                         <option selected value="">Select Payment Mode</option>
                                         <option value="cash">Cash</option>

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('profile_picture')->nullable();
-            $table->string('qr_code');
+            $table->string('qr_code')->nullable();
             $table->string('gym_address')->nullable();
             $table->string('email')->nullable();
             $table->rememberToken();

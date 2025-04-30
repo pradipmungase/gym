@@ -34,26 +34,23 @@
                     <!-- End Col -->
                 </div>
             </div>
-<div class="row mt-4">
-    @foreach($stats as $stat)
-        <div class="col-md-3 mb-3">
-            <div class="card {{ $stat['bg_color'] }} shadow rounded-3">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="h1 mb-1 {{ $stat['text_color'] }}">
-                            {{ $stat['value'] }}
+            <div class="row mt-4">
+                @foreach($stats as $stat)
+                    <div class="col-md-3 mb-3">
+                        <div class="card {{ $stat['bg_color'] }} shadow rounded-3">
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="h1 mb-1 {{ $stat['text_color'] }}">
+                                        {{ $stat['value'] }}
+                                    </div>
+                                    <span class="{{ $stat['text_color'] }}">{{ $stat['title'] }}</span>
+                                </div>
+                                <i class="bi {{ $stat['icon'] }} fs-1 {{ $stat['text_color'] }}"></i>
+                            </div>
                         </div>
-                        <span class="{{ $stat['text_color'] }}">{{ $stat['title'] }}</span>
                     </div>
-                    <i class="bi {{ $stat['icon'] }} fs-1 {{ $stat['text_color'] }}"></i>
-                </div>
+                @endforeach
             </div>
-        </div>
-    @endforeach
-</div>
-
-
-
 
             <div class="card">
                 <div class="card-header">
@@ -87,6 +84,7 @@
                                                     'google pay' => asset('assets/images/google-pay-icon.png'),
                                                     'cash' => asset('assets/images/euro-notes-color-icon.png'),
                                                     'other' => asset('assets/images/credit-card-color-icon.png'),
+                                                    'system' => asset('assets/images/led-television-color-icon.png'),
                                                 ];
 
                                                 $mode = strtolower($payment->payment_mode);
