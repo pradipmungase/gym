@@ -56,7 +56,7 @@
                                 <label for="date" class="form-label">
                                     Date <span class="text-danger">*</span>
                                 </label>
-                                <input type="date" class="form-control" id="date" name="date" required min="{{ date('Y-m-d') }}">
+                                <input type="text" required class="js-flatpickr form-control flatpickr-custom" placeholder="Date" id="date" name="date" data-hs-flatpickr-options='{"dateFormat": "d/m/Y"}'>
                                 <div class="invalid-feedback">Date is required.</div>
                             </div>
                             <div class="col-md-4">

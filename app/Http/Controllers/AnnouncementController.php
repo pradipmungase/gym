@@ -32,6 +32,9 @@ class AnnouncementController extends Controller{
 
     public function store(Request $request)
     {
+        $request->merge([
+            'date' => convertDateToYMD($request->input('date')),
+        ]);
         $request->validate([
             'title' => 'required|string|max:255',
             'description'  => 'required|string|max:255',

@@ -19,6 +19,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('assets/vendor/flatpickr/dist/flatpickr.min.css') }}">
+
 
     <link rel="manifest" href="{{ asset('/PWA/manifest.json') }}">
     <style data-hs-appearance-onload-styles>
@@ -907,6 +909,8 @@
     <script src="{{ asset('') }}assets/vendor/hs-file-attach/dist/hs-file-attach.min.js"></script>
     <script src="{{ asset('') }}assets/vendor/appear/dist/appear.min.js"></script>
     <script src="{{ asset('') }}assets/vendor/hs-counter/dist/hs-counter.min.js"></script>
+    <script src="{{ asset('assets/vendor/flatpickr/dist/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('assets/js/hs.flatpickr.js') }}"></script>
     <script>
         (function() {
             window.onload = function() {
@@ -1066,6 +1070,14 @@
             // =======================================================
             new HSCounter('.js-counter')
         })();
+    </script>
+
+    <script>
+    (function() {
+        // INITIALIZATION OF FLATPICKR
+        // =======================================================
+        HSCore.components.HSFlatpickr.init('.js-flatpickr')
+    })();
     </script>
 
 </body>

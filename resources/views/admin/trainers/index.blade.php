@@ -112,16 +112,15 @@
                             <div class="col-md-12">
                                 <label for="trainerAddress" class="form-label">Address <span
                                         class="text-danger">*</span></label>
-                                <textarea class="form-control" id="trainerAddress" name="address" rows="2" required></textarea>
+                                <textarea class="form-control" id="trainerAddress" name="address" rows="2" required placeholder="e.g., 123, Main St, Anytown, Maharashtra, India"></textarea>
                                 <div class="invalid-feedback">Address is required.</div>
                             </div>
 
 
                             <!-- Joining Date -->
                             <div class="col-md-6">
-                                <label for="joiningDate" class="form-label">Joining Date <span
-                                        class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="joiningDate" name="joining_date" required>
+                                <label for="joiningDate" class="form-label">Joining Date <span class="text-danger">*</span></label>
+                                <input type="text" required class="js-flatpickr form-control flatpickr-custom" placeholder="Joining Date" id="joiningDate" name="joining_date" data-hs-flatpickr-options='{"dateFormat": "d/m/Y"}'>
                                 <div class="invalid-feedback">Joining date is required.</div>
                             </div>
 
@@ -159,8 +158,7 @@
                             <div class="col-md-6">
                                 <label for="dateOfBirth" class="form-label">Date of Birth <span
                                         class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="dateOfBirth" name="birth_date"
-                                    required>
+                                    <input type="text" required class="js-flatpickr form-control flatpickr-custom" placeholder="Date of Birth" id="dateOfBirth" name="birth_date" data-hs-flatpickr-options='{"dateFormat": "d/m/Y"}'>
                                 <div class="invalid-feedback">Date of birth is required.</div>
                             </div>
 
@@ -240,7 +238,7 @@
                             <div class="col-md-12">
                                 <label for="editTrainerAddress" class="form-label">Address <span
                                         class="text-danger">*</span></label>
-                                <textarea class="form-control" id="editTrainerAddress" name="address" rows="2" required></textarea>
+                                <textarea class="form-control" id="editTrainerAddress" name="address" rows="2" required placeholder="e.g., 123, Main St, Anytown, Maharashtra, India"></textarea>
                                 <div class="invalid-feedback">Address is required.</div>
                             </div>
 
@@ -249,8 +247,7 @@
                             <div class="col-md-6">
                                 <label for="editJoiningDate" class="form-label">Joining Date <span
                                         class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="editJoiningDate" name="joining_date"
-                                    placeholder="e.g., 2025-01-01" required>
+                                    <input type="text" required class="js-flatpickr form-control flatpickr-custom" placeholder="Joining Date" id="editJoiningDate" name="joining_date" data-hs-flatpickr-options='{"dateFormat": "d/m/Y"}'>
                                 <div class="invalid-feedback">Joining date is required.</div>
                             </div>
 
@@ -292,8 +289,7 @@
                             <div class="col-md-6">
                                 <label for="editDateOfBirth" class="form-label">Date of Birth <span
                                         class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="editDateOfBirth" name="birth_date"
-                                    required>
+                                    <input type="text" required class="js-flatpickr form-control flatpickr-custom" placeholder="Date of Birth" id="editDateOfBirth" name="birth_date" data-hs-flatpickr-options='{"dateFormat": "d/m/Y"}'>
                                 <div class="invalid-feedback">Date of birth is required.</div>
                             </div>  
 

@@ -31,6 +31,9 @@ class ExpenseController extends Controller{
     }
     public function store(Request $request)
     {
+        $request->merge([
+            'date' => convertDateToYMD($request->input('date')),
+        ]);
         $request->validate([
             'name' => 'required|string|max:255',
             'amount'  => 'required|numeric|min:1',
@@ -54,6 +57,9 @@ class ExpenseController extends Controller{
 
     public function update(Request $request)
     {
+        $request->merge([
+            'date' => convertDateToYMD($request->input('date')),
+        ]);
         $request->validate([
             'name' => 'required|string|max:255',
             'amount' => 'required|numeric|min:1',

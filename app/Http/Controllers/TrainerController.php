@@ -35,6 +35,10 @@ class TrainerController extends Controller{
 
     public function store(Request $request)
     {
+        $request->merge([
+            'joining_date' => convertDateToYMD($request->input('joining_date')),
+            'birth_date' => convertDateToYMD($request->input('birth_date')),
+        ]);
         $request->validate([
             'name'            => 'required|string|max:255',
             'email'           => 'required|string|email|unique:trainers,email',
@@ -112,6 +116,10 @@ class TrainerController extends Controller{
 
     public function update(Request $request)
     {
+        $request->merge([
+            'joining_date' => convertDateToYMD($request->input('joining_date')),
+            'birth_date' => convertDateToYMD($request->input('birth_date')),
+        ]);
         $request->validate([
             'trainer_id' => ['required', Rule::exists('trainers', 'id')],
             'name' => ['required', 'string', 'max:255'],

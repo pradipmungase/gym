@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str; 
 
 
+function convertDateToYMD($date) {
+    $dateObj = DateTime::createFromFormat('d/m/Y', $date);
+    return $dateObj ? $dateObj->format('Y-m-d') : null;
+}
 
 function getMemberRequestCount() {
     $memberRequestCount = DB::table('member_registration')->where('status', 'pending')->count();

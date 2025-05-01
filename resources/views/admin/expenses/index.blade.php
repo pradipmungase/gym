@@ -63,7 +63,7 @@
                                 <label for="date" class="form-label">
                                     Date <span class="text-danger">*</span>
                                 </label>
-                                <input type="date" class="form-control" id="date" name="date" required>
+                                <input type="text" required class="js-flatpickr form-control flatpickr-custom" placeholder="Date" id="date" name="date" data-hs-flatpickr-options='{"dateFormat": "d/m/Y"}'>
                                 <div class="invalid-feedback">Date is required.</div>
                             </div>
 
@@ -71,7 +71,7 @@
                                 <label for="description" class="form-label">
                                     Description <span class="text-danger">*</span>
                                 </label>
-                                <textarea class="form-control" id="description" name="description" required></textarea>
+                                <textarea class="form-control" id="description" name="description" required placeholder="e.g., Description"></textarea>
                                 <div class="invalid-feedback">Description is required.</div>
                             </div>
                         </div>
@@ -132,7 +132,7 @@
                                 <label for="editDate" class="form-label">
                                     Date <span class="text-danger">*</span>
                                 </label>
-                                <input type="date" class="form-control" id="editDate" name="date" required>
+                                <input type="text" required class="js-flatpickr form-control flatpickr-custom" placeholder="Date" id="editDate" name="date" data-hs-flatpickr-options='{"dateFormat": "d/m/Y"}'>
                                 <div class="invalid-feedback">Date is required.</div>
                             </div>
 
@@ -141,7 +141,7 @@
                                 <label for="editDescription" class="form-label">
                                     Description
                                 </label>
-                                <textarea class="form-control" id="editDescription" name="description"></textarea>
+                                <textarea class="form-control" id="editDescription" name="description" placeholder="e.g., Description"></textarea>
                                 <div class="invalid-feedback">Description is required.</div>
                             </div>
 
@@ -202,15 +202,14 @@
                                 <label for="date" class="form-label">
                                     Date <span class="text-danger">*</span>
                                 </label>
-                                <input readonly type="date" class="form-control" id="viewDate" name="date"
-                                    required placeholder="e.g., 1000">
+                                <input readonly type="text" required class="js-flatpickr form-control flatpickr-custom" placeholder="Date" id="viewDate" name="date" data-hs-flatpickr-options='{"dateFormat": "d/m/Y"}'>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="description" class="form-label">
                                     Description <span class="text-danger">*</span>
                                 </label>
-                                <textarea readonly class="form-control" id="viewDescription" name="description" required></textarea>
+                                <textarea readonly class="form-control" id="viewDescription" name="description" required placeholder="e.g., Description"></textarea>
                                 <div class="invalid-feedback">Description is required.</div>
                             </div>
                         </div>
