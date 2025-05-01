@@ -7,13 +7,10 @@
     <meta name= "apple-mobile-web-app-status-bar" content="#aa7700">
     <meta name="theme-color" content="black">
     <title>GYM Manager</title>
-    {{-- <link rel="shortcut icon" href="{{ asset('logo/5.jpg') }}"> --}}
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon_io/android-chrome-192x192.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon_io/favicon.ico') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('') }}assets/vendor/bootstrap-icons/font/bootstrap-icons.css">
-    {{-- <link rel="stylesheet" href="{{ asset('') }}assets/vendor/jsvectormap/dist/css/jsvectormap.min.css"> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('') }}assets/vendor/tom-select/dist/css/tom-select.bootstrap5.css"> --}}
-
-
     <link rel="preload" href="{{ asset('') }}assets/css/theme.min.css" data-hs-appearance="default" as="style">
     <link rel="preload" href="{{ asset('') }}assets/css/theme-dark.min.css" data-hs-appearance="dark"
         as="style">
@@ -298,15 +295,15 @@
         class="navbar navbar-expand-lg navbar-fixed navbar-height navbar-container navbar-bordered bg-white">
         <div class="navbar-nav-wrap">
             <!-- Logo -->
-            <a class="navbar-brand" href="{{ url('/dashboard') }}" aria-label="Front" style="width: 30% !important;">
-                <img class="navbar-brand-logo" src="{{ asset('assets/images/shortLogoResized.png') }}" alt="Logo"
-                    data-hs-theme-appearance="default">
-                <img class="navbar-brand-logo" src="{{ asset('assets/images/shortLogoResized.png') }}" alt="Logo"
-                    data-hs-theme-appearance="dark">
-                <img class="navbar-brand-logo-mini" src="{{ asset('assets/images/shortLogoResized.png') }}" alt="Logo"
-                    data-hs-theme-appearance="default">
-                <img class="navbar-brand-logo-mini" src="{{ asset('assets/images/shortLogoResized.png') }}" alt="Logo"
-                    data-hs-theme-appearance="dark">
+            <a class="navbar-brand" href="{{ url('/dashboard') }}" aria-label="" style="width: 30% !important;">
+            <img class="navbar-brand-logo" src="{{ asset('assets/images/shortLogo.png') }}"
+                alt="Logo" data-hs-theme-appearance="default">
+            <img class="navbar-brand-logo" src="{{ asset('assets/images/shortLogo.png') }}"
+                alt="Logo" data-hs-theme-appearance="dark">
+            <img class="navbar-brand-logo-mini" src="{{ asset('assets/images/shortLogo.png') }}"
+                alt="Logo" data-hs-theme-appearance="default">
+            <img class="navbar-brand-logo-mini" src="{{ asset('assets/images/shortLogo.png') }}"
+                alt="Logo" data-hs-theme-appearance="dark">
             </a>
             <!-- End Logo -->
 
@@ -373,8 +370,7 @@
                                         </div>
 
                                         <input type="search" class="form-control mobileViewSearch"
-                                            placeholder="Search Member & Trainer"
-                                            aria-label="Search Member & Trainer">
+                                            placeholder="Search Member & Trainer" aria-label="Search Member & Trainer">
                                         <a class="input-group-append input-group-text" href="javascript:;">
                                             <i class="bi-x-lg"></i>
                                         </a>
@@ -408,8 +404,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item d-sm-inline-block">
                         <button id="installBtn" type="button"
-                            class="btn btn-ghost-secondary btn-icon rounded-circle"
-                            title="Install App">
+                            class="btn btn-ghost-secondary btn-icon rounded-circle" title="Install App">
                             <i class="bi bi-file-arrow-down"></i>
                         </button>
                     </li>
@@ -581,9 +576,9 @@
             <div class="navbar-vertical-footer-offset">
                 <!-- Logo -->
                 <a class="navbar-brand" href="{{ url('/dashboard') }}" aria-label="">
-                    <img class="navbar-brand-logo" src="{{ asset('assets/images/blackFullLogo.png') }}"
+                    <img class="navbar-brand-logo" src="{{ asset('assets/images/BlackFullLogo.png') }}"
                         alt="Logo" data-hs-theme-appearance="default">
-                    <img class="navbar-brand-logo" src="{{ asset('assets/images/whiteFullLogo.png') }}"
+                    <img class="navbar-brand-logo" src="{{ asset('assets/images/WhiteFullLogo.png') }}"
                         alt="Logo" data-hs-theme-appearance="dark">
                     <img class="navbar-brand-logo-mini" src="{{ asset('assets/images/shortLogo.png') }}"
                         alt="Logo" data-hs-theme-appearance="default">
@@ -613,58 +608,87 @@
 
                         <!-- Dashboard -->
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('dashboard') }}" role="button">
+                            <a class="nav-link @if (Request::is('dashboard')) active @endif"
+                                href="{{ url('dashboard') }}" role="button">
                                 <i class="bi-speedometer2 nav-icon"></i>
                                 <span class="nav-link-title">Dashboard</span>
                             </a>
                         </div>
 
 
+                        @php
+                            $setupActive = Request::is('plans') || Request::is('trainer') || Request::is('permissions');
+                        @endphp
+
                         <div class="nav-item">
-                            <a class="nav-link dropdown-toggle " href="#navbarVerticalMenuDashboards" role="button"
+                            <a class="nav-link dropdown-toggle" href="#navbarVerticalMenuDashboards" role="button"
                                 data-bs-toggle="collapse" data-bs-target="#navbarVerticalMenuDashboards"
-                                aria-expanded="false" aria-controls="navbarVerticalMenuDashboards">
+                                aria-expanded="{{ $setupActive ? 'true' : 'false' }}"
+                                aria-controls="navbarVerticalMenuDashboards">
                                 <i class="bi-house-door nav-icon"></i>
                                 <span class="nav-link-title">Set-Up</span>
                             </a>
 
-                            <div id="navbarVerticalMenuDashboards" class="nav-collapse collapse "
+                            <div id="navbarVerticalMenuDashboards"
+                                class="nav-collapse collapse {{ $setupActive ? 'show' : '' }}"
                                 data-bs-parent="#navbarVerticalMenu">
-                                <a class="nav-link " href="{{ url('plans') }}"> <i
-                                        class="bi-clipboard-check nav-icon"></i>Membership Plan</a>
-                                <a class="nav-link " href="{{ url('trainer') }}"> <i
-                                        class="bi-person-badge nav-icon"></i> Trainers</a>
-                                <a class="nav-link " href="{{ url('permissions') }}"> <i
-                                        class="bi-person-badge nav-icon"></i> Permissions</a>
+                                <a class="nav-link @if (Request::is('plans')) active @endif"
+                                    href="{{ url('plans') }}">
+                                    <i class="bi-clipboard-check nav-icon"></i>Membership Plan
+                                </a>
+                                <a class="nav-link @if (Request::is('trainer')) active @endif"
+                                    href="{{ url('trainer') }}">
+                                    <i class="bi-person-badge nav-icon"></i> Trainers
+                                </a>
+                                <a class="nav-link @if (Request::is('permissions')) active @endif"
+                                    href="{{ url('permissions') }}">
+                                    <i class="bi-person-badge nav-icon"></i> Permissions
+                                </a>
                             </div>
                         </div>
 
 
+                        @php
+                            $memberManagementActive = Request::is('members') || Request::is('memberRequest');
+                            $memberRequestCount = getMemberRequestCount();
+                            if ($memberRequestCount > 0) {
+                                $memberManagementActive = true;
+                            }
+                        @endphp
 
                         <div class="nav-item">
-                            <a class="nav-link dropdown-toggle " href="#navbarVerticalMenuDashboards1" role="button"
+                            <a class="nav-link dropdown-toggle" href="#navbarVerticalMenuDashboards1" role="button"
                                 data-bs-toggle="collapse" data-bs-target="#navbarVerticalMenuDashboards1"
-                                aria-expanded="false" aria-controls="navbarVerticalMenuDashboards1">
+                                aria-expanded="{{ $memberManagementActive ? 'true' : 'false' }}"
+                                aria-controls="navbarVerticalMenuDashboards1">
                                 <i class="bi-house-door nav-icon"></i>
-                                <span class="nav-link-title">Member Management</span>
+                                <span class="nav-link-title">Members Mgmt
+                                </span>
                             </a>
 
-                            <div id="navbarVerticalMenuDashboards1" class="nav-collapse collapse "
+                            <div id="navbarVerticalMenuDashboards1"
+                                class="nav-collapse collapse {{ $memberManagementActive ? 'show' : '' }}"
                                 data-bs-parent="#navbarVerticalMenu">
-                                <a class="nav-link" href="{{ url('members') }}" role="button">
+                                <a class="nav-link @if (Request::is('members')) active @endif"
+                                    href="{{ url('members') }}" role="button">
                                     <i class="bi-people nav-icon"></i>
                                     <span class="nav-link-title">Members</span>
                                 </a>
-                                <a class="nav-link " href="{{ url('memberRequest') }}"> <i
-                                        class="bi-person-badge nav-icon"></i> Member Request</a>
+                                <a class="nav-link @if (Request::is('memberRequest')) active @endif"
+                                    href="{{ url('memberRequest') }}">
+                                    <i class="bi-person-badge nav-icon"></i> Member Request
+                                    <span class="badge bg-primary rounded-pill ms-1">{{ $memberRequestCount }} </span>
+                                </a>
                             </div>
                         </div>
+
 
 
 
                         <!-- Attendance -->
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('attendance') }}" role="button">
+                            <a class="nav-link @if (Request::is('attendance')) active @endif"
+                                href="{{ url('attendance') }}" role="button">
                                 <i class="bi-calendar-check nav-icon"></i>
                                 <span class="nav-link-title">Attendance</span>
                             </a>
@@ -672,7 +696,8 @@
 
                         <!-- Expenses -->
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('expenses') }}" role="button">
+                            <a class="nav-link @if (Request::is('expenses')) active @endif"
+                                href="{{ url('expenses') }}" role="button">
                                 <i class="bi-cash-stack nav-icon"></i>
                                 <span class="nav-link-title">Expenses</span>
                             </a>
@@ -680,7 +705,8 @@
 
                         <!-- announcement -->
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('announcement') }}" role="button">
+                            <a class="nav-link @if (Request::is('announcement')) active @endif"
+                                href="{{ url('announcement') }}" role="button">
                                 <i class="bi-megaphone nav-icon"></i>
                                 <span class="nav-link-title">Announcement</span>
                             </a>
@@ -688,7 +714,8 @@
 
                         <!-- Reports -->
                         <div class="nav-item">
-                            <a class="nav-link" href="#" role="button">
+                            <a class="nav-link @if (Request::is('reports')) active @endif" href="#"
+                                role="button">
                                 <i class="bi-bar-chart-line nav-icon"></i>
                                 <span class="nav-link-title">Reports</span>
                             </a>
@@ -696,7 +723,8 @@
 
                         <!-- Settings -->
                         <div class="nav-item">
-                            <a class="nav-link" href="#" role="button">
+                            <a class="nav-link @if (Request::is('settings')) active @endif" href="#"
+                                role="button">
                                 <i class="bi-gear nav-icon"></i>
                                 <span class="nav-link-title">Settings</span>
                             </a>
@@ -704,15 +732,16 @@
 
                         <!-- Support -->
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ url('support') }}" role="button">
+                            <a class="nav-link @if (Request::is('support')) active @endif"
+                                href="{{ url('support') }}" role="button">
                                 <i class="bi-question-circle nav-icon"></i>
                                 <span class="nav-link-title">Support</span>
                             </a>
                         </div>
 
                         <div class="nav-item">
-                            <a class="nav-link" href="#" data-bs-toggle="modal"
-                                data-bs-target="#requestFeatureModal" role="button">
+                            <a class="nav-link @if (Request::is('requestFeature')) active @endif" href="#"
+                                data-bs-toggle="modal" data-bs-target="#requestFeatureModal" role="button">
                                 <i class="bi-question-circle nav-icon"></i>
                                 <span class="nav-link-title">Request Feature</span>
                             </a>
@@ -720,7 +749,8 @@
 
                         <!-- Logout -->
                         <div class="nav-item">
-                            <a class="nav-link text-danger" href="{{ url('logout') }}" role="button">
+                            <a class="nav-link text-danger @if (Request::is('logout')) active @endif"
+                                href="{{ url('logout') }}" role="button">
                                 <i class="bi-box-arrow-right nav-icon text-danger"></i>
 
                                 <span class="nav-link-title">Log out</span>

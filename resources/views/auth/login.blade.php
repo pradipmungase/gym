@@ -16,7 +16,7 @@
     <title>Welcome to - GYM Manager Admin!</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.ico') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon_io/android-chrome-192x192.png') }}" />
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">

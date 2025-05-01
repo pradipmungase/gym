@@ -11,6 +11,11 @@ use Illuminate\Support\Str;
 
 
 
+function getMemberRequestCount() {
+    $memberRequestCount = DB::table('member_registration')->where('status', 'pending')->count();
+    return $memberRequestCount;
+}
+
 
 function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
 {
